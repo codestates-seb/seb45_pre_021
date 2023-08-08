@@ -35,4 +35,9 @@ public class Controller {
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
+
+    @GetMapping
+    public String branchTest() {
+        return "브렌치 테스트 하려고 만듬ㅋㅋ";
+    }
 }
