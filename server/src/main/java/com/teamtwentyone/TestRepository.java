@@ -1,4 +1,7 @@
 package com.teamtwentyone;
 
-public interface TestRepository {
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface TestRepository extends JpaRepository<TestEntity, Long> {
+
 }
