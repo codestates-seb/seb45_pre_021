@@ -53,10 +53,15 @@ const Sidebar = () => {
 export default Sidebar;
 
 const SideContainer = styled.aside`
-  height: 100vh;
+  /* height: 100vh; */
   width: 280px;
   padding: 0 20px;
   border-right: 1px solid gray;
+
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
 `;
 
 const SideBox = styled.div`
