@@ -1,20 +1,28 @@
+import { useState } from 'react';
 import { styled } from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import logo from '../imgs/logo-stackoverflow.png';
+import HeaderDropdown from './HeaderDropdown.jsx';
 import headerbutton from '../imgs/HeaderButton.svg';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 
 const Nav = () => {
+  const [isShow, setIsShow] = useState(false);
   const navigate = useNavigate();
+
+  const dropDownHandler = () => {
+    setIsShow((props) => !props);
+  };
 
   return (
     <NavigationSection>
       <DropdownSection>
-        <button>
+        <button onClick={dropDownHandler}>
           <img src={headerbutton} alt="헤더 드롭다운 버튼" />
         </button>
       </DropdownSection>
+      {isShow ? <HeaderDropdown dropDownHandler={dropDownHandler} /> : ''}
       <LogoSection onClick={() => navigate('/')}>
         <img src={logo} alt="Logo" />
       </LogoSection>
