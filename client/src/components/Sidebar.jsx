@@ -1,32 +1,49 @@
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 
 const Sidebar = () => {
   return (
     <SideContainer>
       <SideBox>
         <HomeLayer>
-          <HomeTitle>Home</HomeTitle>
+          <HomeTitle>
+            <Link to="/">Home</Link>
+          </HomeTitle>
         </HomeLayer>
 
         <PublicBox>
           <h2>Public</h2>
           <ul>
-            <ListItem>Questions</ListItem>
-            <ListItem>Tags</ListItem>
-            <ListItem>Users</ListItem>
-            <ListItem>Companies</ListItem>
+            <ListItem>
+              <Link to="/">Questions</Link>
+            </ListItem>
+            <ListItem>
+              <Link to="/">Tags</Link>
+            </ListItem>
+            <ListItem>
+              <Link to="/">Users</Link>
+            </ListItem>
+            <ListItem>
+              <Link to="/">Companies</Link>
+            </ListItem>
           </ul>
         </PublicBox>
         <CollectivesBox>
           <h2>Collectives</h2>
           <ul>
-            <ListItem>Explore Collectives</ListItem>
+            <ListItem>
+              <Link>Explore Collectives</Link>
+            </ListItem>
           </ul>
         </CollectivesBox>
         <ButtonBox>
           <h2>Teams</h2>
-          <TeamButton>Create Free Team</TeamButton>
-          <QuestionBox>Looking for your Teams?</QuestionBox>
+          <TeamButton>
+            <Link>Create Free Team</Link>
+          </TeamButton>
+          <QuestionBox>
+            <Link>Looking for your Teams?</Link>
+          </QuestionBox>
         </ButtonBox>
       </SideBox>
     </SideContainer>
