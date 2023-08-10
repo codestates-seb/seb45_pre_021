@@ -7,7 +7,7 @@ const Sidebar = () => {
       <SideBox>
         <HomeLayer>
           <HomeTitle>
-            <Link to="/">Home</Link>
+            <LinkItems to="/">Home</LinkItems>
           </HomeTitle>
         </HomeLayer>
 
@@ -15,16 +15,16 @@ const Sidebar = () => {
           <h2>Public</h2>
           <ul>
             <ListItem>
-              <Link to="/">Questions</Link>
+              <LinkItems to="/">Questions</LinkItems>
             </ListItem>
             <ListItem>
-              <Link to="/">Tags</Link>
+              <LinkItems to="/">Tags</LinkItems>
             </ListItem>
             <ListItem>
               <Link to="/">Users</Link>
             </ListItem>
             <ListItem>
-              <Link to="/">Companies</Link>
+              <LinkItems to="/">Companies</LinkItems>
             </ListItem>
           </ul>
         </PublicBox>
@@ -32,17 +32,17 @@ const Sidebar = () => {
           <h2>Collectives</h2>
           <ul>
             <ListItem>
-              <Link>Explore Collectives</Link>
+              <LinkItems>Explore Collectives</LinkItems>
             </ListItem>
           </ul>
         </CollectivesBox>
         <ButtonBox>
           <h2>Teams</h2>
           <TeamButton>
-            <Link>Create Free Team</Link>
+            <LinkButton>Create Free Team</LinkButton>
           </TeamButton>
           <QuestionBox>
-            <Link>Looking for your Teams?</Link>
+            <LinkItems>Looking for your Teams?</LinkItems>
           </QuestionBox>
         </ButtonBox>
       </SideBox>
@@ -128,4 +128,12 @@ const TeamButton = styled.button`
 const QuestionBox = styled.p`
   color: rgba(0, 0, 0, 0.6);
   text-align: center;
+`;
+
+const LinkButton = styled(Link)`
+  color: #fff;
+`;
+
+const LinkItems = styled(Link)`
+  color: #000;
 `;
