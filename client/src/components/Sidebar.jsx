@@ -54,14 +54,14 @@ export default Sidebar;
 
 const SideContainer = styled.aside`
   height: 100vh;
-  width: 240px;
+  width: 280px;
   padding: 0 20px;
   border-right: 1px solid gray;
 `;
 
 const SideBox = styled.div`
   width: 100%;
-  height: 580px;
+  height: 540px;
   font-size: 13px;
   border-bottom: 1px solid gray;
 `;
@@ -81,13 +81,22 @@ const HomeTitle = styled.h2`
 
 const PublicBox = styled.div`
   padding: 0 10px;
-  height: 180px;
+  height: 200px;
 `;
 
 const ListItem = styled.li`
   list-style: none;
   font-size: 16px;
-  line-height: 2;
+  line-height: 1.7;
+  height: 25px;
+  margin: 10px;
+  padding-left: 20px;
+
+  /* background-color: red; */
+
+  & hover {
+    background-color: #000;
+  }
 `;
 
 const CollectivesBox = styled.div`
@@ -96,7 +105,13 @@ const CollectivesBox = styled.div`
 
 const ButtonBox = styled.div`
   padding: 0 10px;
-  margin-top: 80px;
+  margin-top: 60px;
+
+  height: 140px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
 `;
 
 const TeamButton = styled.button`
