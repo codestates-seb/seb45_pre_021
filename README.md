@@ -23,15 +23,11 @@
 <img src="https://img.shields.io/badge/-Java-05122A?style=flat&logo=Java"/>
 <img src="https://img.shields.io/badge/-Spring-05122A?style=flat&logo=Spring"/>
 <img src="https://img.shields.io/badge/-Springboot-05122A?style=flat&logo=Springboot"/>
-<img src="https://img.shields.io/badge/-django-05122A?style=flat&logo=django"/>
 <img src="https://img.shields.io/badge/-amazonaws-05122A?style=flat&logo=amazonaws"/>
 <br>
 <img src="https://img.shields.io/badge/-git-05122A?style=flat&logo=git"/>
 <img src="https://img.shields.io/badge/-github-05122A?style=flat&logo=github"/>
 <img src="https://img.shields.io/badge/Visual Studio Code-007ACC?style=flat-square&logo=Visual Studio Code&logoColor=white"/>
-
-
-
 
 </p>
 
