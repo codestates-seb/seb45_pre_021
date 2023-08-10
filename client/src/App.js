@@ -10,22 +10,26 @@ import Detail from './pages/questions/Detail.jsx';
 import NotFound from './pages/NotFound.jsx';
 
 import './App.css';
+import Footer from './components/Footer.jsx';
 
 function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/users" element={<MyPage />} />
-        <Route path="/users/login" element={<Login />} />
-        <Route path="/users/register" element={<Register />} />
-        <Route path="/questions" element={<Main />} />
-        <Route path="/questions/post" element={<Post />} />
-        <Route path="/questions/edit/:id" element={<Edit />} />
-        <Route path="/questions/detail/:id" element={<Detail />} />
-        <Route path="*" element={<NotFound />} />
-      </Routes>
-    </BrowserRouter>
+    <>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/users" element={<MyPage />} />
+          <Route path="/users/login" element={<Login />} />
+          <Route path="/users/register" element={<Register />} />
+          <Route path="/questions" element={<Main />} />
+          <Route path="/questions/post" element={<Post />} />
+          <Route path="/questions/edit/:id" element={<Edit />} />
+          <Route path="/questions/detail/:id" element={<Detail />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </BrowserRouter>
+      <Footer />
+    </>
   );
 }
 
