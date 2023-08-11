@@ -6,13 +6,13 @@ const Sidebar = () => {
     <SideContainer>
       <SideBox>
         <HomeLayer>
-          <HomeTitle>
-            <LinkItems to="/">Home</LinkItems>
-          </HomeTitle>
+          <HomeBox>
+            <HomeTitle to="/">Home</HomeTitle>
+          </HomeBox>
         </HomeLayer>
 
         <PublicBox>
-          <h2>Public</h2>
+          <Titles>Public</Titles>
           <ul>
             <ListItem>
               <LinkItems to="/">Questions</LinkItems>
@@ -29,22 +29,21 @@ const Sidebar = () => {
           </ul>
         </PublicBox>
         <CollectivesBox>
-          <h2>Collectives</h2>
-          <ul>
-            <ListItem>
-              <LinkItems>Explore Collectives</LinkItems>
-            </ListItem>
-          </ul>
+          <Titles>Collectives</Titles>
+
+          <LinkItems>Explore Collectives</LinkItems>
         </CollectivesBox>
         <ButtonBox>
-          <h2>Teams</h2>
-          <TeamButton>
-            <LinkButton>Create Free Team</LinkButton>
-          </TeamButton>
-          <QuestionBox>
-            <LinkItems>Looking for your Teams?</LinkItems>
-          </QuestionBox>
+          <Titles>Teams</Titles>
+
+          <LinkItems>Create Free Team</LinkItems>
         </ButtonBox>
+
+        <FindTeamBox>
+          <QuestionBox>
+            <LinkButton>Looking for your Teams?</LinkButton>
+          </QuestionBox>
+        </FindTeamBox>
       </SideBox>
     </SideContainer>
   );
@@ -53,11 +52,8 @@ const Sidebar = () => {
 export default Sidebar;
 
 const SideContainer = styled.aside`
-  /* height: 100vh; */
-  width: 280px;
-  padding: 0 20px;
+  width: 164px;
   border-right: 1px solid gray;
-
   position: fixed;
   top: 0;
   left: 0;
@@ -67,35 +63,42 @@ const SideContainer = styled.aside`
 const SideBox = styled.div`
   width: 100%;
   height: 540px;
-  font-size: 13px;
-  border-bottom: 1px solid gray;
 `;
 
 const HomeLayer = styled.div`
-  /* background-color: #9a9a9a; */
-  height: 70px;
+  height: 25px;
+  padding: 0 5px;
 `;
 
-const HomeTitle = styled.h2`
+const HomeBox = styled.h3`
   display: flex;
   align-items: center;
-  justify-content: center;
   height: 100%;
-  font-size: 22px;
+  font-weight: 600;
 `;
 
 const PublicBox = styled.div`
-  padding: 0 10px;
+  padding-left: 10px;
   height: 200px;
+  margin-top: 35px;
+`;
+
+const Titles = styled.p`
+  text-transform: uppercase;
+  font-weight: 300;
+  font-size: 13px;
 `;
 
 const ListItem = styled.li`
   list-style: none;
-  font-size: 16px;
+  /* font-size: 16px; */
   line-height: 1.7;
   height: 25px;
   margin: 10px;
-  padding-left: 20px;
+  margin-left: -20px;
+  font-size: 15px;
+  font-weight: 500;
+  /* padding-left: 0px; */
 
   /* background-color: red; */
 
@@ -105,40 +108,41 @@ const ListItem = styled.li`
 `;
 
 const CollectivesBox = styled.div`
-  padding: 0 10px;
+  padding-left: 10px;
+  height: 60px;
 `;
 
 const ButtonBox = styled.div`
-  padding: 0 10px;
-  margin-top: 60px;
-
-  height: 140px;
-
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-`;
-
-const TeamButton = styled.button`
-  width: 100%;
-  height: 40px;
-  border-radius: 3px;
-  border-color: transparent;
-  background-color: #f48024;
-  color: #fff;
-  font-weight: bold;
-  font-size: 16px;
+  padding-left: 10px;
 `;
 
 const QuestionBox = styled.p`
-  color: rgba(0, 0, 0, 0.6);
+  background-color: #f0f8ff;
   text-align: center;
+  font-size: 13px;
+  height: 38px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 500;
+`;
+
+const FindTeamBox = styled.div`
+  padding-left: 0px;
 `;
 
 const LinkButton = styled(Link)`
-  color: #fff;
+  color: #0063bf;
 `;
 
 const LinkItems = styled(Link)`
+  color: rgba(0, 0, 0, 0.8);
+`;
+
+const HomeTitle = styled(Link)`
   color: #000;
+  font-size: 16px;
+  text-decoration: none;
+  font-weight: 700;
 `;
