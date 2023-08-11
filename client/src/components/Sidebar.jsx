@@ -98,13 +98,6 @@ const ListItem = styled.li`
   margin-left: -20px;
   font-size: 15px;
   font-weight: 500;
-  /* padding-left: 0px; */
-
-  /* background-color: red; */
-
-  & hover {
-    background-color: #000;
-  }
 `;
 
 const CollectivesBox = styled.div`
