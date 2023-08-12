@@ -14,15 +14,15 @@ public class User extends UserDateEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
 
-    @Column
+    @Column(unique = true)
     private String email;
 
     @Column
     private String password;
 
-    @Column
+    @Column(unique = true)
     private String nickName;
 
-    @Column
+    @Column(unique = true)
     private String phoneNum;
 }

@@ -3,6 +3,10 @@ package com.teamtwentyone.users.repository;
 import com.teamtwentyone.users.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface UserRepository extends JpaRepository<User, Long> {
+import java.util.Optional;
 
+public interface UserRepository extends JpaRepository<User, Long> {
+    Optional<User> findByEmail(String email);
+    Optional<User> findByNickName(String nickName);
+    Optional<User> findByPhoneNum(String phoneNum);
 }
