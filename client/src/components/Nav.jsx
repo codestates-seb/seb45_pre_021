@@ -60,7 +60,7 @@ const NavigationSection = styled.header`
   right: 0;
   width: 100vw;
   max-width: 100%;
-  height: 5.6vh;
+  height: 3.5rem;
   margin: 0 auto;
   display: flex;
   align-items: center;
