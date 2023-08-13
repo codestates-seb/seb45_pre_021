@@ -10,7 +10,7 @@ import javax.validation.constraints.Pattern;
 
 public class UserDto {
     @Getter
-    public static class Post {
+    public static class signup {
         @NotBlank
         @Email(message = "올바른 이메일 형식이 아닙니다.")
         private String email;
@@ -35,10 +35,6 @@ public class UserDto {
     public static class Patch {
         private Long id;
 
-        @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[$@$!%*#?&])[A-Za-z\\d$@$!%*#?&]{8,16}$",
-                message = "비밀번호는 특수문자, 영문자, 숫자를 포함한 8글자 이상 16글자 이하로 구성되어야 합니다.")
-        private String password;
-
         @Pattern(regexp = "^[가-힣a-zA-Z]{2,6}$",
                 message = "닉네임은 한글, 영문자만 허용되며 2글자 이상 6글자 이하로 구성되어야 하며 공백은 허용하지 않습니다.")
         private String nickName;
@@ -53,12 +49,24 @@ public class UserDto {
     }
 
     @Getter
+    public static class PatchPassword {
+        private Long id;
+
+        @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[$@$!%*#?&])[A-Za-z\\d$@$!%*#?&]{8,16}$",
+                message = "비밀번호는 특수문자, 영문자, 숫자를 포함한 8글자 이상 16글자 이하로 구성되어야 합니다.")
+        private String password;
+
+        public void setId(Long id) {
+            this.id = id;
+        }
+    }
+
+    @Getter
     @AllArgsConstructor
     @Builder
     public static class Response {
         private Long id;
         private String email;
-        private String password;
         private String nickName;
         private String phoneNum;
         private String createDate;

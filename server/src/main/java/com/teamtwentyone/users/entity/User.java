@@ -4,6 +4,8 @@ import com.teamtwentyone.time.UserDateEntity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @NoArgsConstructor
 @Getter
@@ -25,4 +27,7 @@ public class User extends UserDateEntity {
 
     @Column(unique = true)
     private String phoneNum;
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    private List<String> roles = new ArrayList<>();
 }

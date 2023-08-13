@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class UserMapper {
     //Dto -> Entity
-    public User userPostToUser(UserDto.Post requestBody) {
+    public User userPostToUser(UserDto.signup requestBody) {
         User user = new User();
         user.setEmail(requestBody.getEmail());
         user.setPassword(requestBody.getPassword());
@@ -20,9 +20,16 @@ public class UserMapper {
     public User userPatchToUser(UserDto.Patch requestBody) {
         User user = new User();
         user.setUserId(requestBody.getId());
-        user.setPassword(requestBody.getPassword());
         user.setNickName(requestBody.getNickName());
         user.setPhoneNum(requestBody.getPhoneNum());
+        return user;
+    }
+
+    // Dto -> Entity
+    public User userPatchPasswordToUser(UserDto.PatchPassword requestBody) {
+        User user = new User();
+        user.setUserId(requestBody.getId());
+        user.setPassword(requestBody.getPassword());
         return user;
     }
 
@@ -31,7 +38,6 @@ public class UserMapper {
         return UserDto.Response.builder()
                 .id(user.getUserId())
                 .email(user.getEmail())
-                .password(user.getPassword())
                 .nickName(user.getNickName())
                 .phoneNum(user.getPhoneNum())
                 .createDate(String.valueOf(user.getCreateDate()))
