@@ -8,12 +8,14 @@ import Post from './pages/questions/Post.jsx';
 import Edit from './pages/questions/Edit.jsx';
 import Detail from './pages/questions/Detail.jsx';
 import NotFound from './pages/NotFound.jsx';
+import Nav from './components/Nav.jsx';
 
 import './App.css';
 
 function App() {
   return (
     <BrowserRouter>
+      <Nav />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/users" element={<MyPage />} />
