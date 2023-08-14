@@ -22,12 +22,3 @@ server:
   servlet:
     encoding:
       force-response: true
-
-mail:
-  address:
-    admin: handoseok@gmail.com
-
-jwt:
-  key: ${JWT_SECRET_KEY}
-  access-token-expiration-minutes: 60
-  refresh-token-expiration-minutes: 420

@@ -1,34 +1,55 @@
 package com.teamtwentyone.users.service;
 
+import com.teamtwentyone.auth.dto.PrincipalDto;
 import com.teamtwentyone.exception.BusinessLogicException;
 import com.teamtwentyone.exception.ExceptionCode;
+import com.teamtwentyone.auth.utils.CustomAuthorityUtils;
 import com.teamtwentyone.users.entity.User;
 import com.teamtwentyone.users.repository.UserRepository;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
 public class UserService {
     private final UserRepository repository;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository repository) {
+    private final CustomAuthorityUtils authorityUtils;
+
+    public UserService(UserRepository repository, PasswordEncoder passwordEncoder, CustomAuthorityUtils authorityUtils) {
         this.repository = repository;
+        this.passwordEncoder = passwordEncoder;
+        this.authorityUtils = authorityUtils;
     }
 
+    // 회원 가입
     public User createUser(User user) {
         verifyExistsEmail(user.getEmail()); // 이메일 중복검사 메서드
         verifyExistsNickName(user.getNickName()); // 닉네임 중복검사 메서드
         verifyExistsPhoneNum(user.getPhoneNum()); // 휴대폰번호 중복검사 메서드
+        user.setPassword(passwordEncoder.encode(user.getPassword())); // 비밀번호 암호화
+        List<String> roles = authorityUtils.createRoles(user.getEmail()); // 권한 생성
+        user.setRoles(roles); // 권한 설정
         return repository.save(user);
     }
 
+
+    // 유저 정보 조회
     public User findUser(Long userId) {
-        return findVerifiedUser(userId); // 유저 검증 메서드(유저가 존재하지 않으면 예외처리)
+        compareIdAndLoginId(userId);
+        User finduser = findVerifiedUser(userId); // 유저 검증 메서드(유저가 존재하지 않으면 예외처리)
+        return finduser;
     }
 
+    // 유저 정보 수정
     public User updateUser(User user) {
         User findUser = findVerifiedUser(user.getUserId());
+        compareIdAndLoginId(user.getUserId());
         // 현재 저장된 닉네임과 같다면 중복검사 하지 않음
         Optional.ofNullable(user.getNickName())
                 .ifPresent(nickName -> {
@@ -37,8 +58,6 @@ public class UserService {
                     }
                     findUser.setNickName(nickName);
                 });
-        Optional.ofNullable(user.getPassword())
-                .ifPresent(password -> findUser.setPassword(password));
 
         // 현재 저장된 휴대폰번호와 같다면 중복검사 하지 않음
         Optional.ofNullable(user.getPhoneNum())
@@ -51,7 +70,18 @@ public class UserService {
         return repository.save(findUser);
     }
 
+    // 비밀번호 변경
+    public void updatePassword(User user) {
+        User findUser = findVerifiedUser(user.getUserId());
+        compareIdAndLoginId(user.getUserId());
+
+        findUser.setPassword(passwordEncoder.encode(user.getPassword()));
+        repository.save(findUser);
+    }
+
+    // 유저 삭제
     public void deleteUser(Long userId) {
+        compareIdAndLoginId(userId);
         User findUser = findVerifiedUser(userId);
         repository.delete(findUser);
     }
@@ -95,5 +125,21 @@ public class UserService {
         OptionalUser.ifPresent(user -> {
             throw new BusinessLogicException(ExceptionCode.USER_EXISTS_PHONENUM);
         });
+    }
+
+    public void compareIdAndLoginId(Long id) { // id와 로그인한 유저의 id를 비교하는 메서드
+        if (!id.equals(getLoginUserId())) // id와 로그인한 유저의 id가 다르다면
+            throw new BusinessLogicException(ExceptionCode.NOT_RESOURCE_OWNER); // 예외처리
+    }
+
+    public Long getLoginUserId() { // 로그인한 유저의 id를 가져오는 메서드
+        Long id = null;
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication(); // SecurityContextHolder에서 인증된 객체를 가져옴
+        if (authentication != null && authentication.getPrincipal() instanceof PrincipalDto) { // 인증된 객체가 null이 아니고 PrincipalDto의 인스턴스라면
+            PrincipalDto principal = (PrincipalDto) authentication.getPrincipal(); // PrincipalDto로 형변환
+            id = principal.getId(); // id를 가져옴
+        }
+
+        return id;
     }
 }
