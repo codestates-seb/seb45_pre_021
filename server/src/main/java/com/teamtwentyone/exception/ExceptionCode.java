@@ -5,8 +5,8 @@ public enum ExceptionCode {
     USER_NOT_FOUND(404, "유저를 찾을 수 없습니다."),
     USER_EXISTS_EMAIL(409, "사용중인 이메일 입니다."),
     USER_EXISTS_NICKNAME(409, "사용중인 닉네임 입니다."),
-    USER_EXISTS_PHONENUM(409, "사용중인 번호 입니다.");
-
+    USER_EXISTS_PHONENUM(409, "사용중인 번호 입니다."),
+    NOT_RESOURCE_OWNER(403, "리소스의 소유자가 아닙니다.");
     // 참고용
 //    BOARD_NOT_FOUND(404, "게시글을 찾을 수 없습니다."),
 //    ANSWER_NOT_FOUND(404, "답변을 찾을 수 없습니다."),
