@@ -67,7 +67,6 @@ const NavigationSection = styled.header`
   justify-content: center;
   gap: 1.125rem;
   background: #ffffff;
-  background-color: var(--white);
   border-top: 3px solid #f48224;
   box-shadow: 0px 1px 1px 0px rgba(136, 135, 135, 0.5);
   z-index: 1;
