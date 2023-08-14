@@ -93,7 +93,7 @@ const Home = () => {
             <StackImage src={stack.html} alt="html icon" />
             <StackImage src={stack.javascript} alt="javascript icon" />
             <StackImage src={stack.styledComponent} alt="styled icon" />
-            <StackImage src={stack.figma} alt="figma icon" />
+            {/* <StackImage src={stack.figma} alt="figma icon" /> */}
 
             <StackImage src={stack.nodejs} alt="nodejs icon" />
             <StackImage src={stack.java} alt="java icon" />
@@ -101,8 +101,8 @@ const Home = () => {
             <StackImage src={stack.springboot} alt="springboot icon" />
 
             <StackImage src={stack.amazonaws} alt="amazonaws icon" />
-            <StackImage src={stack.git} alt="git icon" />
-            <StackImage src={stack.github} alt="github icon" />
+            {/* <StackImage src={stack.git} alt="git icon" />
+            <StackImage src={stack.github} alt="github icon" /> */}
           </SkillsComponent>
         </SkillsLayout>
       </BodyLayout>
@@ -121,7 +121,6 @@ const MainLayout = styled.body`
   display: flex;
   flex-direction: column;
   align-items: center;
-  /* justify-content: space-between; */
 `;
 
 const TitleContainer = styled.div`
@@ -150,8 +149,9 @@ const DeveloperLayout = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-around;
-  height: 40vh;
-  width: 60vw;
+  /* height: 45vh; */
+  width: 50vw;
+  height: 400px;
   margin: auto;
 `;
 
@@ -159,16 +159,15 @@ const DeveloperComponent = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-evenly;
-  /* height: 200px; */
 `;
 
 const ProfileLayout = styled.div`
   display: flex;
   align-items: center;
-  justify-content: space-evenly;
+  justify-content: space-between;
   width: 350px;
   height: 100%;
-  background-color: #fff;
+  /* background-color: #fff; */
 `;
 
 const ProfileDetails = styled.div`
@@ -194,7 +193,7 @@ const SkillsLayout = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  height: 40vh;
+  /* height: 40vh; */
   width: 40vw;
   margin: auto;
 
