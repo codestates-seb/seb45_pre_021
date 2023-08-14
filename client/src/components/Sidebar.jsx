@@ -88,10 +88,7 @@ export default Sidebar;
 const SideContainer = styled.aside`
   width: 164px;
   border-right: 1px solid gray;
-  position: fixed;
-  top: 0;
-  left: 0;
-  bottom: 0;
+  height: 100vh;
 `;
 
 const SideBox = styled.div`
@@ -125,11 +122,11 @@ const Titles = styled.p`
 
 const ListItem = styled.li`
   list-style: none;
-  /* font-size: 16px; */
+
   line-height: 1.7;
   height: 25px;
   margin: 10px;
-  margin-left: -20px;
+
   font-size: 15px;
   font-weight: 500;
 `;
