@@ -17,7 +17,9 @@ Viewer.propTypes = {
 const ViewerContainer = styled.div`
   width: 800px;
   height: 240px;
-  background-color: #fff;
+  padding: 0.5rem;
+  border: 1px solid #e3e6e8;
+  border-radius: 5px;
 `;
 
 export default Viewer;

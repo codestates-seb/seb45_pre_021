@@ -5,13 +5,7 @@ import PropTypes from 'prop-types';
 const Editor = ({ content, setContent }) => {
   return (
     <EditorContainer data-color-mode="light">
-      <MDEditor
-        width={800}
-        height={240}
-        value={content}
-        onChange={setContent}
-        preview="edit"
-      />
+      <MDEditor value={content} onChange={setContent} preview="edit" />
     </EditorContainer>
   );
 };
