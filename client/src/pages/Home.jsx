@@ -1,45 +1,32 @@
 import { styled } from 'styled-components';
-import Footer from './../components/Footer.jsx';
 
 const Home = () => {
   return (
-    <>
-      <Header>Header</Header>
-      <MainLayout>
-        <TitleContainer>
-          <h1>Welcome to Stack Overflow</h1>
-        </TitleContainer>
-        <BodyLayout>
-          <DeveloperLayout>
-            <div>Frontend</div>
-            <div>Backend</div>
-          </DeveloperLayout>
-          <SkillsLayout>
-            <h2>Skills</h2>
-            <div>Frontend Skills</div>
-            <div>Backend skills</div>
-          </SkillsLayout>
-        </BodyLayout>
-      </MainLayout>
-      <Footer />
-    </>
+    <MainLayout>
+      <TitleContainer>
+        <h1>Welcome to Stack Overflow</h1>
+      </TitleContainer>
+      <BodyLayout>
+        <DeveloperLayout>
+          <div>Frontend</div>
+          <div>Backend</div>
+        </DeveloperLayout>
+        <SkillsLayout>
+          <h2>Skills</h2>
+          <div>Frontend Skills</div>
+          <div>Backend skills</div>
+        </SkillsLayout>
+      </BodyLayout>
+    </MainLayout>
   );
 };
 
 export default Home;
 
-const Header = styled.header`
-  height: 5vh;
-`;
-
 const MainLayout = styled.body`
-  height: calc(95vh - 150px);
-  margin-top: 54px;
   width: 100vw;
-
-  /* calc(100vh - 204px)
-calc(100vh - 150px)
-marigin-top: 54px; */
+  height: calc (100vh - 56px);
+  margin-top: 56px;
 `;
 
 const TitleContainer = styled.div`
