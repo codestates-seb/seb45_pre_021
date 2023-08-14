@@ -9,6 +9,7 @@ import Edit from './pages/questions/Edit.jsx';
 import Detail from './pages/questions/Detail.jsx';
 import NotFound from './pages/NotFound.jsx';
 import Nav from './components/Nav.jsx';
+import Footer from './components/Footer.jsx';
 
 import './App.css';
 
@@ -27,6 +28,7 @@ function App() {
         <Route path="/questions/detail/:id" element={<Detail />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
+      <Footer />
     </BrowserRouter>
   );
 }
