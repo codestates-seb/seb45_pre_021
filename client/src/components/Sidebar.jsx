@@ -27,7 +27,7 @@ const Sidebar = () => {
               <LinkItems to="/tags">Tags</LinkItems>
             </ListItem>
             <ListItem>
-              <Link to="/users">Users</Link>
+              <LinkItems to="/users">Users</LinkItems>
             </ListItem>
             <ListItem>
               <LinkItems to="/companies">Companies</LinkItems>
