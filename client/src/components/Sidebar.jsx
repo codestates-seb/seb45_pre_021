@@ -1,7 +1,13 @@
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
+import { useState } from 'react';
 
 const Sidebar = () => {
+  const handleClick = (link) => {
+    window.location.href = link;
+  };
+
+  const [toggle, setToggle] = useState(false);
   return (
     <SideContainer>
       <SideBox>
@@ -15,33 +21,61 @@ const Sidebar = () => {
           <Titles>Public</Titles>
           <ul>
             <ListItem>
-              <LinkItems to="/">Questions</LinkItems>
+              <LinkItems to="/questions">Questions</LinkItems>
             </ListItem>
             <ListItem>
-              <LinkItems to="/">Tags</LinkItems>
+              <LinkItems to="/tags">Tags</LinkItems>
             </ListItem>
             <ListItem>
               <Link to="/">Users</Link>
             </ListItem>
             <ListItem>
-              <LinkItems to="/">Companies</LinkItems>
+              <LinkItems to="/companies">Companies</LinkItems>
             </ListItem>
           </ul>
         </PublicBox>
         <CollectivesBox>
           <Titles>Collectives</Titles>
 
-          <LinkItems>Explore Collectives</LinkItems>
+          <LinkItems
+            onClick={() => handleClick('https://stackoverflow.com/collectives')}
+          >
+            Explore Collectives
+          </LinkItems>
         </CollectivesBox>
         <ButtonBox>
           <Titles>Teams</Titles>
 
-          <LinkItems>Create Free Team</LinkItems>
+          <LinkItems
+            onClick={() =>
+              handleClick(
+                'https://stackoverflowteams.com/teams/create/free/?utm_source=so-owned&utm_medium=side-bar&utm_campaign=campaign-38&utm_content=cta',
+              )
+            }
+          >
+            Create Free Team
+          </LinkItems>
         </ButtonBox>
 
         <FindTeamBox>
           <QuestionBox>
-            <LinkButton>Looking for your Teams?</LinkButton>
+            <LinkButton onClick={() => setToggle(!toggle)}>
+              Looking for your Teams?
+            </LinkButton>
+            {toggle && (
+              <ModalBox>
+                <p>Stack Overflow for Teams has its own domain!</p>
+                <p>
+                  You can now access your Teams at{' '}
+                  <a href="https://stackoverflowteams.com/">
+                    stackoverflowteams.com
+                  </a>
+                  . Teams no longer appear in the left sidebar on
+                  stackoverflow.com. Check your email to learn more about these
+                  changes.
+                </p>
+              </ModalBox>
+            )}
           </QuestionBox>
         </FindTeamBox>
       </SideBox>
@@ -119,10 +153,33 @@ const QuestionBox = styled.p`
   align-items: center;
   justify-content: center;
   font-weight: 500;
+  position: relative;
 `;
 
 const FindTeamBox = styled.div`
   padding-left: 0px;
+`;
+
+const ModalBox = styled.div`
+  width: 400px;
+  height: 150px;
+
+  position: absolute;
+  left: 2px;
+  bottom: -170px;
+
+  border: 1px solid rgba(0, 0, 0, 0.6);
+  background-color: #fff;
+  border-radius: 12px;
+
+  font-size: 16px;
+  text-align: left;
+
+  padding: 5px;
+
+  a {
+    color: blue;
+  }
 `;
 
 const LinkButton = styled(Link)`
