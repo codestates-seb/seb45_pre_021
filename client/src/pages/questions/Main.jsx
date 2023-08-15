@@ -23,12 +23,12 @@ const Main = () => {
       </div>
       <QuickLinkLayout>
         <h3>The Overflow Blog</h3>
-        <div>
+        <QuickLinkBox>
           <p>Why everyone should be an AppSec specialist (Ep. 598)</p>
           <p>Want better answers from your data? Ask better questions</p>
-        </div>
+        </QuickLinkBox>
         <h3>Featured on Meta</h3>
-        <div>
+        <QuickLinkBox>
           <p>Moderation strike: results of negotations</p>
           <p>
             Our Design Vision for Stack Overflow and the Stack Exchange network
@@ -36,14 +36,14 @@ const Main = () => {
           <p>Temporary policy: Generative AI (e.g., ChatGPT) is banned</p>
           <p>Preview of Search and Question-Asking Powered by GenAI</p>
           <p>Collections: A New Feature for Collectives on Stack Overflow</p>
-        </div>
+        </QuickLinkBox>
         <h3>Hot Meta Posts</h3>
-        <div>
+        <QuickLinkBox>
           <p>
             What is the edit policy today for questions about obsolete
             functionality?
           </p>
-        </div>
+        </QuickLinkBox>
       </QuickLinkLayout>
     </QuestionsLayout>
   );
@@ -69,6 +69,7 @@ const QuickLinkLayout = styled.article`
   flex-direction: column;
 
   width: 300px;
+  height: 530px;
 
   background-color: #fdf7e2;
 
@@ -82,5 +83,14 @@ const QuickLinkLayout = styled.article`
     align-items: center;
     padding: 10px;
     color: 1px solid rgba(0, 0, 0, 0.8);
+  }
+`;
+
+const QuickLinkBox = styled.div`
+  padding: 14px;
+
+  p {
+    font-size: 14px;
+    margin-bottom: 10px;
   }
 `;
