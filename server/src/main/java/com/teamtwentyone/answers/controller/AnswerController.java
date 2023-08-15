@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import javax.validation.constraints.Min;
 
 @RestController
@@ -26,7 +27,7 @@ public class AnswerController {
 
     // 답변 등록 컨트롤러
     @PostMapping("/post/{question-id}")
-    public ResponseEntity postAnswer(@RequestBody AnswerDto.Post requestBody,
+    public ResponseEntity postAnswer(@Valid @RequestBody AnswerDto.Post requestBody,
                                      @PathVariable("question-id") @Min(1) Long questionId) {
         Answer answer = answerService.createAnswer(mapper.answerPostDtoToEntity(requestBody), questionId);
         return ResponseEntity.status(HttpStatus.CREATED).body(mapper.answerToResponse(answer));
@@ -34,7 +35,7 @@ public class AnswerController {
 
     // 답변 수정 컨트롤러
     @PatchMapping("/edit/{answer-id}")
-    public ResponseEntity patchAnswer(@RequestBody AnswerDto.Patch requestBody,
+    public ResponseEntity patchAnswer(@Valid @RequestBody AnswerDto.Patch requestBody,
                                       @PathVariable("answer-id") @Min(1) Long answerId) {
         Answer answer = answerService.editAnswer(mapper.answerPatchDtoToEntity(requestBody), answerId);
         return ResponseEntity.status(HttpStatus.OK).body(mapper.answerToResponse(answer));

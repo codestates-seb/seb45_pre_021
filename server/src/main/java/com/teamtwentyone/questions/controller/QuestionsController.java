@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Positive;
 import java.util.List;
@@ -31,7 +32,7 @@ public class QuestionsController {
 
     // 질문 등록 컨트롤러
     @PostMapping("/post")
-    public ResponseEntity postQuestions(@RequestBody QuestionsDto.Post requestBody) {
+    public ResponseEntity postQuestions(@Valid @RequestBody QuestionsDto.Post requestBody) {
         Question newQuestion = mapper.questionPostDtoToQuestions(requestBody); // PostDto -> Entity
         Question createdQuestion = questionsService.createQuestion(newQuestion); // 질문 등록 메서드 호출
         QuestionsDto.Response response = mapper.questionsToResponse(createdQuestion); // Entity -> ResponseDto
@@ -40,7 +41,7 @@ public class QuestionsController {
 
     // 질문 수정 컨트롤러
     @PatchMapping("/edit/{question-id}")
-    public ResponseEntity patchQuestions(@RequestBody QuestionsDto.Patch requestBody,
+    public ResponseEntity patchQuestions(@Valid @RequestBody QuestionsDto.Patch requestBody,
                                          @PathVariable("question-id") @Min(1) Long questionId) { // questionId는 1이상의 값만 허용
         requestBody.setId(questionId);
         Question question = mapper.questionPatchDtoToQuestions(requestBody); // PatchDto -> Entity
