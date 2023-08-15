@@ -2,7 +2,6 @@ package com.teamtwentyone.auth.handler;
 
 import com.google.gson.Gson;
 import com.teamtwentyone.response.ErrorResponse;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.AuthenticationException;
