@@ -81,19 +81,7 @@ public class SecurityConfig {
                     .antMatchers(HttpMethod.POST, "/answers/post/**").hasRole("USER") // 답변 등록은 USER 권한 필요
                     .antMatchers(HttpMethod.PATCH, "/answers/edit/**").hasRole("USER") // 답변 수정은 USER 권한 필요
                     .antMatchers(HttpMethod.DELETE, "/answers/delete/**").hasRole("USER") // 답변 삭제는 USER 권한 필요
-//                      .antMatchers(HttpMethod.POST,"/questions").hasRole("USER")
-//                      .antMatchers(HttpMethod.PATCH,"/questions/**").hasRole("USER")
-//                      .antMatchers(HttpMethod.GET,"/questions").permitAll()
-//                      .antMatchers(HttpMethod.GET,"/questions/{id}").permitAll()
-//                      .antMatchers(HttpMethod.DELETE,"/questions/{id}").hasRole("USER")
-//                      .antMatchers(HttpMethod.POST,"/questions/{id}/answers").hasRole("USER")
-
-//                      .antMatchers(HttpMethod.PATCH,"/answers/**").hasRole("USER")
-//                      .antMatchers(HttpMethod.GET,"/questions/{id}/answers").denyAll()
-//                      .antMatchers(HttpMethod.GET,"/questions/{id}/answers/{answerId}").denyAll()
-//                      .antMatchers(HttpMethod.DELETE,"/answers/**").hasRole("USER")
-
-                        .antMatchers(HttpMethod.POST,"/logout").hasRole("USER") // logout 은 USER 권한 필요
+                    .antMatchers(HttpMethod.POST,"/logout").hasRole("USER") // logout 은 USER 권한 필요
 //                      .anyRequest().permitAll() // 나머지 요청은 누구나 가능
                 )
                 .build();

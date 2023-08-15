@@ -8,12 +8,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@Slf4j
-public class MemberAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
+public class MemberAuthenticationSuccessHandler implements AuthenticationSuccessHandler { // 인증 성공시 호출되는 핸들러
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request,
                                         HttpServletResponse response,
                                         Authentication authentication) throws IOException {
-        log.info("# 인증 성공");
     }
 }

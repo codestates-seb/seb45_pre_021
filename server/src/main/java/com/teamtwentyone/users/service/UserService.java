@@ -27,9 +27,10 @@ public class UserService {
     private final UserRepository repository;
     private final QuestionsRepository questionsRepository;
     private final AnswerRepository answerRepository;
-    private final PasswordEncoder passwordEncoder;
-    private final CustomAuthorityUtils authorityUtils;
+    private final PasswordEncoder passwordEncoder; // 비밀번호 암호화를 위한 클래스
+    private final CustomAuthorityUtils authorityUtils; // 권한 생성을 위한 클래스
 
+    // 생성자 의존성 주입
     public UserService(UserRepository repository, QuestionsRepository questionsRepository, AnswerRepository answerRepository, PasswordEncoder passwordEncoder, CustomAuthorityUtils authorityUtils) {
         this.repository = repository;
         this.questionsRepository = questionsRepository;
@@ -57,22 +58,27 @@ public class UserService {
     public User findUser() {
         Long userId = getLoginUserId(); // 로그인한 유저의 id를 가져옴
         User finduser = findVerifiedUser(userId); // 유저 검증 메서드(유저가 존재하지 않으면 예외처리)
+
         // 유저가 작성한 게시글의 수
         List<Question> allQuestions = questionsRepository.findByWriterNickNameContaining(finduser.getNickName());
         finduser.setAllCount(allQuestions.size());
 
+        // 유저가 작성한 진행중 상태의 게시글 수
         List<Question> progressQuestions = allQuestions.stream()
                 .filter(question -> question != null && question.getStatus() == Question.Status.PROGRESS)
                 .collect(Collectors.toList());
         finduser.setProgressCount(progressQuestions.size());
 
+        // 유저가 작성한 완료 상태의 게시글 수
         List<Question> completeQuestions = allQuestions.stream()
                 .filter(question -> question != null && question.getStatus() == Question.Status.COMPLETE)
                 .collect(Collectors.toList());
         finduser.setCompleteCount(completeQuestions.size());
 
+        // 유저가 작성한 답변 수
         List<Answer> allAnswers = answerRepository.findByWriterNickNameContaining(finduser.getNickName());
         finduser.setAnswerCount(allAnswers.size());
+
         return finduser;
     }
 
@@ -80,7 +86,7 @@ public class UserService {
     public Page<Question> findUserQuestions(int page, int size) {
         Long userId = getLoginUserId(); // 로그인한 유저의 id를 가져옴
         User finduser = findVerifiedUser(userId); // 유저 검증 메서드(유저가 존재하지 않으면 예외처리)
-        Page<Question> allQuestions =
+        Page<Question> allQuestions = // 유저가 작성한 게시글 전체 조회
                 questionsRepository.findByWriterNickNameContaining(finduser.getNickName(), PageRequest.of(page, size, Sort.by("questionId").descending()));
         return allQuestions;
     }
@@ -89,7 +95,7 @@ public class UserService {
     public Page<Question> findUserProgressQuestions(int page, int size) {
         Long userId = getLoginUserId(); // 로그인한 유저의 id를 가져옴
         User finduser = findVerifiedUser(userId); // 유저 검증 메서드(유저가 존재하지 않으면 예외처리)
-        Page<Question> progressQuestions =
+        Page<Question> progressQuestions = // 유저가 작성한 게시글 중 진행중인 게시글 조회
                 questionsRepository.findByWriterNickNameContainingAndStatus(finduser.getNickName(), Question.Status.PROGRESS, PageRequest.of(page, size, Sort.by("questionId").descending()));
         return progressQuestions;
     }
@@ -98,7 +104,7 @@ public class UserService {
     public Page<Question> findUserCompleteQuestions(int page, int size) {
         Long userId = getLoginUserId(); // 로그인한 유저의 id를 가져옴
         User finduser = findVerifiedUser(userId); // 유저 검증 메서드(유저가 존재하지 않으면 예외처리)
-        Page<Question> completeQuestions =
+        Page<Question> completeQuestions = // 유저가 작성한 게시글 중 완료된 게시글 조회
                 questionsRepository.findByWriterNickNameContainingAndStatus(finduser.getNickName(), Question.Status.COMPLETE, PageRequest.of(page, size, Sort.by("questionId").descending()));
         return completeQuestions;
     }
@@ -107,15 +113,15 @@ public class UserService {
     public Page<Question> findUserAnswers(int page, int size) {
         Long userId = getLoginUserId(); // 로그인한 유저의 id를 가져옴
         User finduser = findVerifiedUser(userId); // 유저 검증 메서드(유저가 존재하지 않으면 예외처리)
-        Page<Question> answers =
+        Page<Question> answers = // 유저가 작성한 답변이 포함된 게시글 조회
                 questionsRepository.findByAnswersWriterNickNameContaining(finduser.getNickName(), PageRequest.of(page, size, Sort.by("questionId").descending()));
         return answers;
     }
 
     // 유저 정보 수정
     public User updateUser(User user) {
-        User findUser = findVerifiedUser(user.getUserId());
-        compareIdAndLoginId(user.getUserId());
+        Long userId = getLoginUserId(); // 로그인한 유저의 id를 가져옴
+        User findUser = findVerifiedUser(userId); // 유저 검증 메서드(유저가 존재하지 않으면 예외처리)
         // 현재 저장된 닉네임과 같다면 중복검사 하지 않음
         Optional.ofNullable(user.getNickName())
                 .ifPresent(nickName -> {
@@ -138,8 +144,8 @@ public class UserService {
 
     // 비밀번호 변경
     public void updatePassword(User user) {
-        User findUser = findVerifiedUser(user.getUserId());
-        compareIdAndLoginId(user.getUserId());
+        Long userId = getLoginUserId(); // 로그인한 유저의 id를 가져옴
+        User findUser = findVerifiedUser(userId); // 유저 검증 메서드(유저가 존재하지 않으면 예외처리)
 
         findUser.setPassword(passwordEncoder.encode(user.getPassword()));
         repository.save(findUser);

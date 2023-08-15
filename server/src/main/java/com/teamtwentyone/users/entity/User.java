@@ -30,16 +30,16 @@ public class User extends UserDateEntity {
     @Column(unique = true)
     private String phoneNum;
 
-    @Column(nullable = false, columnDefinition = "int default 0")
+    @Column(nullable = false, columnDefinition = "integer default 0")
     private int allCount;
 
-    @Column(nullable = false, columnDefinition = "int default 0")
+    @Column(nullable = false, columnDefinition = "integer default 0")
     private int progressCount;
 
-    @Column(nullable = false, columnDefinition = "int default 0")
+    @Column(nullable = false, columnDefinition = "integer default 0")
     private int completeCount;
 
-    @Column(nullable = false, columnDefinition = "int default 0")
+    @Column(nullable = false, columnDefinition = "integer default 0")
     private int answerCount;
 
     @ManyToOne

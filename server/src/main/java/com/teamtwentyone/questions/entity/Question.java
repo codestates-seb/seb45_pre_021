@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.engine.internal.Cascade;
 
 import javax.persistence.*;
 import java.util.List;
@@ -20,32 +21,33 @@ import java.util.List;
 public class Question extends DateTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long questionId;
+    private Long questionId; // 질문 PK
 
     @Column
-    private String title;
+    private String title; // 질문 제목
 
     @Column
-    private String content;
+    private String content; // 질문 내용
 
     @Enumerated(EnumType.STRING)
-    private Status status;
+    private Status status; // 질문 상태
 
     @Column
-    private String writerNickName;
+    private String writerNickName; // 질문 작성자 닉네임
 
     @Column(columnDefinition = "integer default 0")
-    private int answerCount;
+    private int answerCount; // 답변 수
 
     @ManyToOne
     @JoinColumn(name = "userId")
     @JsonIgnore
     private User user;
 
+    // 질문은 여러개의 답변을 가질 수 있음(fetch = FetchType.LAZY : 지연로딩, cascade = CascadeType.REMOVE : 질문이 삭제되면 답변도 삭제됨)
     @OneToMany(mappedBy = "question", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<Answer> answers;
 
-    public enum Status {
-        PROGRESS, COMPLETE
+    public enum Status { // 질문 상태
+        PROGRESS, COMPLETE // 진행중, 완료
     }
 }

@@ -1,6 +1,6 @@
 package com.teamtwentyone.exception;
 
-public enum ExceptionCode {
+public enum ExceptionCode { // BusinessLogicException 발생시 사용할 예외 코드
     INVALID_INPUT_VALUE(400, "유효성 검증에 실패했습니다."),
     USER_NOT_FOUND(404, "유저를 찾을 수 없습니다."),
     USER_EXISTS_EMAIL(409, "사용중인 이메일 입니다."),

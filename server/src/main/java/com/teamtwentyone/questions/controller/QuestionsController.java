@@ -23,6 +23,7 @@ public class QuestionsController {
     private final QuestionsService questionsService;
     private final QuestionsMapper mapper;
 
+    // 생성자 의존성 주입
     public QuestionsController(QuestionsService questionsService, QuestionsMapper mapper) {
         this.questionsService = questionsService;
         this.mapper = mapper;
@@ -40,7 +41,7 @@ public class QuestionsController {
     // 질문 수정 컨트롤러
     @PatchMapping("/edit/{question-id}")
     public ResponseEntity patchQuestions(@RequestBody QuestionsDto.Patch requestBody,
-                                         @PathVariable("question-id") @Min(1) Long questionId) {
+                                         @PathVariable("question-id") @Min(1) Long questionId) { // questionId는 1이상의 값만 허용
         requestBody.setId(questionId);
         Question question = mapper.questionPatchDtoToQuestions(requestBody); // PatchDto -> Entity
         Question editedQuestion = questionsService.editQuestion(question); // 질문 수정 메서드 호출
@@ -51,7 +52,7 @@ public class QuestionsController {
     // 답변 채택 컨트롤러
     @PatchMapping("/edit/pick-answer/{question-id}/{answer-id}")
     public ResponseEntity patchQuestionsStatus(@PathVariable("question-id") @Min(1) Long questionId,
-                                               @PathVariable("answer-id") @Min(1) Long answerId) {
+                                               @PathVariable("answer-id") @Min(1) Long answerId) { // questionId, answerId는 1이상의 값만 허용
         Question editedQuestion = questionsService.editQuestionStatus(questionId, answerId); // 질문 상태 수정 메서드 호출
         QuestionsDto.Response response = mapper.questionsToResponse(editedQuestion); // Entity -> ResponseDto
         return ResponseEntity.status(HttpStatus.OK).body(response); // 수정된 질문 반환
@@ -152,8 +153,8 @@ public class QuestionsController {
 
     // 게시글 삭제
     @DeleteMapping("/delete/{question-id}")
-    public ResponseEntity deleteQuestions(@PathVariable("question-id") @Min(1) Long questionId) {
-        questionsService.deleteQuestion(questionId);
+    public ResponseEntity deleteQuestions(@PathVariable("question-id") @Min(1) Long questionId) { // questionId는 1이상의 값만 허용
+        questionsService.deleteQuestion(questionId); // 게시글 삭제 메서드 호출
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }

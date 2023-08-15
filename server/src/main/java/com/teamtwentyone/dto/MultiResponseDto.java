@@ -6,7 +6,7 @@ import org.springframework.data.domain.Page;
 import java.util.List;
 
 @Getter
-public class MultiResponseDto<T> {
+public class MultiResponseDto<T> { // 여러개의 데이터를 응답할 때 사용하는 DTO
     private List<T> data;
     private PageInfo pageInfo;
 

@@ -15,11 +15,10 @@ import java.util.Objects;
 @Service
 public class AnswerService {
     private final AnswerRepository answerRepository;
-
     private final QuestionsService questionsService;
-
     private final UserService UserService;
 
+    // 생성자 의존성 주입
     public AnswerService(AnswerRepository answerRepository, QuestionsService questionsService, UserService userService) {
         this.answerRepository = answerRepository;
         this.questionsService = questionsService;
@@ -99,8 +98,8 @@ public class AnswerService {
         answerRepository.delete(findAnswer); // 답변 삭제
     }
 
-    private Answer findVerifiedAnswer(Long answerId) {
-        return answerRepository.findById(answerId)
-                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.ANSWER_NOT_FOUND));
+    private Answer findVerifiedAnswer(Long answerId) { // 답변 검증 메서드
+        return answerRepository.findById(answerId) // 답변 조회
+                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.ANSWER_NOT_FOUND)); // 답변이 존재하지 않으면 예외처리
     }
 }

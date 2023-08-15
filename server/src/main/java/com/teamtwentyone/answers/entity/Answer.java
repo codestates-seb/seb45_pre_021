@@ -16,17 +16,17 @@ import javax.persistence.*;
 public class Answer extends DateTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long answerId;
-    private String content;
-    private boolean selected;
-    private String writerNickName;
+    private Long answerId; // 답변 PK
+    private String content; // 답변 내용
+    private boolean selected; // 답변 채택 여부
+    private String writerNickName; // 답변 작성자 닉네임
 
-    @ManyToOne
+    @ManyToOne // 답변은 하나의 유저에 속해 있음
     @JoinColumn(name = "userId")
     @JsonIgnore
     private User user;
 
-    @ManyToOne
+    @ManyToOne // 답변은 하나의 질문에 속해 있음
     @JoinColumn(name = "questionId")
     @JsonIgnore
     private Question question;

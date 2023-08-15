@@ -13,14 +13,13 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
 public class QuestionsService {
     private final QuestionsRepository questionsRepository;
     private final AnswerRepository answerRepository;
     private final UserService UserService;
 
+    // 생성자 의존성 주입
     public QuestionsService(QuestionsRepository questionsRepository, AnswerRepository answerRepository, com.teamtwentyone.users.service.UserService userService) {
         this.questionsRepository = questionsRepository;
         this.answerRepository = answerRepository;
@@ -29,13 +28,13 @@ public class QuestionsService {
 
     // 게시글 등록
     public Question createQuestion(Question question) {
-        question.setStatus(Question.Status.PROGRESS);
+        question.setStatus(Question.Status.PROGRESS); // 진행중 상태로 초기화
         Long getUserId = UserService.getLoginUserId(); // 로그인한 유저의 id를 가져옴
         User user = UserService.findVerifiedUser(getUserId); // 유저 검증 메서드(유저가 존재하지 않으면 예외처리)
         question.setWriterNickName(user.getNickName()); // 게시글 작성자 닉네임 설정
         question.setUser(user); // 게시글 작성자 설정
         question.setAnswerCount(0); // 답변 수 0으로 초기화
-        questionsRepository.save(question);
+        questionsRepository.save(question); // 게시글 저장
         return question;
     }
 
@@ -67,9 +66,9 @@ public class QuestionsService {
     public Question editQuestionStatus(Long questionId, Long answerId) {
         Question findQuestion = findVerifiedQuestion(questionId); // 게시글 검증 메서드(게시글이 존재하지 않으면 예외처리)
         Answer findAnswer = findQuestion.getAnswers().stream()
-                .filter(answer -> answer.getAnswerId().equals(answerId))
+                .filter(answer -> answer.getAnswerId().equals(answerId)) // 답변 id로 필터링
                 .findFirst()
-                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.ANSWER_NOT_FOUND)); // 답변 검증 메서드(답변이 존재하지 않으면 예외처리)
+                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.ANSWER_NOT_FOUND)); // 답변이 존재하지 않으면 예외처리
 
         if(!findQuestion.getStatus().equals(Question.Status.PROGRESS)) { // 진행중인 게시글만 수정 가능
             throw new BusinessLogicException(ExceptionCode.BOARD_NOT_EDITABLE); // 수정 불가능 예외처리

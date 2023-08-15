@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Calendar;
 import java.util.Date;
@@ -45,7 +44,7 @@ public class JwtTokenizer {
                 .setExpiration(expirateDate)
                 .setIssuedAt(Calendar.getInstance().getTime())
                 .signWith(key)
-                .compact();         // JWT 생성 후 직렬화
+                .compact();
 
         return accessToken;
     }
@@ -90,7 +89,7 @@ public class JwtTokenizer {
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.MINUTE, minutes);
 
-        Date expiration = calendar.getTime(); //return Date
+        Date expiration = calendar.getTime();
         return expiration;
     }
 

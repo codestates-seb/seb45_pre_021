@@ -66,7 +66,7 @@ public class QuestionsDto {
     @Getter
     @AllArgsConstructor
     @Builder
-    public static class ListResponse {
+    public static class ListResponse { // 질문 목록 조회 응답 DTO
         private Long questionId;
         private String title;
         private Question.Status status;

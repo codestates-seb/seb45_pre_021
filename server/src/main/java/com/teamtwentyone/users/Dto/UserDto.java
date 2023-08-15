@@ -8,7 +8,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
-public class UserDto {
+public class UserDto { // User DTO
     @Getter
     public static class signup {
         @NotBlank(message = "비밀번호는 공백이 아니어야 합니다.")
