@@ -32,7 +32,7 @@ public class MemberUserDetailService implements UserDetailsService {
         return new CustomUserDetails(user);
     }
 
-    private class CustomUserDetails extends User implements UserDetails {
+    public class CustomUserDetails extends User implements UserDetails {
 
         CustomUserDetails(User user) {
             setUserId(user.getUserId());

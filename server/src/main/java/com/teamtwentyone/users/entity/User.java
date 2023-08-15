@@ -1,5 +1,7 @@
 package com.teamtwentyone.users.entity;
 
+import com.teamtwentyone.answers.entity.Answer;
+import com.teamtwentyone.questions.entity.Question;
 import com.teamtwentyone.time.UserDateEntity;
 import lombok.*;
 
@@ -27,6 +29,24 @@ public class User extends UserDateEntity {
 
     @Column(unique = true)
     private String phoneNum;
+
+    @Column(nullable = false, columnDefinition = "int default 0")
+    private int allCount;
+
+    @Column(nullable = false, columnDefinition = "int default 0")
+    private int progressCount;
+
+    @Column(nullable = false, columnDefinition = "int default 0")
+    private int completeCount;
+
+    @Column(nullable = false, columnDefinition = "int default 0")
+    private int answerCount;
+
+    @ManyToOne
+    private Question question;
+
+    @ManyToOne
+    private Answer answer;
 
     @ElementCollection(fetch = FetchType.EAGER)
     private List<String> roles = new ArrayList<>();

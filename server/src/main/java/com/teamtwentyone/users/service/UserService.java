@@ -1,11 +1,18 @@
 package com.teamtwentyone.users.service;
 
+import com.teamtwentyone.answers.entity.Answer;
+import com.teamtwentyone.answers.repository.AnswerRepository;
 import com.teamtwentyone.auth.dto.PrincipalDto;
 import com.teamtwentyone.exception.BusinessLogicException;
 import com.teamtwentyone.exception.ExceptionCode;
 import com.teamtwentyone.auth.utils.CustomAuthorityUtils;
+import com.teamtwentyone.questions.entity.Question;
+import com.teamtwentyone.questions.repository.QuestionsRepository;
 import com.teamtwentyone.users.entity.User;
 import com.teamtwentyone.users.repository.UserRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -13,16 +20,20 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService {
     private final UserRepository repository;
+    private final QuestionsRepository questionsRepository;
+    private final AnswerRepository answerRepository;
     private final PasswordEncoder passwordEncoder;
-
     private final CustomAuthorityUtils authorityUtils;
 
-    public UserService(UserRepository repository, PasswordEncoder passwordEncoder, CustomAuthorityUtils authorityUtils) {
+    public UserService(UserRepository repository, QuestionsRepository questionsRepository, AnswerRepository answerRepository, PasswordEncoder passwordEncoder, CustomAuthorityUtils authorityUtils) {
         this.repository = repository;
+        this.questionsRepository = questionsRepository;
+        this.answerRepository = answerRepository;
         this.passwordEncoder = passwordEncoder;
         this.authorityUtils = authorityUtils;
     }
@@ -35,15 +46,70 @@ public class UserService {
         user.setPassword(passwordEncoder.encode(user.getPassword())); // 비밀번호 암호화
         List<String> roles = authorityUtils.createRoles(user.getEmail()); // 권한 생성
         user.setRoles(roles); // 권한 설정
+        user.setAllCount(0); // 전체 질문 수 0으로 초기화
+        user.setProgressCount(0); // 진행중인 질문 수 0으로 초기화
+        user.setCompleteCount(0); // 완료한 질문 수 0으로 초기화
+        user.setAnswerCount(0); // 답변 수 0으로 초기화
         return repository.save(user);
     }
 
-
     // 유저 정보 조회
-    public User findUser(Long userId) {
-        compareIdAndLoginId(userId);
+    public User findUser() {
+        Long userId = getLoginUserId(); // 로그인한 유저의 id를 가져옴
         User finduser = findVerifiedUser(userId); // 유저 검증 메서드(유저가 존재하지 않으면 예외처리)
+        // 유저가 작성한 게시글의 수
+        List<Question> allQuestions = questionsRepository.findByWriterNickNameContaining(finduser.getNickName());
+        finduser.setAllCount(allQuestions.size());
+
+        List<Question> progressQuestions = allQuestions.stream()
+                .filter(question -> question != null && question.getStatus() == Question.Status.PROGRESS)
+                .collect(Collectors.toList());
+        finduser.setProgressCount(progressQuestions.size());
+
+        List<Question> completeQuestions = allQuestions.stream()
+                .filter(question -> question != null && question.getStatus() == Question.Status.COMPLETE)
+                .collect(Collectors.toList());
+        finduser.setCompleteCount(completeQuestions.size());
+
+        List<Answer> allAnswers = answerRepository.findByWriterNickNameContaining(finduser.getNickName());
+        finduser.setAnswerCount(allAnswers.size());
         return finduser;
+    }
+
+    // 유저가 작성한 게시글 전체 조회
+    public Page<Question> findUserQuestions(int page, int size) {
+        Long userId = getLoginUserId(); // 로그인한 유저의 id를 가져옴
+        User finduser = findVerifiedUser(userId); // 유저 검증 메서드(유저가 존재하지 않으면 예외처리)
+        Page<Question> allQuestions =
+                questionsRepository.findByWriterNickNameContaining(finduser.getNickName(), PageRequest.of(page, size, Sort.by("questionId").descending()));
+        return allQuestions;
+    }
+
+    // 유저가 작성한 게시글 중 진행중인 게시글 조회
+    public Page<Question> findUserProgressQuestions(int page, int size) {
+        Long userId = getLoginUserId(); // 로그인한 유저의 id를 가져옴
+        User finduser = findVerifiedUser(userId); // 유저 검증 메서드(유저가 존재하지 않으면 예외처리)
+        Page<Question> progressQuestions =
+                questionsRepository.findByWriterNickNameContainingAndStatus(finduser.getNickName(), Question.Status.PROGRESS, PageRequest.of(page, size, Sort.by("questionId").descending()));
+        return progressQuestions;
+    }
+
+    // 유저가 작성한 게시글 중 완료된 게시글 조회
+    public Page<Question> findUserCompleteQuestions(int page, int size) {
+        Long userId = getLoginUserId(); // 로그인한 유저의 id를 가져옴
+        User finduser = findVerifiedUser(userId); // 유저 검증 메서드(유저가 존재하지 않으면 예외처리)
+        Page<Question> completeQuestions =
+                questionsRepository.findByWriterNickNameContainingAndStatus(finduser.getNickName(), Question.Status.COMPLETE, PageRequest.of(page, size, Sort.by("questionId").descending()));
+        return completeQuestions;
+    }
+
+    // 유저가 작성한 답변이 포함된 게시글 조회
+    public Page<Question> findUserAnswers(int page, int size) {
+        Long userId = getLoginUserId(); // 로그인한 유저의 id를 가져옴
+        User finduser = findVerifiedUser(userId); // 유저 검증 메서드(유저가 존재하지 않으면 예외처리)
+        Page<Question> answers =
+                questionsRepository.findByAnswersWriterNickNameContaining(finduser.getNickName(), PageRequest.of(page, size, Sort.by("questionId").descending()));
+        return answers;
     }
 
     // 유저 정보 수정
@@ -80,8 +146,8 @@ public class UserService {
     }
 
     // 유저 삭제
-    public void deleteUser(Long userId) {
-        compareIdAndLoginId(userId);
+    public void deleteUser() {
+        Long userId = getLoginUserId(); // 로그인한 유저의 id를 가져옴
         User findUser = findVerifiedUser(userId);
         repository.delete(findUser);
     }

@@ -11,8 +11,9 @@ import javax.validation.constraints.Pattern;
 public class UserDto {
     @Getter
     public static class signup {
-        @NotBlank
-        @Email(message = "올바른 이메일 형식이 아닙니다.")
+        @NotBlank(message = "비밀번호는 공백이 아니어야 합니다.")
+        @Pattern(regexp = "^[a-zA-Z0-9+-_.]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$",
+                message = "이메일 형식이 올바르지 않습니다.")
         private String email;
 
         @NotBlank(message = "비밀번호는 공백이 아니어야 합니다.")
@@ -64,11 +65,15 @@ public class UserDto {
     @Getter
     @AllArgsConstructor
     @Builder
-    public static class Response {
+    public static class ResponseMyPage {
         private Long id;
         private String email;
         private String nickName;
         private String phoneNum;
+        private int allCount;
+        private int progressCount;
+        private int completeCount;
+        private int answerCount;
         private String createDate;
         private String modifiedDate;
     }
