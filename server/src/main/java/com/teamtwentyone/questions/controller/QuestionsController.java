@@ -60,7 +60,7 @@ public class QuestionsController {
     }
 
     // 질문 조회 컨트롤러
-    @GetMapping("/{question-id}")
+    @GetMapping("/board/{question-id}")
     public ResponseEntity getQuestions(@PathVariable("question-id") @Min(1) Long questionId) { // questionId는 1이상의 값만 허용
         Question question = questionsService.findQuestion(questionId); // 질문 조회 메서드 호출
         QuestionsDto.Response response = mapper.questionsToResponse(question); // Entity -> ResponseDto

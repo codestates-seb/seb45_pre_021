@@ -72,11 +72,16 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize -> authorize // 요청에 대한 권한 설정
                     .antMatchers(HttpMethod.POST,"/users/signup").permitAll() // 회원가입은 누구나 가능
                     .antMatchers(HttpMethod.PATCH,"/users/**").hasRole("USER") // 회원정보 수정은 USER 권한 필요
-                    .antMatchers(HttpMethod.GET,"/users/**").hasRole("USER") // 회원정보 조회는 USER 권한 필요
-                    .antMatchers(HttpMethod.DELETE,"/users/**").hasRole("USER") // 회원정보 삭제는 USER 권한 필요
+                    .antMatchers(HttpMethod.GET,"/users/mypage/**").hasRole("USER") // 회원정보 조회는 USER 권한 필요
+                    .antMatchers(HttpMethod.DELETE,"/users/mypage/delete").hasRole("USER") // 회원정보 삭제는 USER 권한 필요
+
                     .antMatchers(HttpMethod.POST ,"/questions/post").hasRole("USER") // 질문 등록은 USER 권한 필요
                     .antMatchers(HttpMethod.PATCH,"/questions/edit/**").hasRole("USER") // 질문 수정은 USER 권한 필요
+                    .antMatchers(HttpMethod.PATCH, "/questions/edit/**").hasRole("USER") // 질문 수정은 USER 권한 필요
+                    .antMatchers(HttpMethod.GET,"/questions/board/**").hasRole("USER") // 질문 상세 조회는 USER 권한 필요
+                    .antMatchers(HttpMethod.GET, "/questions/**").permitAll() // 질문 전체 조회, 검색은 누구나 가능
                     .antMatchers(HttpMethod.DELETE,"/questions/delete/**").hasRole("USER") // 질문 삭제는 USER 권한 필요
+
                     .antMatchers(HttpMethod.POST, "/answers/post/**").hasRole("USER") // 답변 등록은 USER 권한 필요
                     .antMatchers(HttpMethod.PATCH, "/answers/edit/**").hasRole("USER") // 답변 수정은 USER 권한 필요
                     .antMatchers(HttpMethod.DELETE, "/answers/delete/**").hasRole("USER") // 답변 삭제는 USER 권한 필요
