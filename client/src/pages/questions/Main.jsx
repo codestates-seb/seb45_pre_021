@@ -6,20 +6,40 @@ const Main = () => {
     <QuestionsLayout>
       <div>
         <div>
-          <div>
+          <QuestionsHeader>
             <p>All questions</p>
             <button>Ask Question</button>
-          </div>
-          <div>
+          </QuestionsHeader>
+          <FilterLayout>
             <span>0 questions</span>
-            <span>Newest</span>
-            <span>Unanswered</span>
-          </div>
+            <div>
+              <button>Newest</button>
+              <button>Unanswered</button>
+            </div>
+          </FilterLayout>
         </div>
         <div>
-          <div>0 answers</div>
-          <div>Title</div>
-          <div>Title Info</div>
+          <div>
+            <div>0 votes</div>
+            <div>0 answers</div>
+            <div>0 views</div>
+          </div>
+          <div>
+            <p>Websites to show your code execution line after line</p>
+            <p>
+              I just want to understand the flow of code. If there is any
+              website that makes you understand the code that you have written
+              line by line than it would be helpful. Any website link that
+              explains the...
+            </p>
+            <div>
+              <button>javascript</button>
+              <div>
+                <span>Tabsum Khadka</span>
+                <span>asked 29 secs ago</span>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
       <RightSidebar />
@@ -35,9 +55,22 @@ const QuestionsLayout = styled.section`
   margin: 56px auto 0 auto;
 
   background-color: beige;
-  width: 80%;
+  /* width: 80%; */
 
   display: flex;
   /* align-items: center; */
   justify-content: center;
+`;
+
+const QuestionsHeader = styled.div`
+  width: 30vw;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`;
+
+const FilterLayout = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 `;
