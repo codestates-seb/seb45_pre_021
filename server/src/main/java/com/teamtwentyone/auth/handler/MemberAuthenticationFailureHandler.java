@@ -2,7 +2,6 @@ package com.teamtwentyone.auth.handler;
 
 import com.google.gson.Gson;
 import com.teamtwentyone.response.ErrorResponse;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.AuthenticationException;
@@ -12,14 +11,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@Slf4j
-public class MemberAuthenticationFailureHandler implements AuthenticationFailureHandler {
+public class MemberAuthenticationFailureHandler implements AuthenticationFailureHandler { // 인증 실패시 호출되는 핸들러
     @Override
     public void onAuthenticationFailure(HttpServletRequest request,
                                         HttpServletResponse response,
                                         AuthenticationException exception) throws IOException {
-        log.error("# 인증 실패: {}", exception.getMessage());
-
         sendErrorResponse(response);
     }
 

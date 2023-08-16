@@ -34,12 +34,16 @@ public class UserMapper {
     }
 
     //Entity -> Dto
-    public UserDto.Response userToUserResponse(User user) {
-        return UserDto.Response.builder()
+    public UserDto.ResponseMyPage userToUserResponse(User user) {
+        return UserDto.ResponseMyPage.builder()
                 .id(user.getUserId())
                 .email(user.getEmail())
                 .nickName(user.getNickName())
                 .phoneNum(user.getPhoneNum())
+                .allCount(user.getAllCount())
+                .progressCount(user.getProgressCount())
+                .completeCount(user.getCompleteCount())
+                .answerCount(user.getAnswerCount())
                 .createDate(String.valueOf(user.getCreateDate()))
                 .modifiedDate(String.valueOf(user.getModifiedDate()))
                 .build();

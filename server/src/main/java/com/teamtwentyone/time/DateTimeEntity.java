@@ -15,8 +15,8 @@ import java.time.LocalDateTime;
 public class DateTimeEntity {
     // Board, Answer 용 Date Entity
     @CreatedDate
-    private LocalDateTime createDate; // 엔티티가 저장될때 시간 기록
+    private LocalDateTime createDate; // 엔티티가 저장될때 날짜, 시간 기록
 
     @LastModifiedDate
-    private LocalDateTime modifiedDate; // 엔티티가 수정될때 시간 기록
+    private LocalDateTime modifiedDate; // 엔티티가 수정될때 날짜, 시간 기록
 }

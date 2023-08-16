@@ -24,7 +24,7 @@ public class ErrorResponseSender {
         ObjectMapper mapper = new ObjectMapper();
         String errorJson = mapper.writeValueAsString(errorResponse);
 
-        response.setContentType(MediaType.APPLICATION_JSON_VALUE); //APPLICATION_JSON's STRING type
+        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setStatus(status.value());
 
         response.getWriter().write(errorJson);

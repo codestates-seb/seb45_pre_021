@@ -13,14 +13,11 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @Component
-@Slf4j
 public class MemberAccessDeniedHandler implements AccessDeniedHandler {
     @Override //접근 거부시 처리할 핸들러
     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException, ServletException {
 
         ErrorResponseSender.sendResponse(response, HttpStatus.FORBIDDEN);
         String errorMessage = accessDeniedException.getMessage();
-
-        log.warn("(403) Unauthorized error : " + errorMessage );
     }
 }

@@ -15,7 +15,6 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.Authentication;
@@ -41,6 +40,7 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain (HttpSecurity http) throws Exception {
+        // logout 성공 핸들러
         return  http
                 .headers().frameOptions().sameOrigin() // h2-console 사용을 위한 설정
                 .and()
@@ -59,36 +59,31 @@ public class SecurityConfig {
                 .logout() // logout 설정
                 .logoutUrl("/logout") // logout url 설정
                 .invalidateHttpSession(true) // 세션 초기화
-                .deleteCookies("Authorization") // 쿠키 삭제 : Authorization
                 .deleteCookies("Refresh") // 쿠키 삭제 : Refresh
-                .logoutSuccessHandler(new LogoutSuccessHandler() { // logout 성공 핸들러
-                    @Override
-                    public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-                        response.getWriter().append("Logout successfully");
-                        response.setStatus(HttpServletResponse.SC_OK);
-                    }
+                .logoutSuccessHandler((request, response, authentication) -> {
+                    response.getWriter().append("Logout successfully");
+                    response.setStatus(HttpServletResponse.SC_OK);
                 })
                 .and()
 
                 .authorizeHttpRequests(authorize -> authorize // 요청에 대한 권한 설정
-                        .antMatchers(HttpMethod.POST,"/users").permitAll() // 회원가입은 누구나 가능
-                        .antMatchers(HttpMethod.PATCH,"/users/**").hasRole("USER") // 회원정보 수정은 USER 권한 필요
-                        .antMatchers(HttpMethod.GET,"/users/**").hasRole("USER") // 회원정보 조회는 USER 권한 필요
-                        .antMatchers(HttpMethod.DELETE,"/users/**").hasRole("USER") // 회원정보 삭제는 USER 권한 필요
-//                        .antMatchers(HttpMethod.POST,"/questions").hasRole("USER")
-//                        .antMatchers(HttpMethod.PATCH,"/questions/**").hasRole("USER")
-//                        .antMatchers(HttpMethod.GET,"/questions").permitAll()
-//                        .antMatchers(HttpMethod.GET,"/questions/{id}").permitAll()
-//                        .antMatchers(HttpMethod.DELETE,"/questions/{id}").hasRole("USER")
-//                        .antMatchers(HttpMethod.POST,"/questions/{id}/answers").hasRole("USER")
+                    .antMatchers(HttpMethod.POST,"/users/signup").permitAll() // 회원가입은 누구나 가능
+                    .antMatchers(HttpMethod.PATCH,"/users/**").hasRole("USER") // 회원정보 수정은 USER 권한 필요
+                    .antMatchers(HttpMethod.GET,"/users/mypage/**").hasRole("USER") // 회원정보 조회는 USER 권한 필요
+                    .antMatchers(HttpMethod.DELETE,"/users/mypage/delete").hasRole("USER") // 회원정보 삭제는 USER 권한 필요
 
-//                        .antMatchers(HttpMethod.PATCH,"/answers/**").hasRole("USER")
-//                        .antMatchers(HttpMethod.GET,"/questions/{id}/answers").denyAll()
-//                        .antMatchers(HttpMethod.GET,"/questions/{id}/answers/{answerId}").denyAll()
-//                        .antMatchers(HttpMethod.DELETE,"/answers/**").hasRole("USER")
+                    .antMatchers(HttpMethod.POST ,"/questions/post").hasRole("USER") // 질문 등록은 USER 권한 필요
+                    .antMatchers(HttpMethod.PATCH,"/questions/edit/**").hasRole("USER") // 질문 수정은 USER 권한 필요
+                    .antMatchers(HttpMethod.PATCH, "/questions/edit/**").hasRole("USER") // 질문 수정은 USER 권한 필요
+                    .antMatchers(HttpMethod.GET,"/questions/board/**").hasRole("USER") // 질문 상세 조회는 USER 권한 필요
+                    .antMatchers(HttpMethod.GET, "/questions/**").permitAll() // 질문 전체 조회, 검색은 누구나 가능
+                    .antMatchers(HttpMethod.DELETE,"/questions/delete/**").hasRole("USER") // 질문 삭제는 USER 권한 필요
 
-                        .antMatchers(HttpMethod.POST,"/logout").hasRole("USER") // logout 은 USER 권한 필요
-//                        .anyRequest().permitAll() // 나머지 요청은 누구나 가능
+                    .antMatchers(HttpMethod.POST, "/answers/post/**").hasRole("USER") // 답변 등록은 USER 권한 필요
+                    .antMatchers(HttpMethod.PATCH, "/answers/edit/**").hasRole("USER") // 답변 수정은 USER 권한 필요
+                    .antMatchers(HttpMethod.DELETE, "/answers/delete/**").hasRole("USER") // 답변 삭제는 USER 권한 필요
+                    .antMatchers(HttpMethod.POST,"/logout").hasRole("USER") // logout 은 USER 권한 필요
+                    .anyRequest().permitAll() // 나머지 요청은 누구나 가능
                 )
                 .build();
     }
