@@ -24,7 +24,7 @@ const Sidebar = () => {
               <LinkItems to="/questions">Questions</LinkItems>
             </ListItem>
             <ListItem>
-              <LinkItems to="/tags">Tags</LinkItems>
+              <LinkItems onClick={() => alert('in progress')}>Tags</LinkItems>
             </ListItem>
             <ListItem>
               <LinkItems to="/users">Users</LinkItems>
