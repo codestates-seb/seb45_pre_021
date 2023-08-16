@@ -5,7 +5,12 @@ import PropTypes from 'prop-types';
 const Editor = ({ content, setContent }) => {
   return (
     <EditorContainer data-color-mode="light">
-      <MDEditor value={content} onChange={setContent} preview="edit" />
+      <MDEditor
+        height={240}
+        value={content}
+        onChange={setContent}
+        preview="edit"
+      />
     </EditorContainer>
   );
 };
@@ -16,7 +21,8 @@ Editor.propTypes = {
 };
 
 const EditorContainer = styled.div`
-  width: 800px;
+  width: 100%;
+  max-width: 800px;
   height: 240px;
   line-height: 18px;
   .w-md-editor {
