@@ -42,7 +42,7 @@ const LoginSection = styled.section`
   align-items: center;
   flex-direction: column;
   width: 100%;
-  height: calc(100vh - 204px);
+  min-height: calc(100vh - 204px);
   margin-top: 3.375rem;
   background: transparent;
 `;
