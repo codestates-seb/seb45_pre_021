@@ -37,7 +37,7 @@ const RightAside = styled.article`
 
   width: 300px;
   height: 530px;
-
+  margin-top: 56px;
   background-color: #fdf7e2;
 
   h3 {
@@ -59,5 +59,9 @@ const QuickLinkBox = styled.div`
   p {
     font-size: 14px;
     margin-bottom: 10px;
+
+    &:hover {
+      cursor: pointer;
+    }
   }
 `;
