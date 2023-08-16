@@ -1,7 +1,7 @@
 import { styled } from 'styled-components';
 import PropTypes from 'prop-types';
 import cardImg from '../../imgs/post_card_icon.png';
-import { NextButton } from './NextButton.jsx';
+import Button from '../Button.jsx';
 import { Card } from './Card.jsx';
 
 const TitleSection = ({
@@ -36,15 +36,17 @@ const TitleSection = ({
           }}
         />
         {step === 1 && !isPassed && (
-          <NextButton
-            className={title.length === 0 ? 'disabled' : ''}
-            onClick={() => {
+          <Button
+            disabled={title.length === 0}
+            onClick={(e) => {
+              console.log(e);
               setStep(2);
               setIsPassed(true);
             }}
+            type="light"
           >
             Next
-          </NextButton>
+          </Button>
         )}
       </div>
       {step === 1 && (
