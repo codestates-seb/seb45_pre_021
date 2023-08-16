@@ -22,7 +22,13 @@ const Edit = () => {
         <ContentContainer>
           <EditSection>
             <span className="label">Title</span>
-            <input type="text" value={title} onChange={setTitle} />
+            <input
+              type="text"
+              value={title}
+              onChange={(e) => {
+                setTitle(e.target.value);
+              }}
+            />
             <span className="label">Body</span>
             <Editor content={content} setContent={setContent} />
             <br />
