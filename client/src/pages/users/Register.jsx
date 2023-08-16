@@ -2,10 +2,18 @@ import { styled } from 'styled-components';
 import icon from '../../imgs/google_icon.svg';
 import { Icon } from '@iconify/react';
 import ReCAPTCHA from 'react-google-recaptcha';
+import { useState } from 'react';
+import SignupDropdown from '../../components/SignupDropdown.jsx';
 
 const Register = () => {
   const handleCaptchaChange = (value) => {
     console.log('Captcha value:', value);
+  };
+
+  const [isShow, setIsShow] = useState(false);
+
+  const dropDownHandler = () => {
+    setIsShow((props) => !props);
   };
 
   return (
@@ -98,9 +106,14 @@ const Register = () => {
                 Opt-in to receive occasional product updates, user research
                 invitations, company announcements, and digests.
               </label>
-              <button>
+              <button onClick={dropDownHandler}>
                 <Icon icon="ri:question-fill" width="14" height="14" />
               </button>
+              {isShow ? (
+                <SignupDropdown dropDownHandler={dropDownHandler} />
+              ) : (
+                ''
+              )}
             </CheckSection>
             <ButtonSection>Sign up</ButtonSection>
             <CaptionSection>
