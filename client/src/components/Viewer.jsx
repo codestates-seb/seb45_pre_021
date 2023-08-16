@@ -15,11 +15,10 @@ Viewer.propTypes = {
 };
 
 const ViewerContainer = styled.div`
-  width: 800px;
-  height: 240px;
+  width: 100%;
+  max-width: 800px;
+  min-height: 240px;
   padding: 0.5rem;
-  border: 1px solid #e3e6e8;
-  border-radius: 5px;
 `;
 
 export default Viewer;
