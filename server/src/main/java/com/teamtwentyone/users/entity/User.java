@@ -42,11 +42,11 @@ public class User extends UserDateEntity {
     @Column(nullable = false, columnDefinition = "integer default 0")
     private int answerCount;
 
-    @ManyToOne(cascade = CascadeType.REFRESH)
-    private Question question;
+    @OneToMany
+    private List<Question> questions = new ArrayList<>();
 
-    @ManyToOne
-    private Answer answer;
+    @OneToMany
+    private List<Answer> answer = new ArrayList<>();
 
     @ElementCollection(fetch = FetchType.EAGER)
     private List<String> roles = new ArrayList<>();

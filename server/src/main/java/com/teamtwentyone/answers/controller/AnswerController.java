@@ -45,6 +45,6 @@ public class AnswerController {
     @DeleteMapping("/delete/{answer-id}")
     public ResponseEntity deleteAnswer(@PathVariable("answer-id") @Min(1) Long answerId) {
         answerService.deleteAnswer(answerId);
-        return ResponseEntity.status(HttpStatus.OK).build();
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }

@@ -64,7 +64,7 @@ public class JwtTokenizer {
 
     //base 64 encoding
     public String encodeBase64SecretKey(String secretKey){
-        return Encoders.BASE64.encode(secretKey.getBytes(Charset.defaultCharset())); // //StandardCharsets.UTF_8 -> sun.nio.cs.UTF_8.INSTANCE
+        return Encoders.BASE64.encode(secretKey.getBytes(Charset.defaultCharset()));
     }
 
     //base64로 인코딩된 키를 디코딩 하여 <JWT의 서명에 사용할 Secret Key>를 얻어냄
@@ -73,7 +73,6 @@ public class JwtTokenizer {
         Key key = Keys.hmacShaKeyFor(byteKey);
         return key;
     }
-
 
     //verification : 유저가 리소스 접근할 때마다 request header에 포함된 JWT를 검증
 

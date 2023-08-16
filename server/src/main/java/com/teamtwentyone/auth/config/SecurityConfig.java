@@ -40,6 +40,7 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain (HttpSecurity http) throws Exception {
+        // logout 성공 핸들러
         return  http
                 .headers().frameOptions().sameOrigin() // h2-console 사용을 위한 설정
                 .and()
@@ -58,14 +59,10 @@ public class SecurityConfig {
                 .logout() // logout 설정
                 .logoutUrl("/logout") // logout url 설정
                 .invalidateHttpSession(true) // 세션 초기화
-                .deleteCookies("Authorization") // 쿠키 삭제 : Authorization
                 .deleteCookies("Refresh") // 쿠키 삭제 : Refresh
-                .logoutSuccessHandler(new LogoutSuccessHandler() { // logout 성공 핸들러
-                    @Override
-                    public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-                        response.getWriter().append("Logout successfully");
-                        response.setStatus(HttpServletResponse.SC_OK);
-                    }
+                .logoutSuccessHandler((request, response, authentication) -> {
+                    response.getWriter().append("Logout successfully");
+                    response.setStatus(HttpServletResponse.SC_OK);
                 })
                 .and()
 
@@ -86,7 +83,7 @@ public class SecurityConfig {
                     .antMatchers(HttpMethod.PATCH, "/answers/edit/**").hasRole("USER") // 답변 수정은 USER 권한 필요
                     .antMatchers(HttpMethod.DELETE, "/answers/delete/**").hasRole("USER") // 답변 삭제는 USER 권한 필요
                     .antMatchers(HttpMethod.POST,"/logout").hasRole("USER") // logout 은 USER 권한 필요
-//                      .anyRequest().permitAll() // 나머지 요청은 누구나 가능
+                    .anyRequest().permitAll() // 나머지 요청은 누구나 가능
                 )
                 .build();
     }

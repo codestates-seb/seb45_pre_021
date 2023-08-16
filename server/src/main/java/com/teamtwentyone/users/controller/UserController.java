@@ -93,9 +93,9 @@ public class UserController {
     public ResponseEntity patchUser(// @PathVariable("user-id") @Min(1) Long userId, // userId는 1이상의 값만 허용
                                     @Valid @RequestBody UserDto.Patch requestBody) {
         // requestBody.setId(userId);
-        User user = service.updateUser(userMapper.userPatchToUser(requestBody)); // 유저 정보 수정 메서드 호출
+        service.updateUser(userMapper.userPatchToUser(requestBody)); // 유저 정보 수정 메서드 호출
 
-        return ResponseEntity.ok(userMapper.userToUserResponse(user)); // 수정된 유저 정보 반환
+        return ResponseEntity.status(HttpStatus.OK).body("User Info Update Success"); // 수정된 유저 정보 반환
     }
 
     // 비밀번호 변경 컨트롤러

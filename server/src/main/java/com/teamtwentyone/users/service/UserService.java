@@ -129,6 +129,16 @@ public class UserService {
                         verifyExistsNickName(nickName);
                     }
                     findUser.setNickName(nickName);
+                    // question 의 writerNickName update
+                    List<Question> questions = questionsRepository.findByUserUserId(findUser.getUserId());
+                    questions.forEach(question -> {
+                        question.setWriterNickName(nickName);
+                        questionsRepository.save(question);});
+                    // answers 의 writerNickName update
+                    List<Answer> answers = answerRepository.findByUserUserId(findUser.getUserId());
+                    answers.forEach(answer -> {
+                        answer.setWriterNickName(nickName);
+                        answerRepository.save(answer);});
                 });
 
         // 현재 저장된 휴대폰번호와 같다면 중복검사 하지 않음
@@ -139,6 +149,7 @@ public class UserService {
                     }
                     findUser.setPhoneNum(phoneNum);
                 });
+
         return repository.save(findUser);
     }
 
@@ -155,6 +166,11 @@ public class UserService {
     public void deleteUser() {
         Long userId = getLoginUserId(); // 로그인한 유저의 id를 가져옴
         User findUser = findVerifiedUser(userId);
+        List<Answer> answers = answerRepository.findByUserUserId(findUser.getUserId());
+        List<Question> questions = questionsRepository.findByUserUserId(findUser.getUserId());
+        answers.forEach(answer -> answerRepository.delete(answer));
+        questions.forEach(question -> questionsRepository.delete(question));
+
         repository.delete(findUser);
     }
 
