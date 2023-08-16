@@ -1,8 +1,9 @@
 import { styled } from 'styled-components';
 import RightSidebar from '../../components/RightSidebar.jsx';
+import { useState } from 'react';
 
 const Main = () => {
-  const questions = [
+  const [post, setPost] = useState([
     {
       id: 1,
       title: 'How to use pam authentication in go program',
@@ -10,6 +11,7 @@ const Main = () => {
       tags: 'react',
       name: 'Garrett Graham',
       time: '2 min ago',
+      answered: true,
     },
     {
       id: 2,
@@ -18,6 +20,7 @@ const Main = () => {
       tags: 'react',
       name: 'Min Graham',
       time: '2 min ago',
+      answered: false,
     },
     {
       id: 3,
@@ -26,6 +29,7 @@ const Main = () => {
       tags: 'react',
       name: 'Garrett Graham',
       time: '2 min ago',
+      answered: false,
     },
     {
       id: 4,
@@ -34,6 +38,7 @@ const Main = () => {
       tags: 'react',
       name: 'Garrett ',
       time: '2 min ago',
+      answered: true,
     },
     {
       id: 5,
@@ -42,6 +47,7 @@ const Main = () => {
       tags: 'react',
       name: 'Garrett lee',
       time: '2 min ago',
+      answered: true,
     },
     {
       id: 6,
@@ -50,6 +56,7 @@ const Main = () => {
       tags: 'react',
       name: 'Garrett lee',
       time: '2 min ago',
+      answered: false,
     },
     {
       id: 7,
@@ -58,8 +65,16 @@ const Main = () => {
       tags: 'react',
       name: 'Garrett lee',
       time: '2 min ago',
+      answered: false,
     },
-  ];
+  ]);
+  const [filter, setFilter] = useState('all');
+
+  const handleNull = () => {
+    setPost(null);
+  };
+  console.log(handleNull);
+
   return (
     <QuestionPage>
       {/* <RightSidebar /> */}
@@ -70,86 +85,47 @@ const Main = () => {
           <button>Ask Question</button>
         </Header>
         <SubHeader>
-          <p>0 Questions</p>
+          <p>{post.length} Questions</p>
           <Buttons>
-            <button>Answered</button>
-            <button>Unanswered</button>
+            <button onClick={() => setFilter('answered')}>Answered</button>
+            <button onClick={() => setFilter('unanswered')}>Unanswered</button>
+            <button onClick={() => setFilter('all')}>View All</button>
           </Buttons>
         </SubHeader>
         <div>
-          {questions.map((question) => {
-            return (
-              <QuestionBox key={question.id}>
-                <QuestionStats>
-                  <span>0 vote</span>
-                  <span>0 answers</span>
-                  <span>0 views</span>
-                </QuestionStats>
-                <QuestionInfo>
-                  <h2>{question.title}</h2>
-                  <p>{question.desc}</p>
-                  <UserInfo>
-                    <span>{question.name}</span>
-                  </UserInfo>
-                </QuestionInfo>
-              </QuestionBox>
-            );
-          })}
+          {post
+            .filter((question) => {
+              if (filter === 'answered') {
+                return question.answered;
+              }
+              if (filter === 'unanswered') {
+                return !question.answered;
+              }
+              return true; // For 'all' filter, show all questions
+            })
+            .map((question) => {
+              return (
+                <QuestionBox key={question.id}>
+                  <QuestionStats>
+                    <span>0 vote</span>
+                    <span>0 answers</span>
+                    <span>0 views</span>
+                  </QuestionStats>
+                  <QuestionInfo>
+                    <h2>{question.title}</h2>
+                    <p>{question.desc}</p>
+                    <UserInfo>
+                      <span>{question.name}</span>
+                    </UserInfo>
+                  </QuestionInfo>
+                </QuestionBox>
+              );
+            })}
         </div>
       </QuestionContainer>
       <RightSidebar />
     </QuestionPage>
   );
-
-  //   return (
-  //     <ContainerTest>
-  //       <QuestionsLayout>
-  //         <QuestionsContainer>
-  //           <QuestionsHeader>
-  //             <h2>All questions</h2>
-  //             <button>Ask Question</button>
-  //           </QuestionsHeader>
-  //           <FilterLayout>
-  //             <span>0 questions</span>
-  //             <div>
-  //               <button>Newest</button>
-  //               <button>Unanswered</button>
-  //             </div>
-  //           </FilterLayout>
-  //           {questions.map((box) => {
-  //             return (
-  //               <QuestionBox key={box.id}>
-  //                 <QuestionStats>
-  //                   <StatInfo>
-  //                     <span>0 votes</span>
-  //                   </StatInfo>
-  //                   <StatInfo>
-  //                     <span>0 answers</span>
-  //                   </StatInfo>
-  //                   <StatInfo>
-  //                     <span>0 views</span>
-  //                   </StatInfo>
-  //                 </QuestionStats>
-  //                 <QuestionContent>
-  //                   <h3>{box.title}</h3>
-  //                   <p>{box.desc}</p>
-  //                   <ContentInfo>
-  //                     <button>{box.tags}</button>
-  //                     <div>
-  //                       <span>{box.name}</span>
-  //                       <span>asked 29 secs ago</span>
-  //                     </div>
-  //                   </ContentInfo>
-  //                 </QuestionContent>
-  //               </QuestionBox>
-  //             );
-  //           })}
-  //         </QuestionsContainer>
-  //       </QuestionsLayout>
-  //       <RightSidebar />
-  //     </ContainerTest>
-  //   );
-  // };
 };
 export default Main;
 
@@ -248,6 +224,56 @@ const UserInfo = styled.div`
   align-items: center;
   justify-content: flex-end;
 `;
+
+//   return (
+//     <ContainerTest>
+//       <QuestionsLayout>
+//         <QuestionsContainer>
+//           <QuestionsHeader>
+//             <h2>All questions</h2>
+//             <button>Ask Question</button>
+//           </QuestionsHeader>
+//           <FilterLayout>
+//             <span>0 questions</span>
+//             <div>
+//               <button>Newest</button>
+//               <button>Unanswered</button>
+//             </div>
+//           </FilterLayout>
+//           {questions.map((box) => {
+//             return (
+//               <QuestionBox key={box.id}>
+//                 <QuestionStats>
+//                   <StatInfo>
+//                     <span>0 votes</span>
+//                   </StatInfo>
+//                   <StatInfo>
+//                     <span>0 answers</span>
+//                   </StatInfo>
+//                   <StatInfo>
+//                     <span>0 views</span>
+//                   </StatInfo>
+//                 </QuestionStats>
+//                 <QuestionContent>
+//                   <h3>{box.title}</h3>
+//                   <p>{box.desc}</p>
+//                   <ContentInfo>
+//                     <button>{box.tags}</button>
+//                     <div>
+//                       <span>{box.name}</span>
+//                       <span>asked 29 secs ago</span>
+//                     </div>
+//                   </ContentInfo>
+//                 </QuestionContent>
+//               </QuestionBox>
+//             );
+//           })}
+//         </QuestionsContainer>
+//       </QuestionsLayout>
+//       <RightSidebar />
+//     </ContainerTest>
+//   );
+// };
 // const ContainerTest = styled.section
 //   display: flex;
 //   /* align-items: center; */
