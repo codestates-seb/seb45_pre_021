@@ -1,8 +1,13 @@
 import { styled } from 'styled-components';
 import icon from '../../imgs/google_icon.svg';
 import { Icon } from '@iconify/react';
+import ReCAPTCHA from 'react-google-recaptcha';
 
 const Register = () => {
+  const handleCaptchaChange = (value) => {
+    console.log('Captcha value:', value);
+  };
+
   return (
     <RegisterSection>
       <BodySection>
@@ -81,6 +86,10 @@ const Register = () => {
                 least 1 letter and 1 number.
               </p>
             </LabelSection>
+            <StyledReCAPTCHA
+              sitekey={process.env.REACT_APP_API_URL} // 더미 키값 사용
+              onChange={handleCaptchaChange}
+            />
             <CheckSection>
               <div>
                 <input type="checkbox" name="EmailOptIn" id="opt-in"></input>
@@ -304,6 +313,13 @@ const LabelSection = styled.div`
     font-size: 0.75rem;
     margin-top: -1rem;
   }
+`;
+
+const StyledReCAPTCHA = styled(ReCAPTCHA)`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 18.75rem;
 `;
 
 const ButtonSection = styled.button`
