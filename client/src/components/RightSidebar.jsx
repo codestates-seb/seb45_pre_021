@@ -27,18 +27,25 @@ const RightSidebar = () => {
           </p>
         </QuickLinkBox>
       </OverflowContainer>
-      <CustomFilterContainer>
+      <TabBox>
         <button>Custom Filters</button>
         <FilterInfo>
           <span>Create a custom filter</span>
         </FilterInfo>
-      </CustomFilterContainer>
-      <CustomFilterContainer>
+      </TabBox>
+      <WatchTagBox>
+        <button>Watched Tags</button>
+        <FilterInfo>
+          <span>Watch tags to curate your list of questions.</span>
+          <button>Watch a tag</button>
+        </FilterInfo>
+      </WatchTagBox>
+      <TabBox>
         <button>Ignored Tags </button>
         <FilterInfo>
           <span>Add an ignored tab </span>
         </FilterInfo>
-      </CustomFilterContainer>
+      </TabBox>
     </RightSide>
   );
 };
@@ -63,12 +70,13 @@ const OverflowContainer = styled.article`
     /* background-color: #fff; */
     background-color: #fbf3b5;
     height: 40px;
-    font-size: 15px;
-    color: rgba(0, 0, 0, 0.7);
+    font-size: 14px;
+    color: #525960;
+
     display: flex;
     align-items: center;
     padding: 10px;
-    color: 1px solid rgba(0, 0, 0, 0.8);
+    /* color: 1px solid rgba(0, 0, 0, 0.8); */
   }
 `;
 
@@ -85,7 +93,7 @@ const QuickLinkBox = styled.div`
   }
 `;
 
-const CustomFilterContainer = styled.article`
+const TabBox = styled.article`
   width: 300px;
   height: 95px;
   margin: 20px 0;
@@ -106,4 +114,24 @@ const FilterInfo = styled.div`
   color: #0074cc;
   padding: 16px;
   font-size: 13px;
+`;
+
+const WatchTagBox = styled.div`
+  width: 300px;
+  height: 227px;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: 6px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* justify-content: center; */
+
+  button {
+    height: 45px;
+    width: 100%;
+    text-align: left;
+    font-size: 14px;
+    padding: 16px;
+  }
 `;
