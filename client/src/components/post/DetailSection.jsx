@@ -20,6 +20,7 @@ const DetailSection = ({ step, setStep, content, setContent, isPassed }) => {
           20 characters.
         </span>
         <Editor content={content} setContent={setContent} />
+        <br />
         <span className="output">Output</span>
         <Viewer content={content} />
       </div>
