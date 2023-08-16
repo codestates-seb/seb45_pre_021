@@ -11,11 +11,11 @@ const Button = ({ children, type = 'primary', onClick, disabled }) => {
       border: 'none',
     },
     light: {
-      color: '#000000',
+      color: '#0a95ff',
       bgColor: '#ffffff',
-      hoverColor: '#f8f9f9',
+      hoverColor: '#f0f8ff',
       disabledColor: '#d2d5d8',
-      border: '#babfc4',
+      border: '#none',
     },
   };
   return (
