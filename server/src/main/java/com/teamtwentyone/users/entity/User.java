@@ -42,7 +42,7 @@ public class User extends UserDateEntity {
     @Column(nullable = false, columnDefinition = "integer default 0")
     private int answerCount;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.REFRESH)
     private Question question;
 
     @ManyToOne

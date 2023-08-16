@@ -59,8 +59,8 @@ public class UserService {
         Long userId = getLoginUserId(); // 로그인한 유저의 id를 가져옴
         User finduser = findVerifiedUser(userId); // 유저 검증 메서드(유저가 존재하지 않으면 예외처리)
 
-        // 유저가 작성한 게시글의 수
-        List<Question> allQuestions = questionsRepository.findByWriterNickNameContaining(finduser.getNickName());
+        // 유저가 작성한 전체 게시글 수
+        List<Question> allQuestions = questionsRepository.findByUserUserId(finduser.getUserId());
         finduser.setAllCount(allQuestions.size());
 
         // 유저가 작성한 진행중 상태의 게시글 수
@@ -76,7 +76,7 @@ public class UserService {
         finduser.setCompleteCount(completeQuestions.size());
 
         // 유저가 작성한 답변 수
-        List<Answer> allAnswers = answerRepository.findByWriterNickNameContaining(finduser.getNickName());
+        List<Answer> allAnswers = answerRepository.findByUserUserId(finduser.getUserId());
         finduser.setAnswerCount(allAnswers.size());
 
         return finduser;
@@ -87,34 +87,34 @@ public class UserService {
         Long userId = getLoginUserId(); // 로그인한 유저의 id를 가져옴
         User finduser = findVerifiedUser(userId); // 유저 검증 메서드(유저가 존재하지 않으면 예외처리)
         Page<Question> allQuestions = // 유저가 작성한 게시글 전체 조회
-                questionsRepository.findByWriterNickNameContaining(finduser.getNickName(), PageRequest.of(page, size, Sort.by("questionId").descending()));
+                questionsRepository.findByUserUserId(finduser.getUserId(), PageRequest.of(page, size, Sort.by("questionId").descending()));
         return allQuestions;
     }
 
     // 유저가 작성한 게시글 중 진행중인 게시글 조회
     public Page<Question> findUserProgressQuestions(int page, int size) {
         Long userId = getLoginUserId(); // 로그인한 유저의 id를 가져옴
-        User finduser = findVerifiedUser(userId); // 유저 검증 메서드(유저가 존재하지 않으면 예외처리)
+        User findUser = findVerifiedUser(userId); // 유저 검증 메서드(유저가 존재하지 않으면 예외처리)
         Page<Question> progressQuestions = // 유저가 작성한 게시글 중 진행중인 게시글 조회
-                questionsRepository.findByWriterNickNameContainingAndStatus(finduser.getNickName(), Question.Status.PROGRESS, PageRequest.of(page, size, Sort.by("questionId").descending()));
+                questionsRepository.findByUserUserIdAndStatus(findUser.getUserId(), Question.Status.PROGRESS, PageRequest.of(page, size, Sort.by("questionId").descending()));
         return progressQuestions;
     }
 
     // 유저가 작성한 게시글 중 완료된 게시글 조회
     public Page<Question> findUserCompleteQuestions(int page, int size) {
         Long userId = getLoginUserId(); // 로그인한 유저의 id를 가져옴
-        User finduser = findVerifiedUser(userId); // 유저 검증 메서드(유저가 존재하지 않으면 예외처리)
+        User findUser = findVerifiedUser(userId); // 유저 검증 메서드(유저가 존재하지 않으면 예외처리)
         Page<Question> completeQuestions = // 유저가 작성한 게시글 중 완료된 게시글 조회
-                questionsRepository.findByWriterNickNameContainingAndStatus(finduser.getNickName(), Question.Status.COMPLETE, PageRequest.of(page, size, Sort.by("questionId").descending()));
+                questionsRepository.findByUserUserIdAndStatus(findUser.getUserId(), Question.Status.COMPLETE, PageRequest.of(page, size, Sort.by("questionId").descending()));
         return completeQuestions;
     }
 
     // 유저가 작성한 답변이 포함된 게시글 조회
     public Page<Question> findUserAnswers(int page, int size) {
         Long userId = getLoginUserId(); // 로그인한 유저의 id를 가져옴
-        User finduser = findVerifiedUser(userId); // 유저 검증 메서드(유저가 존재하지 않으면 예외처리)
+        User findUser = findVerifiedUser(userId); // 유저 검증 메서드(유저가 존재하지 않으면 예외처리)
         Page<Question> answers = // 유저가 작성한 답변이 포함된 게시글 조회
-                questionsRepository.findByAnswersWriterNickNameContaining(finduser.getNickName(), PageRequest.of(page, size, Sort.by("questionId").descending()));
+                questionsRepository.findByAnswersUserUserId(findUser.getUserId(), PageRequest.of(page, size, Sort.by("questionId").descending()));
         return answers;
     }
 

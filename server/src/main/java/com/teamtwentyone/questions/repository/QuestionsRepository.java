@@ -14,8 +14,9 @@ public interface QuestionsRepository extends JpaRepository<Question, Long> {
     Page<Question> findByTitleContaining(String keyword, PageRequest pageRequest); // 제목으로 조회
     Page<Question> findByContentContaining(String keyword, PageRequest pageRequest); // 내용으로 조회
     Page<Question> findByWriterNickNameContaining(String keyword, PageRequest pageRequest); // 작성자 닉네임으로 조회
-    List<Question> findByWriterNickNameContaining(String keyword); // 작성자 닉네임으로 조회
     Page<Question> findByAnswersContentContaining(String keyword, PageRequest pageRequest); // 답변 내용으로 조회
-    Page<Question> findByWriterNickNameContainingAndStatus(String nickName, Question.Status status, PageRequest questionId); // 작성자 닉네임과 질문 상태로 조회
-    Page<Question> findByAnswersWriterNickNameContaining(String nickName, PageRequest questionId); // 답변 작성자 닉네임으로 조회
+    List<Question> findByUserUserId(Long userId); // 유저 아이디로 조회
+    Page<Question> findByUserUserId(Long userId, PageRequest questionId); // 유저 아이디로 조회
+    Page<Question> findByUserUserIdAndStatus(Long userId, Question.Status status, PageRequest questionId); // 유저 아이디와 질문 상태로 조회
+    Page<Question> findByAnswersUserUserId(Long userId, PageRequest questionId); // 답변 작성자 아이디로 조회
 }
