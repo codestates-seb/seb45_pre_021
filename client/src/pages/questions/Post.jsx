@@ -3,7 +3,7 @@ import { useState } from 'react';
 import NoticeSection from '../../components/post/NoticeSection.jsx';
 import TitleSection from '../../components/post/TitleSection.jsx';
 import DetailSection from '../../components/post/DetailSection.jsx';
-import { NextButton } from '../../components/post/NextButton.jsx';
+import Button from '../../components/Button.jsx';
 import kanaImg from '../../imgs/post_kana.png';
 
 const Post = () => {
@@ -43,14 +43,14 @@ const Post = () => {
           isPassed={isPassed}
         />
         {(step === 2 || content.length > 0) && (
-          <NextButton
+          <Button
             className={content.length < 20 ? 'disabled' : ''}
             onClick={() => {
               post();
             }}
           >
             Post your question
-          </NextButton>
+          </Button>
         )}
       </PageContainer>
     </PageWrapper>
