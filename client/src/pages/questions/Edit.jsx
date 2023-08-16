@@ -3,7 +3,7 @@ import { useState } from 'react';
 import Sidebar from '../../components/Sidebar.jsx';
 import Editor from '../../components/Editor.jsx';
 import Viewer from '../../components/Viewer.jsx';
-import { NextButton } from '../../components/post/NextButton.jsx';
+import Button from '../../components/Button.jsx';
 
 const Edit = () => {
   const [title, setTitle] = useState('Hello');
@@ -35,7 +35,7 @@ const Edit = () => {
             <Viewer content={content} />
             <br />
             <div className="btn-wrapper">
-              <NextButton onClick={postEdits}>Save edits</NextButton>
+              <Button onClick={postEdits}>Save edits</Button>
             </div>
           </EditSection>
           <Widget>
