@@ -25,7 +25,7 @@ server:
 
 #mail:
 #  address:
-#    admin: handoseok@gmail.com
+#    admin:
 
 jwt:
   key: ${JWT_SECRET_KEY}
