@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { styled } from 'styled-components';
 import icon from '../../imgs/google_icon.svg';
 import logo from '../../imgs/footer_logo.png';
@@ -5,6 +6,46 @@ import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
   const navigate = useNavigate();
+
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [errors, setErrors] = useState({});
+
+  const emailRegex = /^[a-zA-Z0-9+-_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
+  const passwordRegex =
+    /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%#?&])[A-Za-z\d$@$!%#?&]{8,16}$/;
+
+  const handleLogin = () => {
+    const newErrors = {};
+
+    if (!email) {
+      newErrors.email = 'Email cannot be empty.';
+    } else if (!emailRegex.test(email)) {
+      newErrors.email = 'The email is not a valid email address.';
+    }
+
+    if (!password) {
+      newErrors.password = 'Password cannot be empty.';
+    } else if (!passwordRegex.test(password)) {
+      newErrors.password = 'No user found with matching email';
+    }
+
+    // if (
+    //   email &&
+    //   password &&
+    //   emailRegex.test(email) &&
+    //   passwordRegex.test(password) &&
+    //   !loginSucceeded
+    // ) {
+    //   newErrors.login = 'Invalid email or password';
+    // }
+
+    setErrors(newErrors);
+
+    if (Object.keys(newErrors).length === 0) {
+      // Perform login logic
+    }
+  };
 
   return (
     <LoginSection>
@@ -22,11 +63,25 @@ const Login = () => {
         </ItemSection>
         <LabelSection>
           <label htmlFor="email">Email</label>
-          <input type="email" name="email" id="email" />
+          <input
+            type="email"
+            name="email"
+            id="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+          {errors.email && <span>{errors.email}</span>}
           <label htmlFor="password">Password</label>
-          <input type="password" name="password" id="password" />
+          <input
+            type="password"
+            name="password"
+            id="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          {errors.password && <span>{errors.password}</span>}
         </LabelSection>
-        <ButtonSection>Log in</ButtonSection>
+        <ButtonSection onSubmit={handleLogin}>Log in</ButtonSection>
         <ButtonSection className="OAuth">
           <img src={icon} alt="icon" />
           <p>Log in with Google</p>
@@ -52,7 +107,7 @@ const LogoSection = styled.div`
   cursor: pointer;
 `;
 
-const FormSection = styled.div`
+const FormSection = styled.form`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -133,6 +188,18 @@ const LabelSection = styled.div`
       border-color: hsla(206, 100%, 40%, 0.6);
       outline: none;
     }
+  }
+
+  span {
+    display: flex;
+    flex-direction: column;
+    height: 0.1875rem;
+    font-size: 0.8125rem;
+    font-weight: bold;
+    color: #d0393e;
+    padding-left: 0.125rem;
+    margin-top: -0.9375rem;
+    margin-bottom: 0.9375rem;
   }
 `;
 
