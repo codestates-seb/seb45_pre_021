@@ -41,6 +41,6 @@ dependencies {
 	implementation 'com.google.code.gson:gson'
 }
 
-tasks.named('test') {
-	useJUnitPlatform()
-}
+//tasks.named('test') {
+//	useJUnitPlatform()
+//}

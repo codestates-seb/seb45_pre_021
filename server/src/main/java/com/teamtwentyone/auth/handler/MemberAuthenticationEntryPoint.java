@@ -29,12 +29,12 @@ public class MemberAuthenticationEntryPoint implements AuthenticationEntryPoint 
         else
             ErrorResponseSender.sendResponse(response, HttpStatus.UNAUTHORIZED);
 
-        //log
-        String errorMessage = "";
-
-        if (exception != null)
-            errorMessage = exception.getMessage();
-        else // AuthenticationException
-            errorMessage = authException.getMessage();
+//        //log
+//        String errorMessage = "";
+//
+//        if (exception != null)
+//            errorMessage = exception.getMessage();
+//        else // AuthenticationException
+//            errorMessage = authException.getMessage();
     }
 }
