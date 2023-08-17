@@ -22,9 +22,9 @@ const Register = () => {
   };
 
   const nickNameRegex = /^[가-힣a-zA-Z]{2,6}$/;
-  const emailRegex = /^[a-zA-Z0-9+-_.]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$/;
+  const emailRegex = /^[a-zA-Z0-9+-_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
   const passwordRegex =
-    /^(?=.*[A-Za-z])(?=.*\\d)(?=.*[$@$!%#?&])[A-Za-z\\d$@$!%#?&]{8,16}$/;
+    /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%#?&])[A-Za-z\d$@$!%#?&]{8,16}$/;
 
   const handleSignUp = async (e) => {
     e.preventDefault();
