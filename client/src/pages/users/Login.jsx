@@ -54,7 +54,7 @@ const Login = () => {
       <LogoSection onClick={() => navigate('/')}>
         <img src={logo} alt="logo" />
       </LogoSection>
-      <FormSection>
+      <FormSection onSubmit={handleLogin}>
         <ItemSection>
           <h1>Login</h1>
         </ItemSection>
@@ -83,7 +83,7 @@ const Login = () => {
           />
           {errors.password && <span>{errors.password}</span>}
         </LabelSection>
-        <ButtonSection onSubmit={handleLogin}>Log in</ButtonSection>
+        <ButtonSection type="submit">Log in</ButtonSection>
         <ButtonSection className="OAuth">
           <img src={icon} alt="icon" />
           <p>Log in with Google</p>
