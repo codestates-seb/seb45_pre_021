@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.teamtwentyone.auth.dto.LoginDto;
 import com.teamtwentyone.auth.jwt.JwtTokenizer;
 import com.teamtwentyone.users.entity.User;
-import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationServiceException;
@@ -20,16 +19,20 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-@RequiredArgsConstructor
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     private final AuthenticationManager authenticationManager;
     private final JwtTokenizer jwtTokenizer;
 
+    public JwtAuthenticationFilter(AuthenticationManager authenticationManager, JwtTokenizer jwtTokenizer) {
+        this.authenticationManager = authenticationManager;
+        this.jwtTokenizer = jwtTokenizer;
+    }
 
     @SneakyThrows
     @Override
@@ -58,10 +61,15 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         String refreshToken = delegateRefreshToken(user);
 
         String responseTokenString = "Bearer " + accessToken;
-        response.setHeader("Authorization", responseTokenString );
+        // response.setHeader("Authorization", responseTokenString );
+        ObjectMapper objectMapper = new ObjectMapper();
+        String jsonResponse = objectMapper.writeValueAsString(Collections.singletonMap("token", responseTokenString));
 
-        Cookie cookie = new Cookie("Refresh", refreshToken);
-        response.addCookie(cookie);
+        response.setContentType("application/json");
+        response.getWriter().write(jsonResponse);
+
+//        Cookie cookie = new Cookie("Refresh", refreshToken);
+//        response.addCookie(cookie);
 
     }
 

@@ -108,7 +108,6 @@ public class SecurityConfig {
 //        configuration.setAllowedMethods(Arrays.asList("POST","GET","PATCH","DELETE","OPTIONS"));
 //        configuration.addExposedHeader("Authorization");
 
-
         configuration.setAllowCredentials(true); // 쿠키 허용
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource(); // cors 설정 적용
