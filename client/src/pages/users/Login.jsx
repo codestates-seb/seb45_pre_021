@@ -1,17 +1,66 @@
+import { useState } from 'react';
 import { styled } from 'styled-components';
 import icon from '../../imgs/google_icon.svg';
 import logo from '../../imgs/footer_logo.png';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const Login = () => {
   const navigate = useNavigate();
+
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [errors, setErrors] = useState({});
+
+  const emailRegex = /^[a-zA-Z0-9+-_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
+  const passwordRegex =
+    /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%#?&])[A-Za-z\d$@$!%#?&]{8,16}$/;
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+
+    const newErrors = {};
+
+    if (!email) {
+      newErrors.email = 'Email cannot be empty.';
+    } else if (!emailRegex.test(email)) {
+      newErrors.email = 'The email is not a valid email address.';
+    }
+
+    if (!password) {
+      newErrors.password = 'Password cannot be empty.';
+    } else if (!passwordRegex.test(password)) {
+      newErrors.password = 'No user found with matching email';
+    }
+
+    setErrors(newErrors);
+
+    if (Object.keys(newErrors).length === 0) {
+      try {
+        const response = await axios.post('/login', {
+          email,
+          password,
+        });
+
+        if (response.status === 200) {
+          console.log('Login successful');
+          // 로그인 성공 시 필요한 동작 수행
+        } else {
+          console.error('Login failed');
+          // 로그인 실패 시 필요한 동작 수행
+        }
+      } catch (error) {
+        console.error('An error occurred:', error);
+      }
+    }
+  };
 
   return (
     <LoginSection>
       <LogoSection onClick={() => navigate('/')}>
         <img src={logo} alt="logo" />
       </LogoSection>
-      <FormSection>
+      <FormSection onSubmit={handleLogin}>
         <ItemSection>
           <h1>Login</h1>
         </ItemSection>
@@ -22,11 +71,25 @@ const Login = () => {
         </ItemSection>
         <LabelSection>
           <label htmlFor="email">Email</label>
-          <input type="email" name="email" id="email" />
+          <input
+            type="email"
+            name="email"
+            id="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+          {errors.email && <span>{errors.email}</span>}
           <label htmlFor="password">Password</label>
-          <input type="password" name="password" id="password" />
+          <input
+            type="password"
+            name="password"
+            id="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          {errors.password && <span>{errors.password}</span>}
         </LabelSection>
-        <ButtonSection>Log in</ButtonSection>
+        <ButtonSection type="submit">Log in</ButtonSection>
         <ButtonSection className="OAuth">
           <img src={icon} alt="icon" />
           <p>Log in with Google</p>
@@ -52,7 +115,7 @@ const LogoSection = styled.div`
   cursor: pointer;
 `;
 
-const FormSection = styled.div`
+const FormSection = styled.form`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -133,6 +196,18 @@ const LabelSection = styled.div`
       border-color: hsla(206, 100%, 40%, 0.6);
       outline: none;
     }
+  }
+
+  span {
+    display: flex;
+    flex-direction: column;
+    height: 0.1875rem;
+    font-size: 0.8125rem;
+    font-weight: bold;
+    color: #d0393e;
+    padding-left: 0.125rem;
+    margin-top: -0.9375rem;
+    margin-bottom: 0.9375rem;
   }
 `;
 
