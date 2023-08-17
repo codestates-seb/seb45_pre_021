@@ -6,14 +6,53 @@ import { useState } from 'react';
 import SignupDropdown from '../../components/SignupDropdown.jsx';
 
 const Register = () => {
+  const [isShow, setIsShow] = useState(false);
+  const [nickName, setNickName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [errors, setErrors] = useState({});
+
   const handleCaptchaChange = (value) => {
     console.log('Captcha value:', value);
   };
 
-  const [isShow, setIsShow] = useState(false);
-
   const dropDownHandler = () => {
     setIsShow((props) => !props);
+  };
+
+  const nickNameRegex = /^[가-힣a-zA-Z]{2,6}$/;
+  const emailRegex = /^[a-zA-Z0-9+-_.]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$/;
+  const passwordRegex =
+    /^(?=.*[A-Za-z])(?=.*\\d)(?=.*[$@$!%#?&])[A-Za-z\\d$@$!%#?&]{8,16}$/;
+
+  const handleLogin = (e) => {
+    e.preventDefault();
+
+    const newErrors = {};
+
+    if (!nickName) {
+      newErrors.nickName = 'Nickname cannot be empty.';
+    } else if (!nickNameRegex.test(nickName)) {
+      newErrors.nickName = 'The nickname is not valid.';
+    }
+
+    if (!email) {
+      newErrors.email = 'Email cannot be empty.';
+    } else if (!emailRegex.test(email)) {
+      newErrors.email = 'The email is not a valid email address.';
+    }
+
+    if (!password) {
+      newErrors.password = 'Password cannot be empty.';
+    } else if (!passwordRegex.test(password)) {
+      newErrors.password = 'No user found with matching email';
+    }
+
+    setErrors(newErrors);
+
+    if (Object.keys(newErrors).length === 0) {
+      // Perform login logic
+    }
   };
 
   return (
@@ -77,18 +116,35 @@ const Register = () => {
             <img src={icon} alt="icon" />
             <p>Sign up with Google</p>
           </OAuthSection>
-          <FormSection>
+          <FormSection onSubmit={handleLogin}>
             <LabelSection>
               <label htmlFor="Display_name">Display name</label>
               <input
                 type="Display_name"
                 name="Display_name"
                 id="Display_name"
+                value={nickName}
+                onChange={(e) => setNickName(e.target.value)}
               />
+              {errors.nickName && <span>{errors.nickName}</span>}
               <label htmlFor="email">Email</label>
-              <input type="email" name="email" id="email" />
+              <input
+                type="email"
+                name="email"
+                id="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+              {errors.email && <span>{errors.email}</span>}
               <label htmlFor="password">Password</label>
-              <input type="password" name="password" id="password" />
+              <input
+                type="password"
+                name="password"
+                id="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+              {errors.password && <span>{errors.password}</span>}
               <p>
                 Passwords must contain at least eight characters, including at
                 least 1 letter and 1 number.
@@ -115,7 +171,7 @@ const Register = () => {
                 ''
               )}
             </CheckSection>
-            <ButtonSection>Sign up</ButtonSection>
+            <ButtonSection type="submit">Sign up</ButtonSection>
             <CaptionSection>
               By clicking “Sign up”, you agree to our{` `}
               <a
@@ -265,7 +321,7 @@ const OAuthSection = styled.button`
   }
 `;
 
-const FormSection = styled.div`
+const FormSection = styled.form`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -281,6 +337,18 @@ const FormSection = styled.div`
     0 10px 24px hsla(0, 0%, 0%, 0.05),
     0 20px 48px hsla(0, 0%, 0%, 0.05),
     0 1px 4px hsla(0, 0%, 0%, 0.1);
+
+  span {
+    display: flex;
+    flex-direction: column;
+    height: 0.1875rem;
+    font-size: 0.8125rem;
+    font-weight: bold;
+    color: #d0393e;
+    padding-left: 0.125rem;
+    margin-top: -1.125rem;
+    margin-bottom: 0.9375rem;
+  }
 `;
 
 const LabelSection = styled.div`
@@ -324,7 +392,8 @@ const LabelSection = styled.div`
   p {
     color: hsl(210, 8%, 45%);
     font-size: 0.75rem;
-    margin-top: -1rem;
+    margin-top: -0.8rem;
+    margin-left: 0.125rem;
   }
 `;
 
