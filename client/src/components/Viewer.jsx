@@ -17,7 +17,7 @@ Viewer.propTypes = {
 const ViewerContainer = styled.div`
   width: 100%;
   max-width: 800px;
-  min-height: 240px;
+  min-height: 100px;
   padding: 0.5rem;
 `;
 
