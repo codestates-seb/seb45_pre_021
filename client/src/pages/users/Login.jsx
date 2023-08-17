@@ -3,6 +3,7 @@ import { styled } from 'styled-components';
 import icon from '../../imgs/google_icon.svg';
 import logo from '../../imgs/footer_logo.png';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -15,7 +16,7 @@ const Login = () => {
   const passwordRegex =
     /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%#?&])[A-Za-z\d$@$!%#?&]{8,16}$/;
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
 
     const newErrors = {};
@@ -32,20 +33,25 @@ const Login = () => {
       newErrors.password = 'No user found with matching email';
     }
 
-    // if (
-    //   email &&
-    //   password &&
-    //   emailRegex.test(email) &&
-    //   passwordRegex.test(password) &&
-    //   !loginSucceeded
-    // ) {
-    //   newErrors.login = 'Invalid email or password';
-    // }
-
     setErrors(newErrors);
 
     if (Object.keys(newErrors).length === 0) {
-      // Perform login logic
+      try {
+        const response = await axios.post('/login', {
+          email,
+          password,
+        });
+
+        if (response.status === 200) {
+          console.log('Login successful');
+          // 로그인 성공 시 필요한 동작 수행
+        } else {
+          console.error('Login failed');
+          // 로그인 실패 시 필요한 동작 수행
+        }
+      } catch (error) {
+        console.error('An error occurred:', error);
+      }
     }
   };
 
