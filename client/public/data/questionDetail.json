@@ -1,0 +1,28 @@
+{
+  "questionId": 1,
+  "title": "최애의 아이 최고의 히로인은 누구인가요?",
+  "content": "카나, 루비, MEM쵸 등의 히로인이 있는데 누가 최고인지 궁금합니다.",
+  "status": "PROGRESS",
+  "writerNickName": "흑룡",
+  "answerCount": 1,
+  "answers": [
+    {
+      "createDate": "2023-08-16T15:41:37.120278",
+      "modifiedDate": "2023-08-16T15:41:37.120278",
+      "answerId": 1,
+      "content": "ㅋㅋ 근본 아이쟝 ㅇㄷ??",
+      "selected": false,
+      "writerNickName": "백룡"
+    },
+    {
+      "createDate": "2023-08-16T15:42:37.120278",
+      "modifiedDate": "2023-08-16T15:42:37.120278",
+      "answerId": 2,
+      "content": "`아리마 카나, 반박 시 알못`",
+      "selected": true,
+      "writerNickName": "배우신 분"
+    }
+  ],
+  "createdAt": "2023-08-16T15:37:11.914762",
+  "modifiedAt": "2023-08-16T15:41:37.123277"
+}
