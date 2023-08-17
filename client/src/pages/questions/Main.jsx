@@ -78,7 +78,6 @@ const Main = () => {
   return (
     <QuestionPage>
       {/* <RightSidebar /> */}
-
       <QuestionContainer>
         <Header>
           <p>All Questions</p>
@@ -136,7 +135,7 @@ const QuestionPage = styled.section`
   /* width: 90%; */
   /* width: 100vw; */
   padding: 16px;
-
+  max-width: 1264;
   margin: 0 auto;
   margin-top: 56px;
 `;
