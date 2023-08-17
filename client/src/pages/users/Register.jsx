@@ -25,7 +25,7 @@ const Register = () => {
   const passwordRegex =
     /^(?=.*[A-Za-z])(?=.*\\d)(?=.*[$@$!%#?&])[A-Za-z\\d$@$!%#?&]{8,16}$/;
 
-  const handleLogin = (e) => {
+  const handleSignUp = (e) => {
     e.preventDefault();
 
     const newErrors = {};
@@ -51,7 +51,6 @@ const Register = () => {
     setErrors(newErrors);
 
     if (Object.keys(newErrors).length === 0) {
-      // Perform login logic
     }
   };
 
@@ -116,7 +115,7 @@ const Register = () => {
             <img src={icon} alt="icon" />
             <p>Sign up with Google</p>
           </OAuthSection>
-          <FormSection onSubmit={handleLogin}>
+          <FormSection onSubmit={handleSignUp}>
             <LabelSection>
               <label htmlFor="Display_name">Display name</label>
               <input
