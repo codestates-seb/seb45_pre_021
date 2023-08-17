@@ -4,6 +4,7 @@ import { Icon } from '@iconify/react';
 import ReCAPTCHA from 'react-google-recaptcha';
 import { useState } from 'react';
 import SignupDropdown from '../../components/SignupDropdown.jsx';
+import axios from 'axios';
 
 const Register = () => {
   const [isShow, setIsShow] = useState(false);
@@ -25,7 +26,7 @@ const Register = () => {
   const passwordRegex =
     /^(?=.*[A-Za-z])(?=.*\\d)(?=.*[$@$!%#?&])[A-Za-z\\d$@$!%#?&]{8,16}$/;
 
-  const handleSignUp = (e) => {
+  const handleSignUp = async (e) => {
     e.preventDefault();
 
     const newErrors = {};
@@ -51,6 +52,23 @@ const Register = () => {
     setErrors(newErrors);
 
     if (Object.keys(newErrors).length === 0) {
+      try {
+        const response = await axios.post('/users/signup', {
+          nickName,
+          email,
+          password,
+        });
+
+        if (response.status === 201) {
+          console.log('Sign up successful');
+          // 회원가입 성공 시 필요한 동작 수행
+        } else {
+          console.error('Sign up failed');
+          // 회원가입 실패 시 필요한 동작 수행
+        }
+      } catch (error) {
+        console.error('An error occurred:', error);
+      }
     }
   };
 
