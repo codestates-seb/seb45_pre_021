@@ -58,17 +58,17 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         User user = (User) authResult.getPrincipal();
 
         String accessToken = delegateAccessToken(user);
-        // String refreshToken = delegateRefreshToken(user);
+        String refreshToken = delegateRefreshToken(user);
 
         String responseTokenString = "Bearer " + accessToken;
-        // response.setHeader("Authorization", responseTokenString );
+//         response.setHeader("Authorization", responseTokenString );
         ObjectMapper objectMapper = new ObjectMapper();
         String jsonResponse = objectMapper.writeValueAsString(Collections.singletonMap("token", responseTokenString));
 
         response.setContentType("application/json");
         response.getWriter().write(jsonResponse);
 
-//        Cookie cookie = new Cookie("Refresh", refreshToken);
+//        Cookie cookie = new Cookie("Refresh", responseTokenString);
 //        response.addCookie(cookie);
 
     }

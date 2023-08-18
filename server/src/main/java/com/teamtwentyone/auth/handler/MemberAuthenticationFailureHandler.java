@@ -21,7 +21,7 @@ public class MemberAuthenticationFailureHandler implements AuthenticationFailure
 
     private void sendErrorResponse(HttpServletResponse response) throws IOException {
         Gson gson = new Gson();
-        ErrorResponse errorResponse = new ErrorResponse(HttpStatus.UNAUTHORIZED.value(), "인증 실패");
+        ErrorResponse errorResponse = new ErrorResponse(HttpStatus.UNAUTHORIZED.value(), "이메일 또는 비밀번호를 잘 못 입력하셨습니다.");
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setStatus(HttpStatus.UNAUTHORIZED.value());
         response.getWriter().write(gson.toJson(errorResponse, ErrorResponse.class));

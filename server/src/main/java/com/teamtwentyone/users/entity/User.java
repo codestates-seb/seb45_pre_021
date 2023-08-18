@@ -27,8 +27,11 @@ public class User extends UserDateEntity {
     @Column(unique = true)
     private String nickName;
 
-    @Column(unique = true)
-    private String phoneNum;
+    /*
+    프론트 요청으로 휴대폰 번호 필드 제거
+     */
+//    @Column(unique = true)
+//    private String phoneNum;
 
     @Column(nullable = false, columnDefinition = "integer default 0")
     private int allCount;

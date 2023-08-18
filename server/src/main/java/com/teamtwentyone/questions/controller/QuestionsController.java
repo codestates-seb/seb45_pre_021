@@ -16,7 +16,6 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.Positive;
 import java.util.List;
 
-@CrossOrigin(origins = "*")
 @Validated
 @RestController
 @RequestMapping("/questions")

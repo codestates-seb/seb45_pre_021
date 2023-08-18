@@ -27,7 +27,7 @@ public class MemberAuthenticationEntryPoint implements AuthenticationEntryPoint 
         if (exception instanceof ExpiredJwtException || exception instanceof SignatureException)
             ErrorResponseSender.sendResponse(response, HttpStatus.UNAUTHORIZED, "JWT Expired");
         else
-            ErrorResponseSender.sendResponse(response, HttpStatus.UNAUTHORIZED);
+            ErrorResponseSender.sendResponse(response, HttpStatus.UNAUTHORIZED, "권한이 없습니다.");
 
 //        //log
 //        String errorMessage = "";

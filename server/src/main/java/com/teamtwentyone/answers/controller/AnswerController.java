@@ -15,7 +15,6 @@ import javax.validation.constraints.Min;
 @RestController
 @RequestMapping("/answers")
 @Validated
-@CrossOrigin(origins = "*")
 public class AnswerController {
     private final AnswerService answerService;
     private final AnswerMapper mapper;

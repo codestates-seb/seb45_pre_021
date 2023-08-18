@@ -17,10 +17,9 @@ import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 import java.util.List;
 
+@Validated
 @RestController
 @RequestMapping("/users")
-@CrossOrigin(origins = "*")
-@Validated
 public class UserController {
     private final UserMapper userMapper;
     private final QuestionsMapper questionsMapper;

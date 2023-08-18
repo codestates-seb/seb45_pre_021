@@ -17,19 +17,15 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
+import java.util.Arrays;
 
 @Configuration
 @RequiredArgsConstructor
@@ -96,24 +92,25 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() { // cors 설정
         CorsConfiguration configuration = new CorsConfiguration();
+        // configuration.addAllowedOrigin("http://localhost:3000");
+        configuration.setAllowedOrigins(
+                Arrays.asList("http://localhost:3000", "http://localhost:8080"));
+        configuration.addAllowedMethod("*");
+        configuration.addAllowedHeader("*");
+        configuration.addExposedHeader("Authorization");
+        configuration.addExposedHeader("Access-Control-Allow-Credentials");
+        configuration.addExposedHeader("Access-Control-Allow-Origin");
+        configuration.setAllowedMethods(Arrays.asList("POST","GET","PATCH","DELETE","OPTIONS"));
+        configuration.addExposedHeader("Authorization");
 
-        configuration.addAllowedOriginPattern("*"); // 모든 요청 허용
-        configuration.addAllowedMethod("*"); // 모든 메소드 허용
-        configuration.addAllowedHeader("*"); // 모든 헤더 허용
-        configuration.addExposedHeader("*"); // 모든 응답 헤더 허용
-        configuration.addExposedHeader("Authorization"); // Authorization 헤더 허용
-        configuration.addExposedHeader("Access-Control-Allow-Credentials"); // Access-Control-Allow-Credentials 헤더 허용
-
-//        configuration.addAllowedOriginPattern("http://localhost:3000");
-//        configuration.setAllowedMethods(Arrays.asList("POST","GET","PATCH","DELETE","OPTIONS"));
-//        configuration.addExposedHeader("Authorization");
-
-        configuration.setAllowCredentials(true); // 쿠키 허용
-
+        configuration.setAllowCredentials(true);
+        // setAllowCredentials 를 true 로 설정하면 Access-Control-Allow-Origin 의 값은 * 를 허용하지 않음
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource(); // cors 설정 적용
         source.registerCorsConfiguration("/**", configuration); // 모든 요청에 대해 위의 설정 적용
-
-        return source; // 설정 적용된 source 반환
+        // configuration.addAllowedOriginPattern("*");
+        // configuration.addAllowedOrigin("*");
+        // configuration.addExposedHeader("*");
+        return source;
     }
 
     public class CustomFilterConfigurer extends AbstractHttpConfigurer<CustomFilterConfigurer, HttpSecurity> {
@@ -129,6 +126,5 @@ public class SecurityConfig {
             builder.addFilter(jwtAuthenticationFilter)
                     .addFilterAfter(jwtVerificationFilter, JwtAuthenticationFilter.class);
         }
-
     }
 }

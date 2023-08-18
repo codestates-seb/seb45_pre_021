@@ -43,7 +43,7 @@ public class UserService {
     public User createUser(User user) {
         verifyExistsEmail(user.getEmail()); // 이메일 중복검사 메서드
         verifyExistsNickName(user.getNickName()); // 닉네임 중복검사 메서드
-        verifyExistsPhoneNum(user.getPhoneNum()); // 휴대폰번호 중복검사 메서드
+//        verifyExistsPhoneNum(user.getPhoneNum()); // 프론트 요청으로 사용자 휴대폰 번호 관련 기능 삭제함
         user.setPassword(passwordEncoder.encode(user.getPassword())); // 비밀번호 암호화
         List<String> roles = authorityUtils.createRoles(user.getEmail()); // 권한 생성
         user.setRoles(roles); // 권한 설정
@@ -140,16 +140,17 @@ public class UserService {
                         answer.setWriterNickName(nickName);
                         answerRepository.save(answer);});
                 });
-
-        // 현재 저장된 휴대폰번호와 같다면 중복검사 하지 않음
-        Optional.ofNullable(user.getPhoneNum())
-                .ifPresent(phoneNum -> {
-                    if (!findUser.getPhoneNum().equals(phoneNum)) {
-                        verifyExistsPhoneNum(phoneNum);
-                    }
-                    findUser.setPhoneNum(phoneNum);
-                });
-
+        /*
+        * 프론트 요청으로 사용자 휴대폰 번호 관련 기능 삭제
+        */
+//        // 현재 저장된 휴대폰번호와 같다면 중복검사 하지 않음
+//        Optional.ofNullable(user.getPhoneNum())
+//                .ifPresent(phoneNum -> {
+//                    if (!findUser.getPhoneNum().equals(phoneNum)) {
+//                        verifyExistsPhoneNum(phoneNum);
+//                    }
+//                    findUser.setPhoneNum(phoneNum);
+//                });
         return repository.save(findUser);
     }
 
@@ -204,21 +205,26 @@ public class UserService {
             throw new BusinessLogicException(ExceptionCode.USER_EXISTS_NICKNAME);
         });
     }
+        /*
+        * 프론트 요청으로 사용자 휴대폰 번호 관련 기능 삭제
+         */
+//    // 휴대폰번호 중복검사 메서드
+//    private void verifyExistsPhoneNum(String phoneNum) {
+//        Optional<User> OptionalUser =
+//                repository.findByPhoneNum(phoneNum);
+//
+//        OptionalUser.ifPresent(user -> {
+//            throw new BusinessLogicException(ExceptionCode.USER_EXISTS_PHONENUM);
+//        });
+//    }
 
-    // 휴대폰번호 중복검사 메서드
-    private void verifyExistsPhoneNum(String phoneNum) {
-        Optional<User> OptionalUser =
-                repository.findByPhoneNum(phoneNum);
-
-        OptionalUser.ifPresent(user -> {
-            throw new BusinessLogicException(ExceptionCode.USER_EXISTS_PHONENUM);
-        });
-    }
-
-    public void compareIdAndLoginId(Long id) { // id와 로그인한 유저의 id를 비교하는 메서드
-        if (!id.equals(getLoginUserId())) // id와 로그인한 유저의 id가 다르다면
-            throw new BusinessLogicException(ExceptionCode.NOT_RESOURCE_OWNER); // 예외처리
-    }
+      /*
+      * 미사용 메서드 주석처리(필요한 서비스 로직에서 직접 구현)
+      * */
+//    public void compareIdAndLoginId(Long id) { // id와 로그인한 유저의 id를 비교하는 메서드
+//        if (!id.equals(getLoginUserId())) // id와 로그인한 유저의 id가 다르다면
+//            throw new BusinessLogicException(ExceptionCode.NOT_RESOURCE_OWNER); // 예외처리
+//    }
 
     public Long getLoginUserId() { // 로그인한 유저의 id를 가져오는 메서드
         Long id = null;
