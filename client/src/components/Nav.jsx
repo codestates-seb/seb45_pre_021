@@ -1,11 +1,19 @@
+import { useState, useEffect } from 'react';
 import { styled } from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import logo from '../imgs/logo-stackoverflow.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
+import profile from '../imgs/profile/hoshino_ai.jpg';
 
 const Nav = () => {
   const navigate = useNavigate();
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    const token = localStorage.getItem('access_token');
+    setIsLoggedIn(!!token);
+  }, []);
 
   return (
     <NavigationSection>
@@ -28,12 +36,23 @@ const Nav = () => {
         <input type="text" placeholder="Search..." />
       </SearchSection>
       <UserSection>
-        <LoginSection onClick={() => navigate('/users/login')}>
-          Log in
-        </LoginSection>
-        <RegisterSection onClick={() => navigate('/users/register')}>
-          Sign up
-        </RegisterSection>
+        {isLoggedIn ? (
+          <UserSection>
+            <ProfileSection onClick={() => navigate('/users')}>
+              <img src={profile} alt="Profile" />
+            </ProfileSection>
+            <LogoutSection onClick={() => navigate('/')}>Log out</LogoutSection>
+          </UserSection>
+        ) : (
+          <UserSection>
+            <LoginSection onClick={() => navigate('/users/login')}>
+              Log in
+            </LoginSection>
+            <RegisterSection onClick={() => navigate('/users/register')}>
+              Sign up
+            </RegisterSection>
+          </UserSection>
+        )}
       </UserSection>
     </NavigationSection>
   );
@@ -161,7 +180,19 @@ const UserSection = styled.ol`
   }
 `;
 
+const ProfileSection = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 0.625rem;
+
+  img {
+    width: 1.875rem;
+  }
+`;
+
 const LoginSection = styled.li``;
+const LogoutSection = styled.li``;
 const RegisterSection = styled.li``;
 
 export default Nav;
