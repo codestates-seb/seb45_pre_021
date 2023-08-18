@@ -37,20 +37,19 @@ const Login = () => {
 
     if (Object.keys(newErrors).length === 0) {
       try {
-        const response = await axios.post('/login', {
-          email,
-          password,
-        });
+        const userInfo = { email, password };
+        const response = await axios.post(
+          `${process.env.REACT_APP_BASE_URL}login`,
+          userInfo,
+        );
+        console.log('Login successful');
 
-        if (response.status === 200) {
-          console.log('Login successful');
-          // 로그인 성공 시 필요한 동작 수행
-        } else {
-          console.error('Login failed');
-          // 로그인 실패 시 필요한 동작 수행
-        }
+        const accessToken = response.data.token;
+        localStorage.setItem('access_token', accessToken);
+
+        navigate('/questions');
       } catch (error) {
-        console.error('An error occurred:', error);
+        alert(`message: ${error.response.data.message}`);
       }
     }
   };
