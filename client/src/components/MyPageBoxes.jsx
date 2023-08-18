@@ -26,6 +26,102 @@ export const Badges = () => {
     </>
   );
 };
+export const FollowedPosts = () => {
+  return (
+    <>
+      <h3>Followed posts</h3>
+      <Box>
+        <p>
+          You are not <a href="/">following any posts.</a>
+        </p>
+      </Box>
+    </>
+  );
+};
+export const ActiveBounties = () => {
+  return (
+    <>
+      <h3>Active bounties (0)</h3>
+      <Box>
+        <p>
+          You have no active <a href="/">bounties</a>
+        </p>
+      </Box>
+    </>
+  );
+};
+export const Articles = () => {
+  return (
+    <>
+      <h3>Articles</h3>
+      <Box>
+        <p>
+          You have not created any <a href="/">articles</a>.
+        </p>
+      </Box>
+    </>
+  );
+};
+export const VotesCast = () => {
+  return (
+    <>
+      <h3>Votes cast</h3>
+      <Box>
+        <p>
+          You have not cast any <a href="/">votes</a>.
+        </p>
+      </Box>
+    </>
+  );
+};
+export const Answers = () => {
+  return (
+    <>
+      <h3>Answers</h3>
+      <ActivityBox>
+        <p>
+          You have not <a href="/">answered</a> any questions
+        </p>
+      </ActivityBox>
+    </>
+  );
+};
+export const Questions = () => {
+  return (
+    <>
+      <h3>Questions</h3>
+      <ActivityBox>
+        <p>
+          You have not <a href="/">asked</a> any questions
+        </p>
+      </ActivityBox>
+    </>
+  );
+};
+export const Tags = () => {
+  return (
+    <>
+      <h3>Tags</h3>
+      <ActivityBox>
+        <p>
+          You have not participated in any <a href="/">tags</a>
+        </p>
+      </ActivityBox>
+    </>
+  );
+};
+export const Reputation = () => {
+  return (
+    <>
+      <h3>Tags</h3>
+      <ActivityBox>
+        <p>
+          You have no recent <a href="/">reputation changes.</a>
+        </p>
+      </ActivityBox>
+    </>
+  );
+};
 
 export const Posts = () => {
   return (
@@ -70,6 +166,24 @@ const Box = styled.div`
   color: #6a737c;
   border-radius: 8px;
 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  a {
+    cursor: pointer;
+    color: #0074cc;
+  }
+`;
+
+const ActivityBox = styled.div`
+  height: 100px;
+  width: 30vw;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  background-color: #f8f9f9;
+  color: #6a737c;
+  border-radius: 8px;
+  margin: 8px 0;
   display: flex;
   align-items: center;
   justify-content: center;
