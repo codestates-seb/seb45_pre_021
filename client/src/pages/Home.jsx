@@ -1,7 +1,9 @@
 import { styled } from 'styled-components';
+import { useNavigate } from 'react-router-dom';
 // import profileImg from '../imgs/profile-img.jpeg';
 
 const Home = () => {
+  const nav = useNavigate();
   const stack = {
     react:
       'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/React-icon.svg/2300px-React-icon.svg.png',
@@ -27,7 +29,7 @@ const Home = () => {
 
   return (
     <MainLayout>
-      <TitleContainer>
+      <TitleContainer onClick={() => nav('/questions')}>
         <h1>Welcome to Stack Overflow</h1>
       </TitleContainer>
       <BodyLayout>
@@ -135,6 +137,7 @@ const TitleContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
 `;
 
 const BodyLayout = styled.div`
