@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
 import Sidebar from '../../components/Sidebar.jsx';
 import TitleSection from '../../components/detail/TitleSection.jsx';
@@ -9,6 +10,7 @@ import Button from '../../components/Button.jsx';
 import widgetImg1 from '../..//imgs/widget_pencil.png';
 import widgetImg2 from '../..//imgs/widget_speechbubble.png';
 import widgetImg3 from '../..//imgs/widget_sof.png';
+import axios from '../../utils/axios.js';
 
 const Detail = () => {
   const [question, setQuestion] = useState(null);
@@ -16,15 +18,43 @@ const Detail = () => {
   const [answers, setAnswers] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
+  const { id } = useParams();
+
+  const navigate = useNavigate();
+
   useEffect(() => {
+    // Mock data
     (async () => {
-      const res = await fetch('/data/questionDetail.json');
-      const data = await res.json();
-      setQuestion(data);
-      if (data.answers && data.answers.length > 0) {
-        setSelected(data.answers.find((answer) => answer.selected));
-        setAnswers(data.answers.filter((answer) => !answer.selected));
+      if (id === 'test') {
+        const res = await fetch('/data/questionDetail.json');
+        const data = await res.json();
+        setQuestion(data);
+        if (data.answers && data.answers.length > 0) {
+          setSelected(data.answers.find((answer) => answer.selected));
+          setAnswers(data.answers.filter((answer) => !answer.selected));
+        }
+        setIsLoading(false);
+        return;
       }
+      // Real data
+      try {
+        const res = await axios.get(`/questions/board/${id}`);
+        console.log(res);
+
+        if (res.data.status === 400) {
+          navigate('/404');
+        }
+
+        setQuestion(res.data);
+        if (res.data.answers && res.data.answers.length > 0) {
+          setSelected(res.data.answers.find((answer) => answer.selected));
+          setAnswers(res.data.answers.filter((answer) => !answer.selected));
+        }
+      } catch (err) {
+        console.log(err);
+        navigate('/404');
+      }
+
       setIsLoading(false);
     })();
   }, []);
