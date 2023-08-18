@@ -4,8 +4,9 @@ import icon from '../../imgs/google_icon.svg';
 import logo from '../../imgs/footer_logo.png';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import PropTypes from 'prop-types';
 
-const Login = () => {
+const Login = ({ handleLoginUpdate }) => {
   const navigate = useNavigate();
 
   const [email, setEmail] = useState('');
@@ -47,6 +48,7 @@ const Login = () => {
         const accessToken = response.data.token;
         localStorage.setItem('access_token', accessToken);
 
+        handleLoginUpdate();
         navigate('/questions');
       } catch (error) {
         alert(`message: ${error.response.data.message}`);
@@ -96,6 +98,10 @@ const Login = () => {
       </FormSection>
     </LoginSection>
   );
+};
+
+Login.propTypes = {
+  handleLoginUpdate: PropTypes.func.isRequired,
 };
 
 const LoginSection = styled.section`

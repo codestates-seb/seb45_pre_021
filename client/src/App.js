@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Home from './pages/Home.jsx';
 import MyPage from './pages/users/MyPage.jsx';
@@ -14,13 +15,32 @@ import Footer from './components/Footer.jsx';
 import './App.css';
 
 function App() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    const token = localStorage.getItem('access_token');
+    setIsLoggedIn(!!token);
+  }, []);
+
+  const handleLoginUpdate = () => {
+    setIsLoggedIn(true);
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('access_token');
+    setIsLoggedIn(false);
+  };
+
   return (
     <BrowserRouter>
-      <Nav />
+      <Nav isLoggedIn={isLoggedIn} handleLogout={handleLogout} />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/users" element={<MyPage />} />
-        <Route path="/users/login" element={<Login />} />
+        <Route
+          path="/users/login"
+          element={<Login handleLoginUpdate={handleLoginUpdate} />}
+        />
         <Route path="/users/register" element={<Register />} />
         <Route path="/questions" element={<Main />} />
         <Route path="/questions/post" element={<Post />} />

@@ -1,25 +1,13 @@
-import { useState, useEffect } from 'react';
 import { styled } from 'styled-components';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import logo from '../imgs/logo-stackoverflow.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import profile from '../imgs/profile/hoshino_ai.jpg';
+import PropTypes from 'prop-types';
 
-const Nav = () => {
+const Nav = ({ isLoggedIn, handleLogout }) => {
   const navigate = useNavigate();
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-  useEffect(() => {
-    const token = localStorage.getItem('access_token');
-    setIsLoggedIn(!!token);
-  }, []);
-
-  const handleLogout = () => {
-    localStorage.removeItem('access_token');
-    setIsLoggedIn(false);
-    navigate('/');
-  };
 
   return (
     <NavigationSection>
@@ -47,7 +35,9 @@ const Nav = () => {
             <ProfileSection onClick={() => navigate('/users')}>
               <img src={profile} alt="Profile" />
             </ProfileSection>
-            <LogoutSection onClick={handleLogout}>Log out</LogoutSection>
+            <LogoutSection as={Link} to="/" onClick={handleLogout}>
+              Log out
+            </LogoutSection>
           </UserSection>
         ) : (
           <UserSection>
@@ -62,6 +52,11 @@ const Nav = () => {
       </UserSection>
     </NavigationSection>
   );
+};
+
+Nav.propTypes = {
+  isLoggedIn: PropTypes.bool.isRequired,
+  handleLogout: PropTypes.func.isRequired,
 };
 
 const NavigationSection = styled.header`
@@ -177,6 +172,16 @@ const UserSection = styled.ol`
   }
 
   li {
+    border-radius: 5px;
+    padding: 8px 10px;
+    background-color: #0995ff;
+    &:hover {
+      background-color: #0074cc;
+    }
+  }
+
+  a {
+    color: white;
     border-radius: 5px;
     padding: 8px 10px;
     background-color: #0995ff;
