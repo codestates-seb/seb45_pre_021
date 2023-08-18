@@ -15,6 +15,12 @@ const Nav = () => {
     setIsLoggedIn(!!token);
   }, []);
 
+  const handleLogout = () => {
+    localStorage.removeItem('access_token');
+    setIsLoggedIn(false);
+    navigate('/');
+  };
+
   return (
     <NavigationSection>
       <LogoSection onClick={() => navigate('/')}>
@@ -41,7 +47,7 @@ const Nav = () => {
             <ProfileSection onClick={() => navigate('/users')}>
               <img src={profile} alt="Profile" />
             </ProfileSection>
-            <LogoutSection onClick={() => navigate('/')}>Log out</LogoutSection>
+            <LogoutSection onClick={handleLogout}>Log out</LogoutSection>
           </UserSection>
         ) : (
           <UserSection>
