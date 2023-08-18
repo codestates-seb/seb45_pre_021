@@ -71,7 +71,7 @@ public class SecurityConfig {
                     .antMatchers(HttpMethod.POST ,"/questions/post").hasRole("USER") // 질문 등록은 USER 권한 필요
                     .antMatchers(HttpMethod.PATCH,"/questions/edit/**").hasRole("USER") // 질문 수정은 USER 권한 필요
                     .antMatchers(HttpMethod.PATCH, "/questions/edit/**").hasRole("USER") // 질문 수정은 USER 권한 필요
-                    .antMatchers(HttpMethod.GET,"/questions/board/**").hasRole("USER") // 질문 상세 조회는 USER 권한 필요
+                    .antMatchers(HttpMethod.GET,"/questions/board/**").permitAll()// .hasRole("USER") // 질문 상세 조회는 누구나 가능
                     .antMatchers(HttpMethod.GET, "/questions/**").permitAll() // 질문 전체 조회, 검색은 누구나 가능
                     .antMatchers(HttpMethod.DELETE,"/questions/delete/**").hasRole("USER") // 질문 삭제는 USER 권한 필요
 
