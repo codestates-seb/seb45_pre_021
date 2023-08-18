@@ -160,7 +160,6 @@ const MyPageLayout = styled.div`
 `;
 
 const MyPageContainer = styled.div`
-  border: 1px solid red;
   width: 100%;
 `;
 
