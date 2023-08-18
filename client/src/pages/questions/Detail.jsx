@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import { styled } from 'styled-components';
 import Sidebar from '../../components/Sidebar.jsx';
 import TitleSection from '../../components/detail/TitleSection.jsx';
@@ -16,17 +17,24 @@ const Detail = () => {
   const [answers, setAnswers] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
+  const { id } = useParams();
+
   useEffect(() => {
-    (async () => {
-      const res = await fetch('/data/questionDetail.json');
-      const data = await res.json();
-      setQuestion(data);
-      if (data.answers && data.answers.length > 0) {
-        setSelected(data.answers.find((answer) => answer.selected));
-        setAnswers(data.answers.filter((answer) => !answer.selected));
-      }
-      setIsLoading(false);
-    })();
+    if (id === 'test') {
+      // test data
+      (async () => {
+        const res = await fetch('/data/questionDetail.json');
+        const data = await res.json();
+        setQuestion(data);
+        if (data.answers && data.answers.length > 0) {
+          setSelected(data.answers.find((answer) => answer.selected));
+          setAnswers(data.answers.filter((answer) => !answer.selected));
+        }
+        setIsLoading(false);
+      })();
+    }
+
+    (async () => {})();
   }, []);
   if (isLoading) return <div>Loading...</div>;
   return (
