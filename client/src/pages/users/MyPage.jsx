@@ -2,9 +2,35 @@ import { styled } from 'styled-components';
 import Sidebar from '../../components/Sidebar.jsx';
 import { useState } from 'react';
 import { ProfileBox } from '../../components/ProfileBox.jsx';
+import { ActivityBox } from '../../components/ActivityBox.jsx';
+import SavesBox from '../../components/SavesBox.jsx';
 
 const MyPage = () => {
   const [profile, setProfile] = useState(true);
+  const [activity, setActivity] = useState(true);
+  const [saves, setSaves] = useState(true);
+  const [setting, setSetting] = useState(true);
+
+  const handleActivity = () => {
+    setProfile(false);
+    setActivity(true);
+  };
+
+  const handleProfile = () => {
+    setProfile(true);
+    setActivity(false);
+  };
+  const handleSaves = () => {
+    setProfile(false);
+    setActivity(false);
+    setSaves(true);
+  };
+  const handleSetting = () => {
+    setProfile(false);
+    setActivity(false);
+    setSaves(false);
+    setSetting(true);
+  };
 
   return (
     <MyPageLayout>
@@ -108,19 +134,16 @@ const MyPage = () => {
         </PageHeader>
         <ProfileTabs>
           <div className="tab--container">
-            <button
-              onClick={() => {
-                setProfile(!profile);
-              }}
-            >
-              Profile
-            </button>
-            <button>Activity</button>
-            <button>Saves</button>
-            <button>Settings</button>
+            <button onClick={handleProfile}>Profile</button>
+            <button onClick={handleActivity}>Activity</button>
+            <button onClick={handleSaves}>Saves</button>
+            <button onClick={handleSetting}>Settings</button>
           </div>
         </ProfileTabs>
-        {profile && <ProfileBox />}
+        {(profile && <ProfileBox />) ||
+          (activity && <ActivityBox />) ||
+          (saves && <SavesBox />) ||
+          (setting && <ActivityBox />)}
       </MyPageContainer>
     </MyPageLayout>
   );
@@ -236,81 +259,11 @@ const ProfileTabs = styled.div`
     height: 30px;
     border-radius: 12px;
     font-size: 15px;
-    background-color: transparent;
+    background-color: #f48225;
+    color: #fff;
 
     &:hover {
       cursor: pointer;
     }
   }
 `;
-
-// const ProfileContainer = styled.div`
-//   margin-left: 20px;
-//   margin-top: 10px;
-//   padding: 10px;
-//   width: 1075px;
-//   display: flex;
-//   justify-content: space-between;
-// `;
-
-// const ProfileLeft = styled.div`
-//   height: 300px;
-//   /* width: 240px; */
-//   margin-right: 20px;
-//   .stats--title {
-//     width: 100%;
-//     padding: 10px 0;
-//     font-size: 24px;
-//     font-weight: 400;
-//   }
-
-//   .community {
-//     margin-top: 20px;
-//   }
-// `;
-
-// const StatsBox = styled.div`
-//   border: 1px solid rgba(0, 0, 0, 0.2);
-//   width: 180px;
-//   height: 140px;
-
-//   display: flex;
-//   flex-wrap: wrap;
-//   border-radius: 4px;
-
-//   /* justify-content: center; */
-
-//   .stats--box {
-//     width: 50%;
-//     height: 50%;
-//     display: flex;
-//     align-items: center;
-//     flex-direction: column;
-//     justify-content: center;
-//   }
-// `;
-
-// const CommunityBox = styled.div`
-//   border: 1px solid rgba(0, 0, 0, 0.2);
-
-//   width: 180px;
-//   height: 55px;
-//   border-radius: 4px;
-
-//   display: flex;
-//   align-items: center;
-//   justify-content: center;
-
-//   color: #0074cc;
-
-//   &:hover {
-//     cursor: pointer;
-//   }
-// `;
-
-// const BoxLayout = styled.div`
-//   height: 800px;
-//   display: flex;
-//   flex-direction: column;
-//   justify-content: space-around;
-// `;
