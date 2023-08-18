@@ -43,6 +43,10 @@ const Login = () => {
           userInfo,
         );
         console.log('Login successful');
+
+        const accessToken = response.data.token;
+        localStorage.setItem('access_token', accessToken);
+
         navigate('/questions');
       } catch (error) {
         alert(`message: ${error.response.data.message}`);
