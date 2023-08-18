@@ -5,6 +5,7 @@ import ReCAPTCHA from 'react-google-recaptcha';
 import { useState } from 'react';
 import SignupDropdown from '../../components/SignupDropdown.jsx';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const Register = () => {
   const [isShow, setIsShow] = useState(false);
@@ -12,6 +13,7 @@ const Register = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState({});
+  const nav = useNavigate();
 
   const handleCaptchaChange = (value) => {
     console.log('Captcha value:', value);
@@ -53,21 +55,15 @@ const Register = () => {
 
     if (Object.keys(newErrors).length === 0) {
       try {
-        const response = await axios.post('/users/signup', {
-          nickName,
-          email,
-          password,
-        });
-
-        if (response.status === 201) {
-          console.log('Sign up successful');
-          // 회원가입 성공 시 필요한 동작 수행
-        } else {
-          console.error('Sign up failed');
-          // 회원가입 실패 시 필요한 동작 수행
-        }
+        const userInfo = { nickName, email, password };
+        const response = await axios.post(
+          `${process.env.REACT_APP_BASE_URL}users/signup`,
+          userInfo,
+        );
+        console.log(response);
+        nav('/login');
       } catch (error) {
-        console.error('An error occurred:', error);
+        alert(`message: ${error.response.data.message}`);
       }
     }
   };
