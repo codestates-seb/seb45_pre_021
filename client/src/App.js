@@ -18,9 +18,7 @@ import './App.css';
 export const LoginContext = createContext();
 
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(
-    localStorage.getItem('accessToken'),
-  );
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   return (
     <LoginContext.Provider value={[isLoggedIn, setIsLoggedIn]}>
