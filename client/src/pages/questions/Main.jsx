@@ -1,6 +1,7 @@
 import { styled } from 'styled-components';
 import RightSidebar from '../../components/RightSidebar.jsx';
 import { useState } from 'react';
+import Sidebar from '../../components/Sidebar.jsx';
 
 const Main = () => {
   const [post, setPost] = useState([
@@ -77,7 +78,7 @@ const Main = () => {
 
   return (
     <QuestionPage>
-      {/* <RightSidebar /> */}
+      <Sidebar />
       <QuestionContainer>
         <Header>
           <p>All Questions</p>
@@ -130,18 +131,14 @@ export default Main;
 
 const QuestionPage = styled.section`
   display: flex;
-  /* align-items: center; */
   justify-content: center;
-  /* width: 90%; */
-  /* width: 100vw; */
-  padding: 16px;
-  max-width: 1264;
+  width: 1264px;
   margin: 0 auto;
   margin-top: 56px;
 `;
 
 const QuestionContainer = styled.article`
-  width: 55vw;
+  width: 1100px;
 `;
 
 const Header = styled.div`
