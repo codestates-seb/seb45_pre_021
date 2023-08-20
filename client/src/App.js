@@ -1,5 +1,5 @@
 // import { useState, useEffect, createContext } from 'react';
-import { useState, createContext } from 'react';
+import { useState, createContext, useEffect } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Home from './pages/Home.jsx';
 import MyPage from './pages/users/MyPage.jsx';
@@ -20,19 +20,22 @@ export const LoginContext = createContext();
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
+  useEffect(() => {
+    const token = localStorage.getItem('access_token');
+    if (token) {
+      setIsLoggedIn(true);
+    }
+  }, []);
+
   return (
     <LoginContext.Provider value={[isLoggedIn, setIsLoggedIn]}>
       <BrowserRouter>
-        <Nav isLoggedIn={isLoggedIn} />
+        <Nav />
         {/* <Nav isLoggedIn={isLoggedIn} handleLogout={handleLogout} /> */}
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/users" element={<MyPage />} />
-          <Route
-            path="/users/login"
-            // element={<Login handleLoginUpdate={handleLoginUpdate} />}
-            element={<Login />}
-          />
+          <Route path="/users/login" element={<Login />} />
           <Route path="/users/register" element={<Register />} />
           <Route path="/questions" element={<Main />} />
           <Route path="/questions/post" element={<Post />} />
