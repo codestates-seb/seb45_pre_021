@@ -43,6 +43,7 @@ public class UserService {
     public User createUser(User user) {
         verifyExistsEmail(user.getEmail()); // 이메일 중복검사 메서드
         verifyExistsNickName(user.getNickName()); // 닉네임 중복검사 메서드
+        user.setImageId(randomImageId()); // 랜덤 이미지 id 생성
 //        verifyExistsPhoneNum(user.getPhoneNum()); // 프론트 요청으로 사용자 휴대폰 번호 관련 기능 삭제함
         user.setPassword(passwordEncoder.encode(user.getPassword())); // 비밀번호 암호화
         List<String> roles = authorityUtils.createRoles(user.getEmail()); // 권한 생성
@@ -140,6 +141,13 @@ public class UserService {
                         answer.setWriterNickName(nickName);
                         answerRepository.save(answer);});
                 });
+        // 현재 저장된 이미지 id와 같다면 중복검사 하지 않음
+        Optional.ofNullable(user.getImageId())
+                .ifPresent(imageId -> {
+                    if(!(findUser.getImageId() == imageId)) {
+                        findUser.setImageId(imageId);
+                    }
+                });
         /*
         * 프론트 요청으로 사용자 휴대폰 번호 관련 기능 삭제
         */
@@ -204,6 +212,12 @@ public class UserService {
         OptionalUser.ifPresent(user -> {
             throw new BusinessLogicException(ExceptionCode.USER_EXISTS_NICKNAME);
         });
+    }
+
+    // 랜덤 이미지 id 생성 메서드(1 ~ 6)
+    public int randomImageId() {
+        int imageId = (int) (Math.random() * 6) + 1;
+        return imageId;
     }
         /*
         * 프론트 요청으로 사용자 휴대폰 번호 관련 기능 삭제

@@ -21,6 +21,7 @@ public class UserMapper {
         User user = new User();
         user.setUserId(requestBody.getId());
         user.setNickName(requestBody.getNickName());
+        user.setImageId(requestBody.getImageId());
         // user.setPhoneNum(requestBody.getPhoneNum()); // 프론트 요청으로 휴대폰 번호 필드 제거
         return user;
     }
@@ -39,6 +40,7 @@ public class UserMapper {
                 .id(user.getUserId())
                 .email(user.getEmail())
                 .nickName(user.getNickName())
+                .imageId(user.getImageId())
                 // .phoneNum(user.getPhoneNum()) // 프론트 요청으로 휴대폰 번호 필드 제거
                 .allCount(user.getAllCount())
                 .progressCount(user.getProgressCount())

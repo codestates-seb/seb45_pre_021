@@ -42,6 +42,7 @@ public class UserDto { // User DTO
                 message = "닉네임은 한글, 영문자만 허용되며 2글자 이상 6글자 이하로 구성되어야 하며 공백은 허용하지 않습니다.")
         private String nickName;
 
+        private int imageId;
         /*
         프론트 요청으로 휴대폰 번호 필드 제거
          */
@@ -75,6 +76,7 @@ public class UserDto { // User DTO
         private String email;
         private String nickName;
         // private String phoneNum; // 프론트 요청으로 휴대폰 번호 필드 제거
+        private int imageId;
         private int allCount;
         private int progressCount;
         private int completeCount;

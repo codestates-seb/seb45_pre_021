@@ -27,6 +27,9 @@ public class User extends UserDateEntity {
     @Column(unique = true)
     private String nickName;
 
+    @Column
+    private int imageId;
+
     /*
     프론트 요청으로 휴대폰 번호 필드 제거
      */
