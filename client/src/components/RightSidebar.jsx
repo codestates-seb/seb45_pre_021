@@ -1,32 +1,67 @@
 import { styled } from 'styled-components';
+import widgetImg1 from '../imgs/widget_pencil.png';
+import widgetImg2 from '../imgs/widget_speechbubble.png';
+import widgetImg3 from '../imgs/widget_sof.png';
 
 const RightSidebar = () => {
   return (
     <RightSide>
-      <OverflowContainer>
-        <h3>The Overflow Blog</h3>
-        <QuickLinkBox>
-          <p>Why everyone should be an AppSec specialist (Ep. 598)</p>
-          <p>Want better answers from your data? Ask better questions</p>
-        </QuickLinkBox>
-        <h3>Featured on Meta</h3>
-        <QuickLinkBox>
-          <p>Moderation strike: results of negotations</p>
-          <p>
-            Our Design Vision for Stack Overflow and the Stack Exchange network
-          </p>
-          <p>Temporary policy: Generative AI (e.g., ChatGPT) is banned</p>
-          <p>Preview of Search and Question-Asking Powered by GenAI</p>
-          <p>Collections: A New Feature for Collectives on Stack Overflow</p>
-        </QuickLinkBox>
-        <h3>Hot Meta Posts</h3>
-        <QuickLinkBox>
-          <p>
-            What is the edit policy today for questions about obsolete
-            functionality?
-          </p>
-        </QuickLinkBox>
-      </OverflowContainer>
+      <Widget>
+        <div className="title-box">The Overflow Blog</div>
+        <ul className="list-box">
+          <li>
+            <img src={widgetImg1} alt="icon" />
+            <span>
+              Want better answers from your data? Ask better questions
+            </span>
+          </li>
+          <li>
+            <img src={widgetImg1} alt="icon" />
+            <span>
+              Making event-driven development predictable with Discover
+              <br />
+              <i>sponsored post</i>
+            </span>
+          </li>
+        </ul>
+        <div className="title-box">Featured on Meta</div>
+        <ul className="list-box">
+          <li>
+            <img src={widgetImg2} alt="icon" />
+            <span>Moderation strike: Results of negotiations </span>
+          </li>
+          <li>
+            <img src={widgetImg2} alt="icon" />
+            <span>
+              Our Design Vision for Stack Overflow and the Stack Exchange
+              network
+            </span>
+          </li>
+          <li>
+            <img src={widgetImg3} alt="icon" />
+            <span>
+              Temporary policy: Generative AI (e.g., ChatGPT) is banned
+            </span>
+          </li>
+          <li>
+            <img src={widgetImg3} alt="icon" />
+            <span>
+              Collections: A New Feature for Collectives on Stack Overflow
+            </span>
+          </li>
+          <li>
+            <img src={widgetImg3} alt="icon" />
+            <span>Preview of Search and Question-Asking Powered by GenAI</span>
+          </li>
+          <li>
+            <img src={widgetImg3} alt="icon" />
+            <span>
+              Call for volunteer reviewers for an updated search experience:
+              OverflowAI Search
+            </span>
+          </li>
+        </ul>
+      </Widget>
       <TabBox>
         <button>Custom Filters</button>
         <FilterInfo>
@@ -57,38 +92,38 @@ const RightSide = styled.section`
   flex-direction: column;
 `;
 
-const OverflowContainer = styled.article`
+const Widget = styled.div`
+  width: 300px;
+  height: fit-content;
   display: flex;
   flex-direction: column;
-
-  width: 300px;
-  height: 530px;
-  margin-top: 56px;
-  background-color: #fdf7e2;
-
-  h3 {
-    /* background-color: #fff; */
-    background-color: #fbf3b5;
-    height: 40px;
-    font-size: 14px;
-    color: #525960;
-
-    display: flex;
-    align-items: center;
-    padding: 10px;
-    /* color: 1px solid rgba(0, 0, 0, 0.8); */
+  border: 1px solid #f1e5bc;
+  border-radius: 5px;
+  .title-box {
+    font-size: 0.8rem;
+    font-weight: 600;
+    background-color: #fbf3d5;
+    padding: 12px 15px;
+    border-top: 1px solid #f1e5bc;
+    border-bottom: 1px solid #f1e5bc;
   }
-`;
-
-const QuickLinkBox = styled.div`
-  padding: 14px;
-
-  p {
-    font-size: 14px;
-    margin-bottom: 10px;
-
-    &:hover {
-      cursor: pointer;
+  .list-box {
+    background-color: #fdf7e2;
+    padding: 4px 15px;
+    li {
+      list-style: none;
+      margin: 12px 0;
+      font-size: 0.8rem;
+      display: flex;
+      flex-direction: row;
+      gap: 0.3rem;
+      img {
+        width: 19px;
+        height: 19px;
+      }
+      i {
+        color: #6a737c;
+      }
     }
   }
 `;

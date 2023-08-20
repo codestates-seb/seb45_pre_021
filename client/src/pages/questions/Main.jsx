@@ -4,71 +4,7 @@ import { useState } from 'react';
 import Sidebar from '../../components/Sidebar.jsx';
 
 const Main = () => {
-  const [post, setPost] = useState([
-    {
-      id: 1,
-      title: 'How to use pam authentication in go program',
-      desc: "I want to use go to implement a library for my other programs to authenticate and log in. I've learned how go exports and calls .so libraries. But this method is more cumbersome. Does go pro...",
-      tags: 'react',
-      name: 'Garrett Graham',
-      time: '2 min ago',
-      answered: true,
-    },
-    {
-      id: 2,
-      title: 'MassTransit.PayloadNotFoundException',
-      desc: "This is my first Node.js project, so I'm still new to utilizing async/await operations. My server.js file: if (process.env.NODE_ENV !== 'production') { require('dotenv').config() } const { ...",
-      tags: 'react',
-      name: 'Min Graham',
-      time: '2 min ago',
-      answered: false,
-    },
-    {
-      id: 3,
-      title: "Node.js exported await function doesn't return value",
-      desc: 'when i try to consume a message, i get this error in rabbitmq management: MT-Fault-ExceptionType: MassTransit.PayloadNotFoundException MT-Fault-Message: The payload was not',
-      tags: 'react',
-      name: 'Garrett Graham',
-      time: '2 min ago',
-      answered: false,
-    },
-    {
-      id: 4,
-      title: 'HOW TO: convert decimals to integers in numpy',
-      desc: "I want to use go to implement a library for my other programs to authenticate and log in. I've learned how go exports and calls .so libraries. But this method is more cumbersome. Does go pro",
-      tags: 'react',
-      name: 'Garrett ',
-      time: '2 min ago',
-      answered: true,
-    },
-    {
-      id: 5,
-      title: 'How to use pam authentication in go program',
-      desc: "I want to use go to implement a library for my other programs to authenticate and log in. I've learned how go exports and calls .so libraries. But this method is more cumbersome. Does go pro",
-      tags: 'react',
-      name: 'Garrett lee',
-      time: '2 min ago',
-      answered: true,
-    },
-    {
-      id: 6,
-      title: 'How to use pam authentication in go program',
-      desc: "I want to use go to implement a library for my other programs to authenticate and log in. I've learned how go exports and calls .so libraries. But this method is more cumbersome. Does go pro",
-      tags: 'react',
-      name: 'Garrett lee',
-      time: '2 min ago',
-      answered: false,
-    },
-    {
-      id: 7,
-      title: 'How to use pam authentication in go program',
-      desc: "I want to use go to implement a library for my other programs to authenticate and log in. I've learned how go exports and calls .so libraries. But this method is more cumbersome. Does go pro",
-      tags: 'react',
-      name: 'Garrett lee',
-      time: '2 min ago',
-      answered: false,
-    },
-  ]);
+  const [post, setPost] = useState([]);
   const [filter, setFilter] = useState('all');
 
   const handleNull = () => {
