@@ -1,12 +1,15 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { styled } from 'styled-components';
 import icon from '../../imgs/google_icon.svg';
 import logo from '../../imgs/footer_logo.png';
+import { LoginContext } from '../../App';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import PropTypes from 'prop-types';
 
-const Login = ({ handleLoginUpdate }) => {
+const Login = () => {
+  const setIsLoggedIn = useContext(LoginContext);
+
   const navigate = useNavigate();
 
   const [email, setEmail] = useState('');
@@ -48,7 +51,7 @@ const Login = ({ handleLoginUpdate }) => {
         const accessToken = response.data.token;
         localStorage.setItem('access_token', accessToken);
 
-        handleLoginUpdate();
+        setIsLoggedIn(true);
         navigate('/questions');
       } catch (error) {
         alert(`message: ${error.response.data.message}`);
