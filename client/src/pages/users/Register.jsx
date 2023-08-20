@@ -2,10 +2,12 @@ import { styled } from 'styled-components';
 import icon from '../../imgs/google_icon.svg';
 import { Icon } from '@iconify/react';
 import ReCAPTCHA from 'react-google-recaptcha';
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import SignupDropdown from '../../components/SignupDropdown.jsx';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+
+import { LoginContext } from '../../App';
 
 const Register = () => {
   const [isShow, setIsShow] = useState(false);
@@ -13,7 +15,13 @@ const Register = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState({});
+  const isLoggedIn = useContext(LoginContext);
+
   const nav = useNavigate();
+
+  if (isLoggedIn) {
+    nav('/questions');
+  }
 
   const handleCaptchaChange = (value) => {
     console.log('Captcha value:', value);
