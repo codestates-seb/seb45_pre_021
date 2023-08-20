@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react';
+// import { useState, useEffect, createContext } from 'react';
+import { useState, createContext } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Home from './pages/Home.jsx';
 import MyPage from './pages/users/MyPage.jsx';
@@ -14,42 +15,36 @@ import Footer from './components/Footer.jsx';
 
 import './App.css';
 
+export const LoginContext = createContext();
+
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-  useEffect(() => {
-    const token = localStorage.getItem('access_token');
-    setIsLoggedIn(!!token);
-  }, []);
-
-  const handleLoginUpdate = () => {
-    setIsLoggedIn(true);
-  };
-
-  const handleLogout = () => {
-    localStorage.removeItem('access_token');
-    setIsLoggedIn(false);
-  };
+  const [isLoggedIn, setIsLoggedIn] = useState(
+    localStorage.getItem('accessToken'),
+  );
 
   return (
-    <BrowserRouter>
-      <Nav isLoggedIn={isLoggedIn} handleLogout={handleLogout} />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/users" element={<MyPage />} />
-        <Route
-          path="/users/login"
-          element={<Login handleLoginUpdate={handleLoginUpdate} />}
-        />
-        <Route path="/users/register" element={<Register />} />
-        <Route path="/questions" element={<Main />} />
-        <Route path="/questions/post" element={<Post />} />
-        <Route path="/questions/edit/:id" element={<Edit />} />
-        <Route path="/questions/detail/:id" element={<Detail />} />
-        <Route path="*" element={<NotFound />} />
-      </Routes>
-      <Footer />
-    </BrowserRouter>
+    <LoginContext.Provider value={[isLoggedIn, setIsLoggedIn]}>
+      <BrowserRouter>
+        <Nav isLoggedIn={isLoggedIn} />
+        {/* <Nav isLoggedIn={isLoggedIn} handleLogout={handleLogout} /> */}
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/users" element={<MyPage />} />
+          <Route
+            path="/users/login"
+            // element={<Login handleLoginUpdate={handleLoginUpdate} />}
+            element={<Login />}
+          />
+          <Route path="/users/register" element={<Register />} />
+          <Route path="/questions" element={<Main />} />
+          <Route path="/questions/post" element={<Post />} />
+          <Route path="/questions/edit/:id" element={<Edit />} />
+          <Route path="/questions/detail/:id" element={<Detail />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+        <Footer />
+      </BrowserRouter>
+    </LoginContext.Provider>
   );
 }
 
