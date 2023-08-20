@@ -12,6 +12,11 @@ const Nav = () => {
   const navigate = useNavigate();
   const [isLoggedIn, setIsLoggedIn] = useContext(LoginContext);
 
+  const handleLogout = () => {
+    localStorage.removeItem('accessToken');
+    setIsLoggedIn(false);
+  };
+
   return (
     <NavigationSection>
       <LogoSection onClick={() => navigate('/')}>
@@ -39,11 +44,7 @@ const Nav = () => {
               <img src={profile} alt="Profile" />
             </ProfileSection>
             {/* <LogoutSection as={Link} to="/" onClick={handleLogout}> */}
-            <LogoutSection
-              as={Link}
-              to="/"
-              onClick={() => setIsLoggedIn(false)}
-            >
+            <LogoutSection as={Link} to="/" onClick={handleLogout}>
               Log out
             </LogoutSection>
           </UserSection>
