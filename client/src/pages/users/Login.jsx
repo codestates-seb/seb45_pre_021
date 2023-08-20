@@ -8,13 +8,15 @@ import axios from 'axios';
 import PropTypes from 'prop-types';
 
 const Login = () => {
-  const setIsLoggedIn = useContext(LoginContext);
-
-  const navigate = useNavigate();
-
+  const [isLoggedIn, setIsLoggedIn] = useContext(LoginContext);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState({});
+  const navigate = useNavigate();
+
+  if (isLoggedIn) {
+    navigate('/questions');
+  }
 
   const emailRegex = /^[a-zA-Z0-9+-_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
   const passwordRegex =
@@ -47,10 +49,8 @@ const Login = () => {
           userInfo,
         );
         console.log('Login successful');
-
         const accessToken = response.data.token;
         localStorage.setItem('access_token', accessToken);
-
         setIsLoggedIn(true);
         navigate('/questions');
       } catch (error) {
