@@ -1,4 +1,3 @@
-// import { useState, useEffect, createContext } from 'react';
 import { useState, createContext, useEffect } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Home from './pages/Home.jsx';
@@ -12,6 +11,7 @@ import Detail from './pages/questions/Detail.jsx';
 import NotFound from './pages/NotFound.jsx';
 import Nav from './components/Nav.jsx';
 import Footer from './components/Footer.jsx';
+import axios from 'axios';
 
 import './App.css';
 
@@ -19,16 +19,36 @@ export const LoginContext = createContext();
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userData, setUserData] = useState(null);
 
   useEffect(() => {
-    const token = localStorage.getItem('access_token');
-    if (token) {
-      setIsLoggedIn(true);
-    }
+    const fetchUserData = async () => {
+      try {
+        const token = localStorage.getItem('access_token');
+        if (token) {
+          setIsLoggedIn(true);
+          const response = await axios.get(
+            `${process.env.REACT_APP_BASE_URL}users/mypage`,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            },
+          );
+          setUserData(response.data);
+        }
+      } catch {
+        console.error();
+      }
+    };
+
+    fetchUserData();
   }, []);
 
   return (
-    <LoginContext.Provider value={[isLoggedIn, setIsLoggedIn]}>
+    <LoginContext.Provider
+      value={[isLoggedIn, setIsLoggedIn, userData, setUserData]}
+    >
       <BrowserRouter>
         <Nav />
         {/* <Nav isLoggedIn={isLoggedIn} handleLogout={handleLogout} /> */}

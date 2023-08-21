@@ -10,12 +10,14 @@ import { LoginContext } from '../App';
 
 const Nav = () => {
   const navigate = useNavigate();
-  const [isLoggedIn, setIsLoggedIn] = useContext(LoginContext);
+  const [setIsLoggedIn] = useContext(LoginContext);
 
   const handleLogout = () => {
-    localStorage.removeItem('accessToken');
+    localStorage.removeItem('access_token');
     setIsLoggedIn(false);
   };
+
+  const token = localStorage.getItem('access_token');
 
   return (
     <NavigationSection>
@@ -38,7 +40,7 @@ const Nav = () => {
         <input type="text" placeholder="Search..." />
       </SearchSection>
       <UserSection>
-        {isLoggedIn ? (
+        {token ? (
           <UserSection>
             <ProfileSection onClick={() => navigate('/users')}>
               <img src={profile} alt="Profile" />
