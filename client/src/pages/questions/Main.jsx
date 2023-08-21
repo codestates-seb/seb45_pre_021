@@ -1,128 +1,135 @@
 import { styled } from 'styled-components';
 import RightSidebar from '../../components/RightSidebar.jsx';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import Sidebar from '../../components/Sidebar.jsx';
+import axios from '../../utils/axios.js';
+import { format } from 'timeago.js';
+import { Link } from 'react-router-dom';
 
 const Main = () => {
-  const [post, setPost] = useState([
-    {
-      id: 1,
-      title: 'How to use pam authentication in go program',
-      desc: "I want to use go to implement a library for my other programs to authenticate and log in. I've learned how go exports and calls .so libraries. But this method is more cumbersome. Does go pro...",
-      tags: 'react',
-      name: 'Garrett Graham',
-      time: '2 min ago',
-      answered: true,
-    },
-    {
-      id: 2,
-      title: 'MassTransit.PayloadNotFoundException',
-      desc: "This is my first Node.js project, so I'm still new to utilizing async/await operations. My server.js file: if (process.env.NODE_ENV !== 'production') { require('dotenv').config() } const { ...",
-      tags: 'react',
-      name: 'Min Graham',
-      time: '2 min ago',
-      answered: false,
-    },
-    {
-      id: 3,
-      title: "Node.js exported await function doesn't return value",
-      desc: 'when i try to consume a message, i get this error in rabbitmq management: MT-Fault-ExceptionType: MassTransit.PayloadNotFoundException MT-Fault-Message: The payload was not',
-      tags: 'react',
-      name: 'Garrett Graham',
-      time: '2 min ago',
-      answered: false,
-    },
-    {
-      id: 4,
-      title: 'HOW TO: convert decimals to integers in numpy',
-      desc: "I want to use go to implement a library for my other programs to authenticate and log in. I've learned how go exports and calls .so libraries. But this method is more cumbersome. Does go pro",
-      tags: 'react',
-      name: 'Garrett ',
-      time: '2 min ago',
-      answered: true,
-    },
-    {
-      id: 5,
-      title: 'How to use pam authentication in go program',
-      desc: "I want to use go to implement a library for my other programs to authenticate and log in. I've learned how go exports and calls .so libraries. But this method is more cumbersome. Does go pro",
-      tags: 'react',
-      name: 'Garrett lee',
-      time: '2 min ago',
-      answered: true,
-    },
-    {
-      id: 6,
-      title: 'How to use pam authentication in go program',
-      desc: "I want to use go to implement a library for my other programs to authenticate and log in. I've learned how go exports and calls .so libraries. But this method is more cumbersome. Does go pro",
-      tags: 'react',
-      name: 'Garrett lee',
-      time: '2 min ago',
-      answered: false,
-    },
-    {
-      id: 7,
-      title: 'How to use pam authentication in go program',
-      desc: "I want to use go to implement a library for my other programs to authenticate and log in. I've learned how go exports and calls .so libraries. But this method is more cumbersome. Does go pro",
-      tags: 'react',
-      name: 'Garrett lee',
-      time: '2 min ago',
-      answered: false,
-    },
-  ]);
-  const [filter, setFilter] = useState('all');
+  const [page, setPage] = useState(1);
+  const [post, setPost] = useState([]);
+  const [totalPosts, setTotalPosts] = useState(0);
+  const [hasMore, setHasMore] = useState(false);
+  const [filter, setFilter] = useState(0);
+  const apiURL = [
+    'questions?size=10&page=',
+    'questions/progress?size=10&page=',
+    'questions/complete?size=10&page=',
+  ];
 
-  const handleNull = () => {
-    setPost(null);
+  const getData = async () => {
+    const res = await axios.get(apiURL[filter] + page);
+    const data = await res.data;
+    setHasMore(data.pageInfo.page < data.pageInfo.totalPages);
+    setTotalPosts(data.pageInfo.totalElements);
+    console.log(data);
+    return data;
   };
-  console.log(handleNull);
+
+  useEffect(() => {
+    // console.log(hasMore);
+    if (!hasMore) return;
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        setPage((prev) => prev + 1);
+      });
+    });
+    observer.observe(document.querySelector('footer'));
+    return () => {
+      observer.disconnect();
+    };
+  }, [hasMore]);
+
+  useEffect(() => {
+    if (page === 1) return;
+    (async () => {
+      try {
+        const data = await getData();
+        setPost((prev) => [...prev, ...data.data]);
+      } catch (err) {
+        console.log(err);
+      }
+    })();
+  }, [page]);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const data = await getData();
+        setPost(data.data);
+      } catch (err) {
+        console.log(err);
+      }
+    })();
+  }, [filter]);
 
   return (
     <QuestionPage>
-      {/* <RightSidebar /> */}
-      <QuestionContainer>
-        <Header>
-          <p>All Questions</p>
-          <Button>Ask Question</Button>
-        </Header>
-        <SubHeader>
-          <p>{post.length} Questions</p>
-          <Buttons>
-            <button onClick={() => setFilter('answered')}>Answered</button>
-            <button onClick={() => setFilter('unanswered')}>Unanswered</button>
-            <button onClick={() => setFilter('all')}>View All</button>
-          </Buttons>
-        </SubHeader>
-        <div>
-          {post
-            .filter((question) => {
-              if (filter === 'answered') {
-                return question.answered;
-              }
-              if (filter === 'unanswered') {
-                return !question.answered;
-              }
-              return true; // For 'all' filter, show all questions
-            })
-            .map((question) => {
+      <Sidebar />
+      <ContentContainer>
+        <QuestionContainer>
+          <Header>
+            <p>All Questions</p>
+            <Link to="/questions/post">
+              <Button>Ask Question</Button>
+            </Link>
+          </Header>
+          <SubHeader>
+            <p>{totalPosts} Questions</p>
+            <Buttons>
+              {['View All', 'Unanswered', 'Answered'].map((content, i) => {
+                return (
+                  <button
+                    key={i}
+                    className={filter === i ? 'disabled' : ''}
+                    onClick={() => {
+                      setFilter(i);
+                      setPage(1);
+                    }}
+                  >
+                    {content}
+                  </button>
+                );
+              })}
+            </Buttons>
+          </SubHeader>
+          <div>
+            {post.map((question) => {
+              const {
+                questionId,
+                title,
+                // status,
+                writerNickName,
+                answerCount,
+                createdAt,
+              } = question;
               return (
-                <QuestionBox key={question.id}>
+                <QuestionBox key={questionId}>
                   <QuestionStats>
-                    <span>0 vote</span>
-                    <span>0 answers</span>
-                    <span>0 views</span>
+                    <span>
+                      {answerCount === 1
+                        ? '1 answer'
+                        : `${answerCount} answers`}
+                    </span>
                   </QuestionStats>
                   <QuestionInfo>
-                    <h2>{question.title}</h2>
-                    <p>{question.desc}</p>
-                    <UserInfo>
-                      <span>{question.name}</span>
-                    </UserInfo>
+                    <Link to={`/questions/detail/${questionId}`}>
+                      <h2>{title}</h2>
+                    </Link>
+                    <p>
+                      <span>{writerNickName}</span> asked{' '}
+                      {format(createdAt, 'en_US')}
+                    </p>
                   </QuestionInfo>
                 </QuestionBox>
               );
             })}
-        </div>
-      </QuestionContainer>
-      <RightSidebar />
+          </div>
+        </QuestionContainer>
+        <RightSidebar />
+      </ContentContainer>
     </QuestionPage>
   );
 };
@@ -130,18 +137,21 @@ export default Main;
 
 const QuestionPage = styled.section`
   display: flex;
-  /* align-items: center; */
   justify-content: center;
-  /* width: 90%; */
-  /* width: 100vw; */
-  padding: 16px;
-  max-width: 1264;
+  width: 1264px;
   margin: 0 auto;
   margin-top: 56px;
 `;
 
 const QuestionContainer = styled.article`
-  width: 55vw;
+  width: 727px;
+`;
+
+const ContentContainer = styled.section`
+  display: flex;
+  justify-content: center;
+  padding-top: 24px;
+  gap: 1.5rem;
 `;
 
 const Header = styled.div`
@@ -149,80 +159,94 @@ const Header = styled.div`
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  margin: 15px 0;
-  padding: 0 10px; /* background-color: lightcyan; */ /* padding: 20px; */
   p {
     font-size: 28px;
+    margin-left: 1.5rem;
   }
+  margin-bottom: 0.5rem;
 `;
 
 const SubHeader = styled.div`
   height: 47px;
-  /* padding: 10px; */
-  margin: 15px 0;
-  padding: 0 10px;
-  /* background-color: lightgray; */
-
   display: flex;
   align-items: center;
   justify-content: space-between;
+  p {
+    margin-left: 1.5rem;
+  }
+  margin-bottom: 0.5rem;
 `;
 
 const Buttons = styled.div`
   display: flex;
   align-items: center;
+  border-radius: 5px;
+  overflow: hidden;
+  border: 1px solid #babfc4;
 
   button {
     padding: 10px;
-    border: 1px solid rgba(0, 0, 0, 0.2);
-    border-radius: 4px;
-
+    font-size: 0.8rem;
+    border-right: 1px solid #babfc4;
+    background-color: #fff;
     &:hover {
       cursor: pointer;
+      background-color: #f8f9f9;
+    }
+    &:last-child {
+      border-right: none;
+    }
+    &.disabled {
+      background-color: #e3e6e8;
+      pointer-events: none;
     }
   }
 `;
 
 const QuestionBox = styled.div`
-  height: 150px;
+  height: 106px;
   padding: 10px 20px;
-  /* background-color: lightblue; */
-
   display: flex;
   align-items: center;
-  justify-content: space-between;
-
+  justify-content: center;
   border-top: 1px solid rgba(0, 0, 0, 0.2);
+  gap: 1rem;
 `;
 
 const QuestionStats = styled.div`
   display: flex;
   flex-direction: column;
-  /* margin-right: 20px; */
-  justify-content: space-evenly;
-  width: 10vw;
-  height: 80%;
+  justify-content: center;
+  width: 108px;
+  text-align: right;
+  color: #6a737c;
+  font-size: 0.8rem;
 `;
 
 const QuestionInfo = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 5px;
+  justify-content: center;
+  gap: 1rem;
+  width: 595px;
+  height: 70px;
   h2 {
-    font-size: 18px;
-    margin: 5px 0;
     color: #0074cc;
+    font-size: 1.2rem;
     font-weight: 400;
+    &:hover {
+      color: #0a95ff;
+      cursor: pointer;
+    }
   }
   p {
-    margin: 8px 0;
+    text-align: right;
+    font-size: 0.8rem;
+    color: #525960;
+    span {
+      color: #000000;
+    }
   }
-`;
-
-const UserInfo = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
 `;
 
 const Button = styled.button`
