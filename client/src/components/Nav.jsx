@@ -5,11 +5,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { useContext } from 'react';
 import { LoginContext } from '../App';
+import profiles from '../utils/profiles.js';
 
 const Nav = () => {
   const navigate = useNavigate();
-  const { handleLogout, profileImages, selectedProfileIndex } =
-    useContext(LoginContext);
+  const { handleLogout, selectedProfileIndex } = useContext(LoginContext);
 
   const token = localStorage.getItem('access_token');
 
@@ -37,7 +37,7 @@ const Nav = () => {
         {token ? (
           <UserSection>
             <ProfileSection onClick={() => navigate('/users')}>
-              <img src={profileImages[selectedProfileIndex]} alt="Profile" />
+              <img src={profiles[selectedProfileIndex]} alt="Profile" />
             </ProfileSection>
             {/* <LogoutSection as={Link} to="/" onClick={handleLogout}> */}
             <LogoutSection as={Link} to="/" onClick={handleLogout}>

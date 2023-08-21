@@ -1,10 +1,11 @@
 import { useState, useContext, useEffect } from 'react';
 import { styled } from 'styled-components';
 import { LoginContext } from '../App';
+import profiles from '../utils/profiles.js';
 
 export const SettingBox = () => {
   const [isChecked, setIsChecked] = useState(false);
-  const { profileImages, selectedProfileIndex, handleProfileChange } =
+  const { selectedProfileIndex, handleProfileChange } =
     useContext(LoginContext);
 
   useEffect(() => {
@@ -12,7 +13,7 @@ export const SettingBox = () => {
   }, [selectedProfileIndex]);
 
   const handlePictureChange = () => {
-    const newIndex = (selectedProfileIndex + 1) % profileImages.length;
+    const newIndex = (selectedProfileIndex + 1) % profiles.length;
     handleProfileChange(newIndex);
   };
 
@@ -31,7 +32,7 @@ export const SettingBox = () => {
             <GeneralInfo>
               <p>Profile Image</p>
               <ProfileBox className="profile--img">
-                <img src={profileImages[selectedProfileIndex]} alt="profile" />
+                <img src={profiles[selectedProfileIndex]} alt="profile" />
                 <ChangePictureBtn onClick={handlePictureChange}>
                   Change Picture
                 </ChangePictureBtn>

@@ -12,7 +12,6 @@ import NotFound from './pages/NotFound.jsx';
 import Nav from './components/Nav.jsx';
 import Footer from './components/Footer.jsx';
 import myAxios from './utils/axios.js';
-import profiles from './utils/profiles';
 
 import './App.css';
 
@@ -22,7 +21,6 @@ function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userData, setUserData] = useState(null);
   const [selectedProfileIndex, setSelectedProfileIndex] = useState(0);
-  const profileImages = profiles();
 
   const handleProfileChange = (index) => {
     setSelectedProfileIndex(index);
@@ -67,7 +65,6 @@ function App() {
         userData,
         setUserData,
         handleLogout,
-        profileImages,
         selectedProfileIndex,
         handleProfileChange,
       }}

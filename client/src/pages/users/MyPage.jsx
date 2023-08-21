@@ -5,15 +5,15 @@ import { ProfileBox } from '../../components/ProfileBox.jsx';
 import { ActivityBox } from '../../components/ActivityBox.jsx';
 import { SettingBox } from '../../components/SettingBox.jsx';
 import SavesBox from '../../components/SavesBox.jsx';
-import PropTypes from 'prop-types';
 import { LoginContext } from '../../App';
+import profiles from '../../utils/profiles.js';
 
 const MyPage = () => {
   const [profile, setProfile] = useState(true);
   const [activity, setActivity] = useState(true);
   const [saves, setSaves] = useState(true);
   const [setting, setSetting] = useState(true);
-  const { profileImages, selectedProfileIndex } = useContext(LoginContext);
+  const { selectedProfileIndex } = useContext(LoginContext);
 
   const handleActivity = () => {
     setProfile(false);
@@ -43,10 +43,7 @@ const MyPage = () => {
         <PageHeader>
           <HeaderLeft>
             <div>
-              <img
-                src={profileImages[selectedProfileIndex]}
-                alt="profile img"
-              />
+              <img src={profiles[selectedProfileIndex]} alt="profile img" />
             </div>
             <UserInfo>
               <h2>Qazx960</h2>
@@ -151,11 +148,6 @@ const MyPage = () => {
       </MyPageContainer>
     </MyPageLayout>
   );
-};
-
-MyPage.propTypes = {
-  profileImages: PropTypes.arrayOf(PropTypes.string).isRequired,
-  selectedProfileIndex: PropTypes.number.isRequired,
 };
 
 export default MyPage;
