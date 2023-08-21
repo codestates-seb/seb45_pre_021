@@ -1,10 +1,12 @@
 import axios from 'axios';
 
+const storedToken = localStorage.getItem('access_token');
+
 const myAxios = axios.create({
   withCredentials: true,
   baseURL: process.env.REACT_APP_BASE_URL,
   headers: {
-    'ngrok-skip-browser-warning': '69420',
+    Authorization: `Bearer ${storedToken}`,
   },
 });
 

@@ -1,13 +1,24 @@
 import { styled } from 'styled-components';
-import { useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import Sidebar from '../../components/Sidebar.jsx';
 import Editor from '../../components/Editor.jsx';
 import Viewer from '../../components/Viewer.jsx';
 import Button from '../../components/Button.jsx';
+import { useNavigate } from 'react-router-dom';
+import { LoginContext } from '../../App.js';
 
 const Edit = () => {
+  const { isLoggedIn } = useContext(LoginContext);
+  const navigate = useNavigate();
+
   const [title, setTitle] = useState('Hello');
   const [content, setContent] = useState('World');
+
+  useEffect(() => {
+    if (!isLoggedIn) {
+      navigate('/users/login');
+    }
+  }, [isLoggedIn]);
 
   const postEdits = () => {
     alert(`

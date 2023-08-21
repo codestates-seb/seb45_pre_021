@@ -5,9 +5,14 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import profile from '../imgs/profile/hoshino_ai.jpg';
 import PropTypes from 'prop-types';
+import { useContext } from 'react';
+import { LoginContext } from '../App';
 
-const Nav = ({ isLoggedIn, handleLogout }) => {
+const Nav = () => {
   const navigate = useNavigate();
+  const { handleLogout } = useContext(LoginContext);
+
+  const token = localStorage.getItem('access_token');
 
   return (
     <NavigationSection>
@@ -30,11 +35,12 @@ const Nav = ({ isLoggedIn, handleLogout }) => {
         <input type="text" placeholder="Search..." />
       </SearchSection>
       <UserSection>
-        {isLoggedIn ? (
+        {token ? (
           <UserSection>
             <ProfileSection onClick={() => navigate('/users')}>
               <img src={profile} alt="Profile" />
             </ProfileSection>
+            {/* <LogoutSection as={Link} to="/" onClick={handleLogout}> */}
             <LogoutSection as={Link} to="/" onClick={handleLogout}>
               Log out
             </LogoutSection>

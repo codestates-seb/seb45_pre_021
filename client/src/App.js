@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, createContext, useEffect } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Home from './pages/Home.jsx';
 import MyPage from './pages/users/MyPage.jsx';
@@ -11,45 +11,62 @@ import Detail from './pages/questions/Detail.jsx';
 import NotFound from './pages/NotFound.jsx';
 import Nav from './components/Nav.jsx';
 import Footer from './components/Footer.jsx';
+// import axios from 'axios';
+import myAxios from './utils/axios.js';
 
 import './App.css';
 
+export const LoginContext = createContext();
+
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-  useEffect(() => {
-    const token = localStorage.getItem('access_token');
-    setIsLoggedIn(!!token);
-  }, []);
-
-  const handleLoginUpdate = () => {
-    setIsLoggedIn(true);
-  };
+  const [userData, setUserData] = useState(null);
 
   const handleLogout = () => {
     localStorage.removeItem('access_token');
     setIsLoggedIn(false);
   };
 
+  useEffect(() => {
+    const storedToken = localStorage.getItem('access_token');
+
+    if (!storedToken) {
+      handleLogout();
+    }
+
+    const fetchUserData = async () => {
+      try {
+        const response = await myAxios.get();
+        setUserData(response.data);
+        setIsLoggedIn(true);
+      } catch (error) {
+        handleLogout();
+      }
+    };
+
+    fetchUserData();
+  }, []);
+
   return (
-    <BrowserRouter>
-      <Nav isLoggedIn={isLoggedIn} handleLogout={handleLogout} />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/users" element={<MyPage />} />
-        <Route
-          path="/users/login"
-          element={<Login handleLoginUpdate={handleLoginUpdate} />}
-        />
-        <Route path="/users/register" element={<Register />} />
-        <Route path="/questions" element={<Main />} />
-        <Route path="/questions/post" element={<Post />} />
-        <Route path="/questions/edit/:id" element={<Edit />} />
-        <Route path="/questions/detail/:id" element={<Detail />} />
-        <Route path="*" element={<NotFound />} />
-      </Routes>
-      <Footer />
-    </BrowserRouter>
+    <LoginContext.Provider
+      value={{ isLoggedIn, setIsLoggedIn, userData, setUserData, handleLogout }}
+    >
+      <BrowserRouter>
+        <Nav />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/users" element={<MyPage />} />
+          <Route path="/users/login" element={<Login />} />
+          <Route path="/users/register" element={<Register />} />
+          <Route path="/questions" element={<Main />} />
+          <Route path="/questions/post" element={<Post />} />
+          <Route path="/questions/edit/:id" element={<Edit />} />
+          <Route path="/questions/detail/:id" element={<Detail />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+        <Footer />
+      </BrowserRouter>
+    </LoginContext.Provider>
   );
 }
 

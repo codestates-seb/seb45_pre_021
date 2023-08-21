@@ -1,12 +1,17 @@
 import { styled } from 'styled-components';
 import icon from '../../imgs/google_icon.svg';
 import { Icon } from '@iconify/react';
-import { useState } from 'react';
+
+import { useState, useContext } from 'react';
+
+
 import SignupDropdown from '../../components/SignupDropdown.jsx';
-import axios from 'axios';
+import myAxios from '../../utils/axios';
 import { useNavigate } from 'react-router-dom';
 import captcha from '../../imgs/captcha.jpg';
 import clikedCaptcha from '../../imgs/clicked_captcha.gif';
+
+import { LoginContext } from '../../App';
 
 const Register = () => {
   const [isShow, setIsShow] = useState(false);
@@ -14,6 +19,14 @@ const Register = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState({});
+
+  const isLoggedIn = useContext(LoginContext);
+
+  if (isLoggedIn) {
+    nav('/questions');
+  }
+
+
   const [clicked, setClicked] = useState(false);
   const nav = useNavigate();
 
@@ -63,14 +76,11 @@ const Register = () => {
     if (Object.keys(newErrors).length === 0) {
       try {
         const userInfo = { nickName, email, password };
-        const response = await axios.post(
-          `${process.env.REACT_APP_BASE_URL}users/signup`,
-          userInfo,
-        );
+        const response = await myAxios.post('signup', userInfo);
         console.log(response);
         nav('/login');
       } catch (error) {
-        alert(`message: ${error.response.data.message}`);
+        console.log(error);
       }
     }
   };

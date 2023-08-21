@@ -1,17 +1,24 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { styled } from 'styled-components';
 import icon from '../../imgs/google_icon.svg';
 import logo from '../../imgs/footer_logo.png';
+import { LoginContext } from '../../App';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import PropTypes from 'prop-types';
 
-const Login = ({ handleLoginUpdate }) => {
-  const navigate = useNavigate();
+import PropTypes from 'prop-types';
+import myAxios from '../../utils/axios';
+
+const Login = () => {
+  const { isLoggedIn } = useContext(LoginContext);
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState({});
+  const navigate = useNavigate();
+
+  if (isLoggedIn) {
+    navigate('/questions');
+  }
 
   const emailRegex = /^[a-zA-Z0-9+-_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
   const passwordRegex =
@@ -39,19 +46,16 @@ const Login = ({ handleLoginUpdate }) => {
     if (Object.keys(newErrors).length === 0) {
       try {
         const userInfo = { email, password };
-        const response = await axios.post(
-          `${process.env.REACT_APP_BASE_URL}login`,
+        const response = await myAxios.post(
+          // `${process.env.REACT_APP_BASE_URL}login`,
+          'login',
           userInfo,
         );
-        console.log('Login successful');
-
         const accessToken = response.data.token;
         localStorage.setItem('access_token', accessToken);
-
-        handleLoginUpdate();
         navigate('/questions');
       } catch (error) {
-        alert(`message: ${error.response.data.message}`);
+        console.log(error);
       }
     }
   };
