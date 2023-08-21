@@ -4,7 +4,6 @@ import { Icon } from '@iconify/react';
 
 import { useState, useContext } from 'react';
 
-
 import SignupDropdown from '../../components/SignupDropdown.jsx';
 import myAxios from '../../utils/axios';
 import { useNavigate } from 'react-router-dom';
@@ -25,7 +24,6 @@ const Register = () => {
   if (isLoggedIn) {
     nav('/questions');
   }
-
 
   const [clicked, setClicked] = useState(false);
   const nav = useNavigate();
