@@ -1,5 +1,5 @@
 import { styled } from 'styled-components';
-import { AboutBox, Badges, Posts } from './MyPageBoxes.jsx';
+import { AboutBox, Badges, Posts } from '../MyPageBoxes.jsx';
 
 export const ProfileBox = () => {
   return (

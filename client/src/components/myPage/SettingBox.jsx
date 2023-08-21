@@ -1,7 +1,7 @@
 import { useState, useContext, useEffect } from 'react';
 import { styled } from 'styled-components';
-import { LoginContext } from '../App';
-import profiles from '../utils/profiles.js';
+import { LoginContext } from '../../App';
+import profiles from '../../utils/profiles.js';
 
 export const SettingBox = () => {
   const [isChecked, setIsChecked] = useState(false);

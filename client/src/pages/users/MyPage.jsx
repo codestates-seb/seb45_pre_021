@@ -1,10 +1,10 @@
 import { styled } from 'styled-components';
 import Sidebar from '../../components/Sidebar.jsx';
 import { useState, useContext } from 'react';
-import { ProfileBox } from '../../components/ProfileBox.jsx';
-import { ActivityBox } from '../../components/ActivityBox.jsx';
-import { SettingBox } from '../../components/SettingBox.jsx';
-import SavesBox from '../../components/SavesBox.jsx';
+import { ProfileBox } from '../../components/myPage/ProfileBox.jsx';
+import { ActivityBox } from '../../components/myPage/ActivityBox.jsx';
+import { SettingBox } from '../../components/myPage/SettingBox.jsx';
+import SavesBox from '../../components/myPage/SavesBox.jsx';
 import { LoginContext } from '../../App';
 import profiles from '../../utils/profiles.js';
 
