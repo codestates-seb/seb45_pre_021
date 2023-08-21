@@ -19,13 +19,14 @@ const Register = () => {
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState({});
 
-  const isLoggedIn = useContext(LoginContext);
-  const nav = useNavigate();
+  const { isLoggedIn } = useContext(LoginContext);
+
   if (isLoggedIn) {
     nav('/questions');
   }
 
   const [clicked, setClicked] = useState(false);
+  const nav = useNavigate();
 
   const handleCaptchaChange = () => {
     setClicked((prevClicked) => !prevClicked);
@@ -73,9 +74,9 @@ const Register = () => {
     if (Object.keys(newErrors).length === 0) {
       try {
         const userInfo = { nickName, email, password };
-        const response = await myAxios.post('signup', userInfo);
+        const response = await myAxios.post('users/signup', userInfo);
         console.log(response);
-        nav('/login');
+        nav('/users/login');
       } catch (error) {
         console.log(error);
       }
