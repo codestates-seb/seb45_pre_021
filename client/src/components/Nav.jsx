@@ -10,12 +10,7 @@ import { LoginContext } from '../App';
 
 const Nav = () => {
   const navigate = useNavigate();
-  const [setIsLoggedIn] = useContext(LoginContext);
-
-  const handleLogout = () => {
-    localStorage.removeItem('access_token');
-    setIsLoggedIn(false);
-  };
+  const { handleLogout } = useContext(LoginContext);
 
   const token = localStorage.getItem('access_token');
 

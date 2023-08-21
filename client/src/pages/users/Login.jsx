@@ -1,4 +1,4 @@
-import { useState, useContext } from 'react';
+import { useContext, useState } from 'react';
 import { styled } from 'styled-components';
 import icon from '../../imgs/google_icon.svg';
 import logo from '../../imgs/footer_logo.png';
@@ -8,7 +8,7 @@ import axios from 'axios';
 import PropTypes from 'prop-types';
 
 const Login = () => {
-  const [isLoggedIn, setIsLoggedIn] = useContext(LoginContext);
+  const { isLoggedIn } = useContext(LoginContext);
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -49,11 +49,8 @@ const Login = () => {
           `${process.env.REACT_APP_BASE_URL}login`,
           userInfo,
         );
-        console.log('Login successful');
-
         const accessToken = response.data.token;
         localStorage.setItem('access_token', accessToken);
-        setIsLoggedIn(true);
         navigate('/questions');
       } catch (error) {
         alert(`message: ${error.response.data.message}`);

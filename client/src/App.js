@@ -20,41 +20,45 @@ export const LoginContext = createContext();
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userData, setUserData] = useState(null);
+
+  const handleLogout = () => {
+    localStorage.removeItem('access_token');
+    setIsLoggedIn(false);
+  };
+
   useEffect(() => {
     const storedToken = localStorage.getItem('access_token');
 
-    if (storedToken) {
-      setIsLoggedIn(true);
-
-      const fetchUserData = async () => {
-        try {
-          const response = await axios.get(
-            `${process.env.REACT_APP_BASE_URL}users/mypage`,
-            {
-              headers: {
-                Authorization: `Bearer ${storedToken}`,
-              },
-            },
-          );
-          setUserData(response.data);
-        } catch (error) {
-          console.error(error);
-        }
-      };
-
-      fetchUserData();
+    if (!storedToken) {
+      handleLogout();
     }
+
+    const fetchUserData = async () => {
+      try {
+        const response = await axios.get(
+          `${process.env.REACT_APP_BASE_URL}users/mypage`,
+          {
+            headers: {
+              Authorization: `Bearer ${storedToken}`,
+            },
+          },
+        );
+        setUserData(response.data);
+        setIsLoggedIn(true);
+      } catch (error) {
+        handleLogout();
+      }
+    };
+
+    fetchUserData();
   }, []);
 
-  console.log(userData);
-  console.log(isLoggedIn);
   return (
     <LoginContext.Provider
-      value={[isLoggedIn, setIsLoggedIn, userData, setUserData]}
+      value={{ isLoggedIn, setIsLoggedIn, userData, setUserData, handleLogout }}
     >
       <BrowserRouter>
         <Nav />
-        {/* <Nav isLoggedIn={isLoggedIn} handleLogout={handleLogout} /> */}
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/users" element={<MyPage />} />

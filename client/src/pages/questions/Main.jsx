@@ -73,7 +73,7 @@ const Main = () => {
   const handleNull = () => {
     setPost(null);
   };
-  console.log(handleNull);
+  console.log('Mainpage testing...', handleNull);
 
   return (
     <QuestionPage>
