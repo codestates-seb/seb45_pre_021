@@ -108,7 +108,7 @@ export const SettingBox = () => {
             <div className="checkbox">
               <input
                 type="checkbox"
-                checked={isChecked}
+                // checked={isChecked}
                 onChange={(e) => setIsChecked(e.target.checked)}
               />
               <p>

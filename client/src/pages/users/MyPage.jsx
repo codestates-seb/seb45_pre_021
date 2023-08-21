@@ -9,32 +9,15 @@ import { LoginContext } from '../../App';
 import profiles from '../../utils/profiles.js';
 
 const MyPage = () => {
-  const [profile, setProfile] = useState(true);
-  const [activity, setActivity] = useState(true);
-  const [saves, setSaves] = useState(true);
-  const [setting, setSetting] = useState(true);
   const { selectedProfileIndex } = useContext(LoginContext);
+  const [tab, setTab] = useState(0);
 
-  const handleActivity = () => {
-    setProfile(false);
-    setActivity(true);
-  };
-
-  const handleProfile = () => {
-    setProfile(true);
-    setActivity(false);
-  };
-  const handleSaves = () => {
-    setProfile(false);
-    setActivity(false);
-    setSaves(true);
-  };
-  const handleSetting = () => {
-    setProfile(false);
-    setActivity(false);
-    setSaves(false);
-    setSetting(true);
-  };
+  const boxCompoenents = [
+    <ProfileBox key={0} />,
+    <ActivityBox key={1} />,
+    <SavesBox key={2} />,
+    <SettingBox key={3} />,
+  ];
 
   return (
     <MyPageLayout>
@@ -135,16 +118,13 @@ const MyPage = () => {
         </PageHeader>
         <ProfileTabs>
           <div className="tab--container">
-            <button onClick={handleProfile}>Profile</button>
-            <button onClick={handleActivity}>Activity</button>
-            <button onClick={handleSaves}>Saves</button>
-            <button onClick={handleSetting}>Settings</button>
+            <button onClick={() => setTab(0)}>Profile</button>
+            <button onClick={() => setTab(1)}>Activity</button>
+            <button onClick={() => setTab(2)}>Saves</button>
+            <button onClick={() => setTab(3)}>Settings</button>
           </div>
         </ProfileTabs>
-        {(profile && <ProfileBox />) ||
-          (activity && <ActivityBox />) ||
-          (saves && <SavesBox />) ||
-          (setting && <SettingBox />)}
+        {boxCompoenents[tab]}
       </MyPageContainer>
     </MyPageLayout>
   );
