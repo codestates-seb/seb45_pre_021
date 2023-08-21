@@ -7,30 +7,56 @@ import { format } from 'timeago.js';
 import { Link } from 'react-router-dom';
 
 const Main = () => {
-  const useMockData = false;
+  const [page, setPage] = useState(1);
   const [post, setPost] = useState([]);
+  const [totalPosts, setTotalPosts] = useState(0);
+  const [hasMore, setHasMore] = useState(false);
   const [filter, setFilter] = useState(0);
   const apiURL = [
-    'questions?page=1&size=10',
-    'questions/progress?page=1&size=10',
-    'questions/complete?page=1&size=10',
+    'questions?size=10&page=',
+    'questions/progress?size=10&page=',
+    'questions/complete?size=10&page=',
   ];
+  useEffect(() => {
+    console.log(hasMore);
+    if (!hasMore) return;
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        setPage((prev) => prev + 1);
+      });
+    });
+    observer.observe(document.querySelector('footer'));
+    return () => {
+      observer.disconnect();
+    };
+  }, [hasMore]);
+
+  useEffect(() => {
+    if (page === 1) return;
+    (async () => {
+      try {
+        const res = await axios.get(apiURL[filter] + page);
+        const data = await res.data;
+        console.log(data);
+        setHasMore(data.pageInfo.page < data.pageInfo.totalPages);
+        setPost((prev) => [...prev, ...data.data]);
+      } catch (err) {
+        console.log(err);
+      }
+    })();
+  }, [page]);
 
   useEffect(() => {
     (async () => {
       try {
-        let data;
-        if (useMockData) {
-          const res = await fetch('/data/allQuestions.json');
-          data = await res.json();
-          console.log(data);
-        } else {
-          const res = await axios.get(apiURL[filter]);
-          data = await res.data;
-          console.log(data);
-        }
+        const res = await axios.get(apiURL[filter] + page);
+        const data = await res.data;
+        console.log(data);
 
+        setHasMore(data.pageInfo.page < data.pageInfo.totalPages);
         setPost(data.data);
+        setTotalPosts(data.pageInfo.totalElements);
       } catch (err) {
         console.log(err);
       }
@@ -49,14 +75,17 @@ const Main = () => {
             </Link>
           </Header>
           <SubHeader>
-            <p>{post.length} Questions</p>
+            <p>{totalPosts} Questions</p>
             <Buttons>
               {['View All', 'Unanswered', 'Answered'].map((content, i) => {
                 return (
                   <button
                     key={i}
                     className={filter === i ? 'disabled' : ''}
-                    onClick={() => setFilter(i)}
+                    onClick={() => {
+                      setFilter(i);
+                      setPage(1);
+                    }}
                   >
                     {content}
                   </button>
