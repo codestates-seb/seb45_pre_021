@@ -24,6 +24,7 @@ function App() {
 
   const handleProfileChange = (index) => {
     setSelectedProfileIndex(index);
+    localStorage.setItem('selected_profile', index);
   };
 
   const handleLogout = () => {

@@ -7,14 +7,14 @@ export const SettingBox = () => {
   const [isChecked, setIsChecked] = useState(false);
   const { selectedProfileIndex, handleProfileChange } =
     useContext(LoginContext);
+  const [openSelector, setOpenSelector] = useState(false);
 
   useEffect(() => {
     localStorage.setItem('selected_profile', selectedProfileIndex);
   }, [selectedProfileIndex]);
 
   const handlePictureChange = () => {
-    const newIndex = (selectedProfileIndex + 1) % profiles.length;
-    handleProfileChange(newIndex);
+    setOpenSelector(true);
   };
 
   return (
@@ -108,7 +108,7 @@ export const SettingBox = () => {
             <div className="checkbox">
               <input
                 type="checkbox"
-                // checked={isChecked}
+                checked={isChecked}
                 onChange={(e) => setIsChecked(e.target.checked)}
               />
               <p>
@@ -121,6 +121,27 @@ export const SettingBox = () => {
           </DeleteContainer>
         </ProfileRight>
       </ActivityHeader>
+      {openSelector && (
+        <ImageSelector
+          onClick={() => {
+            setOpenSelector(false);
+          }}
+        >
+          <div>
+            {profiles.map((profile, index) => (
+              <button
+                key={index}
+                onClick={() => {
+                  setOpenSelector(false);
+                  handleProfileChange(index);
+                }}
+              >
+                <img src={profile} alt="profile" />
+              </button>
+            ))}
+          </div>
+        </ImageSelector>
+      )}
     </ProfileContainer>
   );
 };
@@ -130,6 +151,44 @@ const ProfileContainer = styled.div`
   margin-top: 10px;
   padding: 20px 10px;
   width: 1075px;
+`;
+
+const ImageSelector = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 10;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  div {
+    width: 650px;
+    height: 430px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    button {
+      width: 200px;
+      height: 200px;
+      filter: brightness(0.7);
+      border-radius: 1rem;
+      overflow: hidden;
+      cursor: pointer;
+      transition: 0.5s;
+      &:hover {
+        filter: brightness(1);
+        transform: scale(1.1);
+      }
+      img {
+        width: 100%;
+        height: 100%;
+      }
+    }
+  }
 `;
 
 const ActivityHeader = styled.div`
