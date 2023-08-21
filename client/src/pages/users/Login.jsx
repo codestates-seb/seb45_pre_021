@@ -8,7 +8,7 @@ import axios from 'axios';
 import PropTypes from 'prop-types';
 
 const Login = () => {
-  const [isLoggedIn] = useContext(LoginContext);
+  const [isLoggedIn, setIsLoggedIn] = useContext(LoginContext);
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -50,9 +50,10 @@ const Login = () => {
           userInfo,
         );
         console.log('Login successful');
+
         const accessToken = response.data.token;
         localStorage.setItem('access_token', accessToken);
-
+        setIsLoggedIn(true);
         navigate('/questions');
       } catch (error) {
         alert(`message: ${error.response.data.message}`);
