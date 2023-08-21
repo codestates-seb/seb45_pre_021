@@ -11,8 +11,8 @@ import Detail from './pages/questions/Detail.jsx';
 import NotFound from './pages/NotFound.jsx';
 import Nav from './components/Nav.jsx';
 import Footer from './components/Footer.jsx';
-// import axios from 'axios';
 import myAxios from './utils/axios.js';
+import profiles from './utils/profiles';
 
 import './App.css';
 
@@ -21,6 +21,12 @@ export const LoginContext = createContext();
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userData, setUserData] = useState(null);
+  const [selectedProfileIndex, setSelectedProfileIndex] = useState(0);
+  const profileImages = profiles();
+
+  const handleProfileChange = (index) => {
+    setSelectedProfileIndex(index);
+  };
 
   const handleLogout = () => {
     localStorage.removeItem('access_token');
@@ -28,10 +34,19 @@ function App() {
   };
 
   useEffect(() => {
+    localStorage.setItem('selected_profile', selectedProfileIndex);
+  }, [selectedProfileIndex]);
+
+  useEffect(() => {
     const storedToken = localStorage.getItem('access_token');
 
     if (!storedToken) {
       handleLogout();
+    }
+
+    const storedProfileIndex = localStorage.getItem('selected_profile');
+    if (storedProfileIndex !== null) {
+      setSelectedProfileIndex(parseInt(storedProfileIndex, 10));
     }
 
     const fetchUserData = async () => {
@@ -52,10 +67,22 @@ function App() {
       value={{ isLoggedIn, setIsLoggedIn, userData, setUserData, handleLogout }}
     >
       <BrowserRouter>
-        <Nav />
+        <Nav
+          profileImages={profileImages}
+          selectedProfileIndex={selectedProfileIndex}
+        />
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/users" element={<MyPage />} />
+          <Route
+            path="/users"
+            element={
+              <MyPage
+                profileImages={profileImages}
+                selectedProfileIndex={selectedProfileIndex}
+                handleProfileChange={handleProfileChange}
+              />
+            }
+          />
           <Route path="/users/login" element={<Login />} />
           <Route path="/users/register" element={<Register />} />
           <Route path="/questions" element={<Main />} />

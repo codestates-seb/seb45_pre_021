@@ -3,12 +3,11 @@ import { useNavigate, Link } from 'react-router-dom';
 import logo from '../imgs/logo-stackoverflow.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
-import profile from '../imgs/profile/hoshino_ai.jpg';
 import PropTypes from 'prop-types';
 import { useContext } from 'react';
 import { LoginContext } from '../App';
 
-const Nav = () => {
+const Nav = ({ profileImages, selectedProfileIndex }) => {
   const navigate = useNavigate();
   const { handleLogout } = useContext(LoginContext);
 
@@ -38,7 +37,7 @@ const Nav = () => {
         {token ? (
           <UserSection>
             <ProfileSection onClick={() => navigate('/users')}>
-              <img src={profile} alt="Profile" />
+              <img src={profileImages[selectedProfileIndex]} alt="Profile" />
             </ProfileSection>
             {/* <LogoutSection as={Link} to="/" onClick={handleLogout}> */}
             <LogoutSection as={Link} to="/" onClick={handleLogout}>
@@ -61,8 +60,8 @@ const Nav = () => {
 };
 
 Nav.propTypes = {
-  isLoggedIn: PropTypes.bool.isRequired,
-  handleLogout: PropTypes.func.isRequired,
+  profileImages: PropTypes.arrayOf(PropTypes.string).isRequired,
+  selectedProfileIndex: PropTypes.number.isRequired,
 };
 
 const NavigationSection = styled.header`
