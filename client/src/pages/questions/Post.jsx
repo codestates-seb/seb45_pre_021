@@ -1,12 +1,23 @@
 import { styled } from 'styled-components';
-import { useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import NoticeSection from '../../components/post/NoticeSection.jsx';
 import TitleSection from '../../components/post/TitleSection.jsx';
 import DetailSection from '../../components/post/DetailSection.jsx';
 import Button from '../../components/Button.jsx';
 import kanaImg from '../../imgs/post_kana.png';
+import { useNavigate } from 'react-router-dom';
+import { LoginContext } from '../../App.js';
 
 const Post = () => {
+  const { isLoggedIn } = useContext(LoginContext);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!isLoggedIn) {
+      navigate('/users/login');
+    }
+  }, [isLoggedIn]);
+
   const [step, setStep] = useState(0);
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
