@@ -4,8 +4,9 @@ import icon from '../../imgs/google_icon.svg';
 import logo from '../../imgs/footer_logo.png';
 import { LoginContext } from '../../App';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+
 import PropTypes from 'prop-types';
+import myAxios from '../../utils/axios';
 
 const Login = () => {
   const { isLoggedIn } = useContext(LoginContext);
@@ -45,15 +46,16 @@ const Login = () => {
     if (Object.keys(newErrors).length === 0) {
       try {
         const userInfo = { email, password };
-        const response = await axios.post(
-          `${process.env.REACT_APP_BASE_URL}login`,
+        const response = await myAxios.post(
+          // `${process.env.REACT_APP_BASE_URL}login`,
+          'login',
           userInfo,
         );
         const accessToken = response.data.token;
         localStorage.setItem('access_token', accessToken);
         navigate('/questions');
       } catch (error) {
-        alert(`message: ${error.response.data.message}`);
+        console.log(error);
       }
     }
   };

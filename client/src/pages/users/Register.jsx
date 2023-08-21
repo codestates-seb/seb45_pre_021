@@ -4,7 +4,7 @@ import { Icon } from '@iconify/react';
 import ReCAPTCHA from 'react-google-recaptcha';
 import { useState, useContext } from 'react';
 import SignupDropdown from '../../components/SignupDropdown.jsx';
-import axios from 'axios';
+import myAxios from '../../utils/axios';
 import { useNavigate } from 'react-router-dom';
 
 import { LoginContext } from '../../App';
@@ -64,14 +64,11 @@ const Register = () => {
     if (Object.keys(newErrors).length === 0) {
       try {
         const userInfo = { nickName, email, password };
-        const response = await axios.post(
-          `${process.env.REACT_APP_BASE_URL}users/signup`,
-          userInfo,
-        );
+        const response = await myAxios.post('signup', userInfo);
         console.log(response);
         nav('/login');
       } catch (error) {
-        alert(`message: ${error.response.data.message}`);
+        console.log(error);
       }
     }
   };

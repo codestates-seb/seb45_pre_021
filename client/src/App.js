@@ -11,7 +11,8 @@ import Detail from './pages/questions/Detail.jsx';
 import NotFound from './pages/NotFound.jsx';
 import Nav from './components/Nav.jsx';
 import Footer from './components/Footer.jsx';
-import axios from 'axios';
+// import axios from 'axios';
+import myAxios from './utils/axios.js';
 
 import './App.css';
 
@@ -35,14 +36,7 @@ function App() {
 
     const fetchUserData = async () => {
       try {
-        const response = await axios.get(
-          `${process.env.REACT_APP_BASE_URL}users/mypage`,
-          {
-            headers: {
-              Authorization: `Bearer ${storedToken}`,
-            },
-          },
-        );
+        const response = await myAxios.get();
         setUserData(response.data);
         setIsLoggedIn(true);
       } catch (error) {
