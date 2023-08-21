@@ -5,8 +5,13 @@ import { ProfileBox } from '../../components/ProfileBox.jsx';
 import { ActivityBox } from '../../components/ActivityBox.jsx';
 import { SettingBox } from '../../components/SettingBox.jsx';
 import SavesBox from '../../components/SavesBox.jsx';
+import PropTypes from 'prop-types';
 
-const MyPage = () => {
+const MyPage = ({
+  profileImages,
+  selectedProfileIndex,
+  handleProfileChange,
+}) => {
   const [profile, setProfile] = useState(true);
   const [activity, setActivity] = useState(true);
   const [saves, setSaves] = useState(true);
@@ -41,7 +46,7 @@ const MyPage = () => {
           <HeaderLeft>
             <div>
               <img
-                src="https://www.gravatar.com/avatar/85061b0fd61e1929069ec7b11c6228be?s=256&d=identicon&r=PG&f=y&so-version=2"
+                src={profileImages[selectedProfileIndex]}
                 alt="profile img"
               />
             </div>
@@ -144,10 +149,22 @@ const MyPage = () => {
         {(profile && <ProfileBox />) ||
           (activity && <ActivityBox />) ||
           (saves && <SavesBox />) ||
-          (setting && <SettingBox />)}
+          (setting && (
+            <SettingBox
+              profileImages={profileImages}
+              selectedProfileIndex={selectedProfileIndex}
+              handleProfileChange={handleProfileChange}
+            />
+          ))}
       </MyPageContainer>
     </MyPageLayout>
   );
+};
+
+MyPage.propTypes = {
+  profileImages: PropTypes.arrayOf(PropTypes.string).isRequired,
+  selectedProfileIndex: PropTypes.number.isRequired,
+  handleProfileChange: PropTypes.func.isRequired,
 };
 
 export default MyPage;

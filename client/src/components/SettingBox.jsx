@@ -1,8 +1,18 @@
 import { useState } from 'react';
 import { styled } from 'styled-components';
+import PropTypes from 'prop-types';
 
-export const SettingBox = () => {
+export const SettingBox = ({
+  profileImages,
+  selectedProfileIndex,
+  handleProfileChange,
+}) => {
   const [isChecked, setIsChecked] = useState(false);
+
+  const handlePictureChange = () => {
+    const newIndex = (selectedProfileIndex + 1) % profileImages.length;
+    handleProfileChange(newIndex);
+  };
 
   return (
     <ProfileContainer>
@@ -19,11 +29,10 @@ export const SettingBox = () => {
             <GeneralInfo>
               <p>Profile Image</p>
               <ProfileBox className="profile--img">
-                <img
-                  src="https://www.gravatar.com/avatar/85061b0fd61e1929069ec7b11c6228be?s=164&d=identicon&r=PG&f=y&so-version=2"
-                  alt="profile"
-                />
-                <ChangePictureBtn>Change Picture</ChangePictureBtn>
+                <img src={profileImages[selectedProfileIndex]} alt="profile" />
+                <ChangePictureBtn onClick={handlePictureChange}>
+                  Change Picture
+                </ChangePictureBtn>
               </ProfileBox>
               <Form>
                 <label htmlFor="name">Display Name</label>
@@ -37,7 +46,6 @@ export const SettingBox = () => {
               </Form>
             </GeneralInfo>
           </div>
-
           <LinkContainerTitle>Links</LinkContainerTitle>
           <LinksContainer>
             <UserLinks>
@@ -56,7 +64,6 @@ export const SettingBox = () => {
               </LinkBox>
             </UserLinks>
           </LinksContainer>
-
           <PrivateInfoTitle>
             Private Information <span>Not shown publicly</span>
           </PrivateInfoTitle>
@@ -66,7 +73,6 @@ export const SettingBox = () => {
               <input type="text" id="fullname" />
             </LinkBox>
           </PrivateInfoContainer>
-
           <h3>Delete Profile</h3>
           <DeleteContainer>
             <p>
@@ -116,6 +122,13 @@ export const SettingBox = () => {
   );
 };
 
+SettingBox.propTypes = {
+  profileImages: PropTypes.arrayOf(PropTypes.string).isRequired,
+  selectedProfileIndex: PropTypes.number.isRequired,
+
+  handleProfileChange: PropTypes.func.isRequired,
+};
+
 const ProfileContainer = styled.div`
   margin-left: 20px;
   margin-top: 10px;
@@ -163,6 +176,9 @@ const GeneralInfo = styled.div`
 
 const ProfileBox = styled.div`
   position: relative;
+  img {
+    width: 164px;
+  }
 `;
 
 const ChangePictureBtn = styled.button`
