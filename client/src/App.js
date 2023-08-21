@@ -20,31 +20,34 @@ export const LoginContext = createContext();
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userData, setUserData] = useState(null);
-
   useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        const token = localStorage.getItem('access_token');
-        if (token) {
-          setIsLoggedIn(true);
+    const storedToken = localStorage.getItem('access_token');
+
+    if (storedToken) {
+      setIsLoggedIn(true);
+
+      const fetchUserData = async () => {
+        try {
           const response = await axios.get(
             `${process.env.REACT_APP_BASE_URL}users/mypage`,
             {
               headers: {
-                Authorization: `Bearer ${token}`,
+                Authorization: `Bearer ${storedToken}`,
               },
             },
           );
           setUserData(response.data);
+        } catch (error) {
+          console.error(error);
         }
-      } catch {
-        console.error();
-      }
-    };
+      };
 
-    fetchUserData();
+      fetchUserData();
+    }
   }, []);
 
+  console.log(userData);
+  console.log(isLoggedIn);
   return (
     <LoginContext.Provider
       value={[isLoggedIn, setIsLoggedIn, userData, setUserData]}
