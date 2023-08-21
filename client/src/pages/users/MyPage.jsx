@@ -3,6 +3,7 @@ import Sidebar from '../../components/Sidebar.jsx';
 import { useState } from 'react';
 import { ProfileBox } from '../../components/ProfileBox.jsx';
 import { ActivityBox } from '../../components/ActivityBox.jsx';
+import { SettingBox } from '../../components/SettingBox.jsx';
 import SavesBox from '../../components/SavesBox.jsx';
 
 const MyPage = () => {
@@ -143,7 +144,7 @@ const MyPage = () => {
         {(profile && <ProfileBox />) ||
           (activity && <ActivityBox />) ||
           (saves && <SavesBox />) ||
-          (setting && <ActivityBox />)}
+          (setting && <SettingBox />)}
       </MyPageContainer>
     </MyPageLayout>
   );
