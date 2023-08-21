@@ -1,65 +1,81 @@
 import { styled } from 'styled-components';
 import RightSidebar from '../../components/RightSidebar.jsx';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Sidebar from '../../components/Sidebar.jsx';
+import axios from '../../utils/axios.js';
+import { format } from 'timeago.js';
 
 const Main = () => {
+  const useMockData = false;
   const [post, setPost] = useState([]);
-  const [filter, setFilter] = useState('all');
 
-  const handleNull = () => {
-    setPost(null);
-  };
-  console.log(handleNull);
+  useEffect(() => {
+    (async () => {
+      try {
+        let data;
+        if (useMockData) {
+          const res = await fetch('/data/allQuestions.json');
+          data = await res.json();
+          console.log(data);
+        }
+
+        setPost(data.data);
+      } catch (err) {
+        console.log(err);
+      }
+    })();
+  }, []);
 
   return (
     <QuestionPage>
       <Sidebar />
-      <QuestionContainer>
-        <Header>
-          <p>All Questions</p>
-          <Button>Ask Question</Button>
-        </Header>
-        <SubHeader>
-          <p>{post.length} Questions</p>
-          <Buttons>
-            <button onClick={() => setFilter('answered')}>Answered</button>
-            <button onClick={() => setFilter('unanswered')}>Unanswered</button>
-            <button onClick={() => setFilter('all')}>View All</button>
-          </Buttons>
-        </SubHeader>
-        <div>
-          {post
-            .filter((question) => {
-              if (filter === 'answered') {
-                return question.answered;
-              }
-              if (filter === 'unanswered') {
-                return !question.answered;
-              }
-              return true; // For 'all' filter, show all questions
-            })
-            .map((question) => {
+      <ContentContainer>
+        <QuestionContainer>
+          <Header>
+            <p>All Questions</p>
+            <Button>Ask Question</Button>
+          </Header>
+          <SubHeader>
+            <p>{post.length} Questions</p>
+            <Buttons>
+              <button>Answered</button>
+              <button>Unanswered</button>
+              <button>View All</button>
+            </Buttons>
+          </SubHeader>
+          <div>
+            {post.map((question) => {
+              const {
+                questionId,
+                title,
+                // status,
+                writerNickName,
+                answerCount,
+                createdAt,
+              } = question;
               return (
-                <QuestionBox key={question.id}>
+                <QuestionBox key={questionId}>
                   <QuestionStats>
-                    <span>0 vote</span>
-                    <span>0 answers</span>
-                    <span>0 views</span>
+                    <span>
+                      {answerCount === 1
+                        ? '1 answer'
+                        : `${answerCount} answers`}
+                    </span>
                   </QuestionStats>
                   <QuestionInfo>
-                    <h2>{question.title}</h2>
-                    <p>{question.desc}</p>
-                    <UserInfo>
-                      <span>{question.name}</span>
-                    </UserInfo>
+                    <h2>{title}</h2>
+                    <p>
+                      <span>{writerNickName}</span> asked{' '}
+                      {format(createdAt, 'en_US')}
+                    </p>
                   </QuestionInfo>
                 </QuestionBox>
               );
             })}
-        </div>
-      </QuestionContainer>
-      <RightSidebar />
+          </div>
+        </QuestionContainer>
+        <RightSidebar />
+      </ContentContainer>
     </QuestionPage>
   );
 };
@@ -74,7 +90,14 @@ const QuestionPage = styled.section`
 `;
 
 const QuestionContainer = styled.article`
-  width: 1100px;
+  width: 727px;
+`;
+
+const ContentContainer = styled.section`
+  display: flex;
+  justify-content: center;
+  padding-top: 24px;
+  gap: 1.5rem;
 `;
 
 const Header = styled.div`
@@ -82,23 +105,22 @@ const Header = styled.div`
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  margin: 15px 0;
-  padding: 0 10px; /* background-color: lightcyan; */ /* padding: 20px; */
   p {
     font-size: 28px;
+    margin-left: 1.5rem;
   }
+  margin-bottom: 0.5rem;
 `;
 
 const SubHeader = styled.div`
   height: 47px;
-  /* padding: 10px; */
-  margin: 15px 0;
-  padding: 0 10px;
-  /* background-color: lightgray; */
-
   display: flex;
   align-items: center;
   justify-content: space-between;
+  p {
+    margin-left: 1.5rem;
+  }
+  margin-bottom: 0.5rem;
 `;
 
 const Buttons = styled.div`
@@ -117,45 +139,45 @@ const Buttons = styled.div`
 `;
 
 const QuestionBox = styled.div`
-  height: 150px;
+  height: 106px;
   padding: 10px 20px;
-  /* background-color: lightblue; */
-
   display: flex;
   align-items: center;
-  justify-content: space-between;
-
+  justify-content: center;
   border-top: 1px solid rgba(0, 0, 0, 0.2);
+  gap: 1rem;
 `;
 
 const QuestionStats = styled.div`
   display: flex;
   flex-direction: column;
-  /* margin-right: 20px; */
-  justify-content: space-evenly;
-  width: 10vw;
-  height: 80%;
+  justify-content: center;
+  width: 108px;
+  text-align: right;
+  color: #6a737c;
+  font-size: 0.8rem;
 `;
 
 const QuestionInfo = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 5px;
+  justify-content: center;
+  gap: 1rem;
+  width: 595px;
+  height: 70px;
+  color: #0074cc;
   h2 {
-    font-size: 18px;
-    margin: 5px 0;
-    color: #0074cc;
-    font-weight: 400;
+    font-size: 1.2rem;
+    font-weight: 500;
+    &:hover {
+      filter: brightness(1.2);
+      cursor: pointer;
+    }
   }
   p {
-    margin: 8px 0;
+    text-align: right;
+    font-size: 0.8rem;
   }
-`;
-
-const UserInfo = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
 `;
 
 const Button = styled.button`
