@@ -47,11 +47,12 @@ function App() {
 
     const fetchUserData = async () => {
       try {
-        const response = await myAxios.get();
+        const response = await myAxios.get('users/mypage');
         setUserData(response.data);
         setIsLoggedIn(true);
       } catch (error) {
-        console.log(error);
+        handleLogout();
+        console.log('err', error);
       }
     };
 
