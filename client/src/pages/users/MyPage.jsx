@@ -1,21 +1,19 @@
 import { styled } from 'styled-components';
 import Sidebar from '../../components/Sidebar.jsx';
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { ProfileBox } from '../../components/ProfileBox.jsx';
 import { ActivityBox } from '../../components/ActivityBox.jsx';
 import { SettingBox } from '../../components/SettingBox.jsx';
 import SavesBox from '../../components/SavesBox.jsx';
 import PropTypes from 'prop-types';
+import { LoginContext } from '../../App';
 
-const MyPage = ({
-  profileImages,
-  selectedProfileIndex,
-  handleProfileChange,
-}) => {
+const MyPage = () => {
   const [profile, setProfile] = useState(true);
   const [activity, setActivity] = useState(true);
   const [saves, setSaves] = useState(true);
   const [setting, setSetting] = useState(true);
+  const { profileImages, selectedProfileIndex } = useContext(LoginContext);
 
   const handleActivity = () => {
     setProfile(false);
@@ -149,13 +147,7 @@ const MyPage = ({
         {(profile && <ProfileBox />) ||
           (activity && <ActivityBox />) ||
           (saves && <SavesBox />) ||
-          (setting && (
-            <SettingBox
-              profileImages={profileImages}
-              selectedProfileIndex={selectedProfileIndex}
-              handleProfileChange={handleProfileChange}
-            />
-          ))}
+          (setting && <SettingBox />)}
       </MyPageContainer>
     </MyPageLayout>
   );
@@ -164,7 +156,6 @@ const MyPage = ({
 MyPage.propTypes = {
   profileImages: PropTypes.arrayOf(PropTypes.string).isRequired,
   selectedProfileIndex: PropTypes.number.isRequired,
-  handleProfileChange: PropTypes.func.isRequired,
 };
 
 export default MyPage;

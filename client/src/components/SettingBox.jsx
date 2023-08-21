@@ -1,13 +1,15 @@
-import { useState } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import { styled } from 'styled-components';
-import PropTypes from 'prop-types';
+import { LoginContext } from '../App';
 
-export const SettingBox = ({
-  profileImages,
-  selectedProfileIndex,
-  handleProfileChange,
-}) => {
+export const SettingBox = () => {
   const [isChecked, setIsChecked] = useState(false);
+  const { profileImages, selectedProfileIndex, handleProfileChange } =
+    useContext(LoginContext);
+
+  useEffect(() => {
+    localStorage.setItem('selected_profile', selectedProfileIndex);
+  }, [selectedProfileIndex]);
 
   const handlePictureChange = () => {
     const newIndex = (selectedProfileIndex + 1) % profileImages.length;
@@ -120,13 +122,6 @@ export const SettingBox = ({
       </ActivityHeader>
     </ProfileContainer>
   );
-};
-
-SettingBox.propTypes = {
-  profileImages: PropTypes.arrayOf(PropTypes.string).isRequired,
-  selectedProfileIndex: PropTypes.number.isRequired,
-
-  handleProfileChange: PropTypes.func.isRequired,
 };
 
 const ProfileContainer = styled.div`

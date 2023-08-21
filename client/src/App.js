@@ -34,10 +34,6 @@ function App() {
   };
 
   useEffect(() => {
-    localStorage.setItem('selected_profile', selectedProfileIndex);
-  }, [selectedProfileIndex]);
-
-  useEffect(() => {
     const storedToken = localStorage.getItem('access_token');
     const storedProfileIndex = localStorage.getItem('selected_profile');
 
@@ -64,25 +60,22 @@ function App() {
 
   return (
     <LoginContext.Provider
-      value={{ isLoggedIn, setIsLoggedIn, userData, setUserData, handleLogout }}
+      value={{
+        isLoggedIn,
+        setIsLoggedIn,
+        userData,
+        setUserData,
+        handleLogout,
+        profileImages,
+        selectedProfileIndex,
+        handleProfileChange,
+      }}
     >
       <BrowserRouter>
-        <Nav
-          profileImages={profileImages}
-          selectedProfileIndex={selectedProfileIndex}
-        />
+        <Nav />
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route
-            path="/users"
-            element={
-              <MyPage
-                profileImages={profileImages}
-                selectedProfileIndex={selectedProfileIndex}
-                handleProfileChange={handleProfileChange}
-              />
-            }
-          />
+          <Route path="/users" element={<MyPage />} />
           <Route path="/users/login" element={<Login />} />
           <Route path="/users/register" element={<Register />} />
           <Route path="/questions" element={<Main />} />

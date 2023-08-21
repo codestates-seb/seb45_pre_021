@@ -3,13 +3,13 @@ import { useNavigate, Link } from 'react-router-dom';
 import logo from '../imgs/logo-stackoverflow.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
-import PropTypes from 'prop-types';
 import { useContext } from 'react';
 import { LoginContext } from '../App';
 
-const Nav = ({ profileImages, selectedProfileIndex }) => {
+const Nav = () => {
   const navigate = useNavigate();
-  const { handleLogout } = useContext(LoginContext);
+  const { handleLogout, profileImages, selectedProfileIndex } =
+    useContext(LoginContext);
 
   const token = localStorage.getItem('access_token');
 
@@ -57,11 +57,6 @@ const Nav = ({ profileImages, selectedProfileIndex }) => {
       </UserSection>
     </NavigationSection>
   );
-};
-
-Nav.propTypes = {
-  profileImages: PropTypes.arrayOf(PropTypes.string).isRequired,
-  selectedProfileIndex: PropTypes.number.isRequired,
 };
 
 const NavigationSection = styled.header`
