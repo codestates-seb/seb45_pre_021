@@ -17,8 +17,18 @@ const Main = () => {
     'questions/progress?size=10&page=',
     'questions/complete?size=10&page=',
   ];
+
+  const getData = async () => {
+    const res = await axios.get(apiURL[filter] + page);
+    const data = await res.data;
+    setHasMore(data.pageInfo.page < data.pageInfo.totalPages);
+    setTotalPosts(data.pageInfo.totalElements);
+    console.log(data);
+    return data;
+  };
+
   useEffect(() => {
-    console.log(hasMore);
+    // console.log(hasMore);
     if (!hasMore) return;
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
@@ -36,10 +46,7 @@ const Main = () => {
     if (page === 1) return;
     (async () => {
       try {
-        const res = await axios.get(apiURL[filter] + page);
-        const data = await res.data;
-        console.log(data);
-        setHasMore(data.pageInfo.page < data.pageInfo.totalPages);
+        const data = await getData();
         setPost((prev) => [...prev, ...data.data]);
       } catch (err) {
         console.log(err);
@@ -50,13 +57,8 @@ const Main = () => {
   useEffect(() => {
     (async () => {
       try {
-        const res = await axios.get(apiURL[filter] + page);
-        const data = await res.data;
-        console.log(data);
-
-        setHasMore(data.pageInfo.page < data.pageInfo.totalPages);
+        const data = await getData();
         setPost(data.data);
-        setTotalPosts(data.pageInfo.totalElements);
       } catch (err) {
         console.log(err);
       }
