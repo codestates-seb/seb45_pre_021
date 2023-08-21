@@ -9,6 +9,12 @@ import { Link } from 'react-router-dom';
 const Main = () => {
   const useMockData = false;
   const [post, setPost] = useState([]);
+  const [filter, setFilter] = useState(0);
+  const apiURL = [
+    'questions?page=1&size=10',
+    'questions/progress?page=1&size=10',
+    'questions/complete?page=1&size=10',
+  ];
 
   useEffect(() => {
     (async () => {
@@ -19,7 +25,7 @@ const Main = () => {
           data = await res.json();
           console.log(data);
         } else {
-          const res = await axios.get('/questions?page=1&size=10');
+          const res = await axios.get(apiURL[filter]);
           data = await res.data;
           console.log(data);
         }
@@ -29,7 +35,7 @@ const Main = () => {
         console.log(err);
       }
     })();
-  }, []);
+  }, [filter]);
 
   return (
     <QuestionPage>
@@ -45,9 +51,17 @@ const Main = () => {
           <SubHeader>
             <p>{post.length} Questions</p>
             <Buttons>
-              <button>Answered</button>
-              <button>Unanswered</button>
-              <button>View All</button>
+              {['View All', 'Unanswered', 'Answered'].map((content, i) => {
+                return (
+                  <button
+                    key={i}
+                    className={filter === i ? 'disabled' : ''}
+                    onClick={() => setFilter(i)}
+                  >
+                    {content}
+                  </button>
+                );
+              })}
             </Buttons>
           </SubHeader>
           <div>
@@ -135,14 +149,25 @@ const SubHeader = styled.div`
 const Buttons = styled.div`
   display: flex;
   align-items: center;
+  border-radius: 5px;
+  overflow: hidden;
+  border: 1px solid #babfc4;
 
   button {
     padding: 10px;
-    border: 1px solid rgba(0, 0, 0, 0.2);
-    border-radius: 4px;
-
+    font-size: 0.8rem;
+    border-right: 1px solid #babfc4;
+    background-color: #fff;
     &:hover {
       cursor: pointer;
+      background-color: #f8f9f9;
+    }
+    &:last-child {
+      border-right: none;
+    }
+    &.disabled {
+      background-color: #e3e6e8;
+      pointer-events: none;
     }
   }
 `;
