@@ -21,12 +21,13 @@ const Register = () => {
 
   const { isLoggedIn } = useContext(LoginContext);
 
+  const nav = useNavigate();
+
   if (isLoggedIn) {
     nav('/questions');
   }
 
   const [clicked, setClicked] = useState(false);
-  const nav = useNavigate();
 
   const handleCaptchaChange = () => {
     setClicked((prevClicked) => !prevClicked);
