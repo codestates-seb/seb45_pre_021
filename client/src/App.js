@@ -39,12 +39,12 @@ function App() {
 
   useEffect(() => {
     const storedToken = localStorage.getItem('access_token');
+    const storedProfileIndex = localStorage.getItem('selected_profile');
 
     if (!storedToken) {
       handleLogout();
     }
 
-    const storedProfileIndex = localStorage.getItem('selected_profile');
     if (storedProfileIndex !== null) {
       setSelectedProfileIndex(parseInt(storedProfileIndex, 10));
     }
@@ -55,7 +55,7 @@ function App() {
         setUserData(response.data);
         setIsLoggedIn(true);
       } catch (error) {
-        handleLogout();
+        console.log(error);
       }
     };
 
