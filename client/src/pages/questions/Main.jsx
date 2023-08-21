@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import Sidebar from '../../components/Sidebar.jsx';
 import axios from '../../utils/axios.js';
 import { format } from 'timeago.js';
+import { Link } from 'react-router-dom';
 
 const Main = () => {
   const useMockData = false;
@@ -16,6 +17,10 @@ const Main = () => {
         if (useMockData) {
           const res = await fetch('/data/allQuestions.json');
           data = await res.json();
+          console.log(data);
+        } else {
+          const res = await axios.get('/questions?page=1&size=10');
+          data = await res.data;
           console.log(data);
         }
 
@@ -33,7 +38,9 @@ const Main = () => {
         <QuestionContainer>
           <Header>
             <p>All Questions</p>
-            <Button>Ask Question</Button>
+            <Link to="/questions/post">
+              <Button>Ask Question</Button>
+            </Link>
           </Header>
           <SubHeader>
             <p>{post.length} Questions</p>
@@ -63,7 +70,9 @@ const Main = () => {
                     </span>
                   </QuestionStats>
                   <QuestionInfo>
-                    <h2>{title}</h2>
+                    <Link to={`/questions/detail/${questionId}`}>
+                      <h2>{title}</h2>
+                    </Link>
                     <p>
                       <span>{writerNickName}</span> asked{' '}
                       {format(createdAt, 'en_US')}
@@ -165,18 +174,22 @@ const QuestionInfo = styled.div`
   gap: 1rem;
   width: 595px;
   height: 70px;
-  color: #0074cc;
   h2 {
+    color: #0074cc;
     font-size: 1.2rem;
-    font-weight: 500;
+    font-weight: 400;
     &:hover {
-      filter: brightness(1.2);
+      color: #0a95ff;
       cursor: pointer;
     }
   }
   p {
     text-align: right;
     font-size: 0.8rem;
+    color: #525960;
+    span {
+      color: #000000;
+    }
   }
 `;
 
