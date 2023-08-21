@@ -1,11 +1,12 @@
 import { styled } from 'styled-components';
 import icon from '../../imgs/google_icon.svg';
 import { Icon } from '@iconify/react';
-import ReCAPTCHA from 'react-google-recaptcha';
 import { useState } from 'react';
 import SignupDropdown from '../../components/SignupDropdown.jsx';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import captcha from '../../imgs/captcha.jpg';
+import clikedCaptcha from '../../imgs/clicked_captcha.gif';
 
 const Register = () => {
   const [isShow, setIsShow] = useState(false);
@@ -13,10 +14,11 @@ const Register = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState({});
+  const [clicked, setClicked] = useState(false);
   const nav = useNavigate();
 
-  const handleCaptchaChange = (value) => {
-    console.log('Captcha value:', value);
+  const handleCaptchaChange = () => {
+    setClicked((prevClicked) => !prevClicked);
   };
 
   const dropDownHandler = () => {
@@ -30,6 +32,11 @@ const Register = () => {
 
   const handleSignUp = async (e) => {
     e.preventDefault();
+
+    if (!clicked) {
+      alert('Please click the reCaptcha before submitting the form.');
+      return;
+    }
 
     const newErrors = {};
 
@@ -163,10 +170,16 @@ const Register = () => {
                 least 1 letter and 1 number.
               </p>
             </LabelSection>
-            <StyledReCAPTCHA
-              sitekey={process.env.REACT_APP_API_URL} // 더미 키값 사용
-              onChange={handleCaptchaChange}
-            />
+            {clicked ? (
+              <RecaptchaSection>
+                <img src={clikedCaptcha} alt="reCaptcha" />
+              </RecaptchaSection>
+            ) : (
+              <RecaptchaSection onClick={handleCaptchaChange}>
+                <img src={captcha} alt="reCaptcha" />
+              </RecaptchaSection>
+            )}
+
             <CheckSection>
               <div>
                 <input type="checkbox" name="EmailOptIn" id="opt-in"></input>
@@ -410,11 +423,13 @@ const LabelSection = styled.div`
   }
 `;
 
-const StyledReCAPTCHA = styled(ReCAPTCHA)`
+const RecaptchaSection = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 18.75rem;
+  img {
+    width: 18.75rem;
+  }
 `;
 
 const ButtonSection = styled.button`
