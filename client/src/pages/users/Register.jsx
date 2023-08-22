@@ -20,7 +20,6 @@ const Register = () => {
   const [errors, setErrors] = useState({});
 
   const { isLoggedIn } = useContext(LoginContext);
-
   const nav = useNavigate();
 
   if (isLoggedIn) {
@@ -79,7 +78,7 @@ const Register = () => {
         console.log(response);
         nav('/users/login');
       } catch (error) {
-        console.log(error);
+        alert(`message: ${error.response.data.message}`);
       }
     }
   };

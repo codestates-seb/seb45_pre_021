@@ -55,7 +55,7 @@ const Login = () => {
         await fetchUserData();
         navigate('/questions');
       } catch (error) {
-        console.log(error);
+        alert(`message: ${error.response.data.message}`);
       }
     }
   };
