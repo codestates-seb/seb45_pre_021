@@ -22,8 +22,6 @@ const Register = () => {
   const { isLoggedIn } = useContext(LoginContext);
   const nav = useNavigate();
 
-  const nav = useNavigate();
-
   if (isLoggedIn) {
     nav('/questions');
   }
