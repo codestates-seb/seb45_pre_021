@@ -1,40 +1,23 @@
 import { styled } from 'styled-components';
 import Sidebar from '../../components/Sidebar.jsx';
 import { useState, useContext } from 'react';
-import { ProfileBox } from '../../components/ProfileBox.jsx';
-import { ActivityBox } from '../../components/ActivityBox.jsx';
-import { SettingBox } from '../../components/SettingBox.jsx';
-import SavesBox from '../../components/SavesBox.jsx';
-import PropTypes from 'prop-types';
+import { ProfileBox } from '../../components/myPage/ProfileBox.jsx';
+import { ActivityBox } from '../../components/myPage/ActivityBox.jsx';
+import { SettingBox } from '../../components/myPage/SettingBox.jsx';
+import SavesBox from '../../components/myPage/SavesBox.jsx';
 import { LoginContext } from '../../App';
+import profiles from '../../utils/profiles.js';
 
 const MyPage = () => {
-  const [profile, setProfile] = useState(true);
-  const [activity, setActivity] = useState(true);
-  const [saves, setSaves] = useState(true);
-  const [setting, setSetting] = useState(true);
-  const { profileImages, selectedProfileIndex } = useContext(LoginContext);
+  const { userData } = useContext(LoginContext);
+  const [tab, setTab] = useState(0);
 
-  const handleActivity = () => {
-    setProfile(false);
-    setActivity(true);
-  };
-
-  const handleProfile = () => {
-    setProfile(true);
-    setActivity(false);
-  };
-  const handleSaves = () => {
-    setProfile(false);
-    setActivity(false);
-    setSaves(true);
-  };
-  const handleSetting = () => {
-    setProfile(false);
-    setActivity(false);
-    setSaves(false);
-    setSetting(true);
-  };
+  const boxCompoenents = [
+    <ProfileBox key={0} />,
+    <ActivityBox key={1} />,
+    <SavesBox key={2} />,
+    <SettingBox key={3} />,
+  ];
 
   return (
     <MyPageLayout>
@@ -43,10 +26,9 @@ const MyPage = () => {
         <PageHeader>
           <HeaderLeft>
             <div>
-              <img
-                src={profileImages[selectedProfileIndex]}
-                alt="profile img"
-              />
+              {userData && (
+                <img src={profiles[userData.imageId]} alt="profile img" />
+              )}
             </div>
             <UserInfo>
               <h2>Qazx960</h2>
@@ -138,24 +120,16 @@ const MyPage = () => {
         </PageHeader>
         <ProfileTabs>
           <div className="tab--container">
-            <button onClick={handleProfile}>Profile</button>
-            <button onClick={handleActivity}>Activity</button>
-            <button onClick={handleSaves}>Saves</button>
-            <button onClick={handleSetting}>Settings</button>
+            <button onClick={() => setTab(0)}>Profile</button>
+            <button onClick={() => setTab(1)}>Activity</button>
+            <button onClick={() => setTab(2)}>Saves</button>
+            <button onClick={() => setTab(3)}>Settings</button>
           </div>
         </ProfileTabs>
-        {(profile && <ProfileBox />) ||
-          (activity && <ActivityBox />) ||
-          (saves && <SavesBox />) ||
-          (setting && <SettingBox />)}
+        {boxCompoenents[tab]}
       </MyPageContainer>
     </MyPageLayout>
   );
-};
-
-MyPage.propTypes = {
-  profileImages: PropTypes.arrayOf(PropTypes.string).isRequired,
-  selectedProfileIndex: PropTypes.number.isRequired,
 };
 
 export default MyPage;

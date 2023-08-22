@@ -9,7 +9,7 @@ import {
   Reputation,
   Tags,
   VotesCast,
-} from './MyPageBoxes.jsx';
+} from '../MyPageBoxes.jsx';
 
 export const ActivityBox = () => {
   return (
