@@ -1,13 +1,13 @@
 import axios from 'axios';
 
-const storedToken = localStorage.getItem('access_token');
-
 const myAxios = axios.create({
   withCredentials: true,
   baseURL: process.env.REACT_APP_BASE_URL,
-  headers: {
-    Authorization: storedToken,
-  },
+});
+
+myAxios.interceptors.request.use(function (config) {
+  config.headers.Authorization = localStorage.getItem('access_token');
+  return config;
 });
 
 export default myAxios;
