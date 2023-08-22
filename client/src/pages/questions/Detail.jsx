@@ -17,6 +17,7 @@ const Detail = () => {
   const [selected, setSelected] = useState(null);
   const [answers, setAnswers] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [content, setContent] = useState('');
 
   const { id } = useParams();
 
@@ -80,7 +81,7 @@ const Detail = () => {
                   <AnswerSection answer={answer} key={i} />
                 ))}
               <h2>Your Answer</h2>
-              <Editor />
+              <Editor content={content} setContent={setContent} />
               <br />
               <Button>Post Your Answer</Button>
             </PostsContainer>
