@@ -8,6 +8,7 @@ import Main from './pages/questions/Main.jsx';
 import Post from './pages/questions/Post.jsx';
 import Edit from './pages/questions/Edit.jsx';
 import Detail from './pages/questions/Detail.jsx';
+import Search from './pages/questions/Search.jsx';
 import NotFound from './pages/NotFound.jsx';
 import Nav from './components/Nav.jsx';
 import Footer from './components/Footer.jsx';
@@ -84,6 +85,7 @@ function App() {
           <Route path="/questions/post" element={<Post />} />
           <Route path="/questions/edit/:id" element={<Edit />} />
           <Route path="/questions/detail/:id" element={<Detail />} />
+          <Route path="/questions/search/:keyword" element={<Search />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
         <Footer />
