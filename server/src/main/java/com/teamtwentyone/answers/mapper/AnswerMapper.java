@@ -26,6 +26,7 @@ public class AnswerMapper {
                 .answerId(answer.getAnswerId())
                 .content(answer.getContent())
                 .writerNickName(answer.getWriterNickName())
+                .writerImageId(answer.getUser().getImageId())
                 .createdAt(String.valueOf(answer.getCreateDate()))
                 .modifiedAt(String.valueOf(answer.getModifiedDate()))
                 .build();

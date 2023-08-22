@@ -53,6 +53,7 @@ public class QuestionsDto {
         private String content;
         private Question.Status status;
         private String writerNickName;
+        private int writerImageId;
         private int answerCount;
         private List<Answer> answers;
         private String createdAt;
@@ -71,6 +72,7 @@ public class QuestionsDto {
         private String title;
         private Question.Status status;
         private String writerNickName;
+        private int writerImageId;
         private int answerCount;
         private String createdAt;
         private String modifiedAt;

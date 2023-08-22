@@ -147,7 +147,13 @@ public class UserService {
                     if(!(findUser.getImageId() == imageId)) {
                         findUser.setImageId(imageId);
                     }
+                    // answers 의 writerImageId update
+                    List<Answer> answers = answerRepository.findByUserUserId(findUser.getUserId());
+                    answers.forEach(answer -> {
+                        answer.setWriterImageId(imageId);
+                        answerRepository.save(answer);});
                 });
+
         /*
         * 프론트 요청으로 사용자 휴대폰 번호 관련 기능 삭제
         */

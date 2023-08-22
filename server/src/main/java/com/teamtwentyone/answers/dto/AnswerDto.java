@@ -32,6 +32,7 @@ public class AnswerDto {
         private Long answerId;
         private String content;
         private String writerNickName;
+        private int writerImageId;
         private String createdAt;
         private String modifiedAt;
     }

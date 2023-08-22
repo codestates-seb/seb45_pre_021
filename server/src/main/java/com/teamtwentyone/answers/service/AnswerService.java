@@ -51,6 +51,7 @@ public class AnswerService {
         answer.setWriterNickName(user.getNickName()); // 답변 작성자 닉네임 설정
         answer.setUser(user); // 답변 작성자 설정
         answer.setQuestion(question); // 답변이 달릴 질문 설정
+        answer.setWriterImageId(user.getImageId()); // 답변 작성자 이미지 설정
         question.setAnswerCount(question.getAnswerCount() + 1); // 질문의 답변 수 1 증가
         answerRepository.save(answer);
         return answer;
