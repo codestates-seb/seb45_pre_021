@@ -3,12 +3,16 @@ import { styled } from 'styled-components';
 import PropTypes from 'prop-types';
 
 const Editor = ({ content, setContent }) => {
+  const handleChange = (newContent) => {
+    console.log(newContent); // Log the new content
+    setContent(newContent);
+  };
   return (
     <EditorContainer data-color-mode="light">
       <MDEditor
         height={240}
         value={content}
-        onChange={setContent}
+        onChange={handleChange}
         preview="edit"
       />
     </EditorContainer>
