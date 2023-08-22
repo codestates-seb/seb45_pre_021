@@ -5,11 +5,10 @@ import logo from '../../imgs/footer_logo.png';
 import { LoginContext } from '../../App';
 import { useNavigate } from 'react-router-dom';
 
-import PropTypes from 'prop-types';
-import myAxios from '../../utils/axios';
+import axios from '../../utils/axios';
 
 const Login = () => {
-  const { isLoggedIn } = useContext(LoginContext);
+  const { isLoggedIn, fetchUserData } = useContext(LoginContext);
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -46,13 +45,14 @@ const Login = () => {
     if (Object.keys(newErrors).length === 0) {
       try {
         const userInfo = { email, password };
-        const response = await myAxios.post(
+        const response = await axios.post(
           // `${process.env.REACT_APP_BASE_URL}login`,
           'login',
           userInfo,
         );
         const accessToken = response.data.token;
         localStorage.setItem('access_token', accessToken);
+        await fetchUserData();
         navigate('/questions');
       } catch (error) {
         console.log(error);
@@ -102,10 +102,6 @@ const Login = () => {
       </FormSection>
     </LoginSection>
   );
-};
-
-Login.propTypes = {
-  handleLoginUpdate: PropTypes.func.isRequired,
 };
 
 const LoginSection = styled.section`

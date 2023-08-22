@@ -9,9 +9,7 @@ import profiles from '../utils/profiles.js';
 
 const Nav = () => {
   const navigate = useNavigate();
-  const { handleLogout, userData } = useContext(LoginContext);
-
-  const token = localStorage.getItem('access_token');
+  const { handleLogout, userData, isLoggedIn } = useContext(LoginContext);
 
   return (
     <NavigationSection>
@@ -34,7 +32,7 @@ const Nav = () => {
         <input type="text" placeholder="Search..." />
       </SearchSection>
       <UserSection>
-        {token ? (
+        {isLoggedIn ? (
           <UserSection>
             <ProfileSection onClick={() => navigate('/users')}>
               {userData && (
