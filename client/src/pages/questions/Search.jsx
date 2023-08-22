@@ -75,7 +75,8 @@ const Search = () => {
             </Link>
           </Header>
           <SubHeader>
-            <p>{totalPosts} Questions</p>
+            <span>Results for {keyword}</span>
+            <p>{totalPosts} results</p>
           </SubHeader>
           <div>
             {post.map((question) => {
@@ -141,22 +142,28 @@ const Header = styled.div`
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
+  padding-left: 1.5rem;
   p {
     font-size: 28px;
-    margin-left: 1.5rem;
   }
   margin-bottom: 0.5rem;
 `;
 
 const SubHeader = styled.div`
-  height: 47px;
+  height: 50px;
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  align-items: flex-start;
   justify-content: space-between;
-  p {
-    margin-left: 1.5rem;
+  padding-left: 1.5rem;
+  span {
+    color: #6a737c;
+    font-size: 0.8rem;
   }
-  margin-bottom: 0.5rem;
+  p {
+    font-size: 0.9rem;
+  }
+  margin-bottom: 1rem;
 `;
 
 const QuestionBox = styled.div`
