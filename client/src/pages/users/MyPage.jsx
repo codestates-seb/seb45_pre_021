@@ -31,7 +31,7 @@ const MyPage = () => {
               )}
             </div>
             <UserInfo>
-              <h2>Qazx960</h2>
+              <h2>{userData.nickName}</h2>
               <div className="userinfo--details">
                 <div className="userinfo--box">
                   <svg
