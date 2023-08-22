@@ -94,6 +94,7 @@ export default Sidebar;
 const SideContainer = styled.aside`
   width: 164px;
   border-right: 1px solid gray;
+  min-height: calc(100vh - 204px);
 `;
 
 const SideBox = styled.div`
