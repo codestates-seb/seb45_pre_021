@@ -4,27 +4,49 @@ import Sidebar from '../../components/Sidebar.jsx';
 import Editor from '../../components/Editor.jsx';
 import Viewer from '../../components/Viewer.jsx';
 import Button from '../../components/Button.jsx';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { LoginContext } from '../../App.js';
+import axios from '../../utils/axios.js';
 
 const Edit = () => {
-  const { isLoggedIn } = useContext(LoginContext);
+  const { isLoggedIn, userData } = useContext(LoginContext);
   const navigate = useNavigate();
 
   const [title, setTitle] = useState('Hello');
   const [content, setContent] = useState('World');
 
+  const { id } = useParams();
   useEffect(() => {
+    (async () => {
+      try {
+        const res = await axios.get(`/questions/board/${id}`);
+        if (userData.nickName !== res.data.writerNickName) {
+          navigate(`/questions/detail/${id}`);
+          return;
+        }
+        setTitle(res.data.title);
+        setContent(res.data.content);
+      } catch (error) {
+        console.log(error);
+      }
+    })();
+  }, [userData]);
+
+  useEffect(() => {
+    console.log(isLoggedIn);
     if (!isLoggedIn) {
-      navigate('/users/login');
+      navigate(`/questions/detail/${id}`);
+      return;
     }
   }, [isLoggedIn]);
 
-  const postEdits = () => {
-    alert(`
-      Title: ${title}
-      Content: ${content}
-    `);
+  const postEdits = async () => {
+    try {
+      await axios.patch(`/questions/edit/${id}`, { title, content });
+      navigate(`/questions/detail/${id}`);
+    } catch (error) {
+      console.log(error);
+    }
   };
   return (
     <PageWrapper>
