@@ -7,6 +7,7 @@ import Button from '../../components/Button.jsx';
 import kanaImg from '../../imgs/post_kana.png';
 import { useNavigate } from 'react-router-dom';
 import { LoginContext } from '../../App.js';
+import axios from '../../utils/axios.js';
 
 const Post = () => {
   const { isLoggedIn } = useContext(LoginContext);
@@ -22,12 +23,21 @@ const Post = () => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [isPassed, setIsPassed] = useState(false);
-  const post = () => {
-    // 추후 백엔드 API 요청 코드 작성
-    alert(`
-      title: ${title}
-      content: ${content}
-    `);
+  const post = async () => {
+    try {
+      if (title.length < 5) {
+        alert('Title must be at least 5 characters');
+        return;
+      }
+      if (content.length < 20) {
+        alert('Content must be at least 20 characters');
+        return;
+      }
+      await axios.post('/questions/post', { title, content });
+      navigate('/questions');
+    } catch (err) {
+      console.log(err);
+    }
   };
   return (
     <PageWrapper>
