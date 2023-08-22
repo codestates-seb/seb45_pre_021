@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
 import Sidebar from '../../components/Sidebar.jsx';
@@ -10,54 +10,102 @@ import Button from '../../components/Button.jsx';
 import widgetImg1 from '../..//imgs/widget_pencil.png';
 import widgetImg2 from '../..//imgs/widget_speechbubble.png';
 import widgetImg3 from '../..//imgs/widget_sof.png';
-import axios from '../../utils/axios.js';
+import myAxios from '../../utils/axios.js';
+import { LoginContext } from '../../App.js';
 
 const Detail = () => {
   const [question, setQuestion] = useState(null);
   const [selected, setSelected] = useState(null);
   const [answers, setAnswers] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [content, setContent] = useState('');
+  const [userId, setUserId] = useState(null);
+  const [userNickname, setUserNickname] = useState('');
 
-  const { id } = useParams();
+  const { isLoggedIn } = useContext(LoginContext);
 
   const navigate = useNavigate();
 
-  useEffect(() => {
-    // Mock data
-    (async () => {
-      if (id === 'test') {
-        const res = await fetch('/data/questionDetail.json');
-        const data = await res.json();
-        setQuestion(data);
-        if (data.answers && data.answers.length > 0) {
-          setSelected(data.answers.find((answer) => answer.selected));
-          setAnswers(data.answers.filter((answer) => !answer.selected));
-        }
-        setIsLoading(false);
-        return;
+  if (!isLoggedIn) {
+    navigate('/users/login');
+  }
+
+  const { id } = useParams();
+
+  // post event
+
+  const handleSubmit = async () => {
+    const newAnswer = {
+      content: content,
+    };
+
+    try {
+      await myAxios.post(`/answers/post/${userId}`, newAnswer);
+      setContent('');
+      setUserId(null);
+      getData();
+    } catch (error) {
+      alert('Error: Not able to POST an REPLY!');
+    }
+  };
+
+  // delete post
+  const handleDelete = async (answerId) => {
+    try {
+      await myAxios.delete(`/answers/delete/${answerId}`);
+
+      setAnswers((prevAnws) =>
+        prevAnws.filter((answer) => answer.answerId !== answerId),
+      );
+    } catch (error) {
+      alert('Error deleting answer:', error);
+    }
+  };
+
+  //edit post
+  const handleEdit = async (answerId, editedContent) => {
+    try {
+      const response = await myAxios.patch(`/answers/edit/${answerId}`, {
+        content: editedContent,
+      });
+
+      if (response.status === 200) {
+        getData();
+      } else {
+        console.error('Error editing answer:', response.data.error);
       }
-      // Real data
-      try {
-        const res = await axios.get(`/questions/board/${id}`);
-        console.log(res);
+    } catch (error) {
+      console.error('Error editing answer:', error);
+    }
+  };
 
-        if (res.data.status === 400) {
-          navigate('/404');
-        }
-
-        setQuestion(res.data);
-        if (res.data.answers && res.data.answers.length > 0) {
-          setSelected(res.data.answers.find((answer) => answer.selected));
-          setAnswers(res.data.answers.filter((answer) => !answer.selected));
-        }
-      } catch (err) {
-        console.log(err);
+  const getData = async () => {
+    // Real data
+    try {
+      const res = await myAxios.get(`/questions/board/${id}`);
+      if (res.data.status === 400) {
         navigate('/404');
       }
 
-      setIsLoading(false);
-    })();
+      setQuestion(res.data);
+      setUserId(res.data.questionId);
+      setUserNickname(res.data.answers[0]?.writerNickName);
+
+      if (res.data.answers && res.data.answers.length > 0) {
+        setSelected(res.data.answers.find((answer) => answer.selected));
+        setAnswers(res.data.answers.filter((answer) => !answer.selected));
+      }
+    } catch (err) {
+      navigate('/404');
+    }
+
+    setIsLoading(false);
+  };
+
+  useEffect(() => {
+    getData();
   }, []);
+
   if (isLoading) return <div>Loading...</div>;
   return (
     <PageWrapper>
@@ -72,17 +120,23 @@ const Detail = () => {
               {answers.length + (selected ? 1 : 0) > 1 && (
                 <h2> {answers.length + (selected ? 1 : 0)} Answers</h2>
               )}
-              {selected && (
-                <AnswerSection answer={selected} isSelected={true} />
-              )}
+              {selected && <AnswerSection answer={selected} />}
               {answers.length > 0 &&
                 answers.map((answer, i) => (
-                  <AnswerSection answer={answer} key={i} />
+                  <AnswerSection
+                    answer={answer}
+                    key={i}
+                    handleDelete={handleDelete}
+                    userId={userId}
+                    userNickname={userNickname}
+                    onEdit={handleEdit}
+                  />
                 ))}
               <h2>Your Answer</h2>
-              <Editor />
+              <Editor content={content} setContent={setContent} />
               <br />
-              <Button>Post Your Answer</Button>
+              {/* <Button>Post Your Answer</Button> */}
+              <Button onClick={handleSubmit}>Post Your Answer</Button>
             </PostsContainer>
             <Widget>
               <div className="title-box">The Overflow Blog</div>

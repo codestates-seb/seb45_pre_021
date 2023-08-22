@@ -23,7 +23,7 @@ const Main = () => {
     const data = await res.data;
     setHasMore(data.pageInfo.page < data.pageInfo.totalPages);
     setTotalPosts(data.pageInfo.totalElements);
-    console.log(data);
+
     return data;
   };
 
