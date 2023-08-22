@@ -12,6 +12,8 @@ const AnswerSection = ({ answer, isSelected = false }) => {
       <BottomBox>
         <ProfileCard author={writerNickName} createdAt={createDate} />
       </BottomBox>
+      <UserSettingButton>Edit</UserSettingButton>
+      <UserSettingButton>Delete</UserSettingButton>
     </AnswerContainer>
   );
 };
@@ -24,6 +26,8 @@ AnswerSection.propTypes = {
     writerNickName: propTypes.string.isRequired,
   }).isRequired,
   isSelected: propTypes.bool,
+  loggedInUser: propTypes.string.isRequired,
+  handleDelete: propTypes.func.isRequired,
 };
 
 const AcceptedTag = styled.div`
@@ -52,6 +56,18 @@ const BottomBox = styled.div`
     &:hover {
       filter: brightness(1.2);
     }
+  }
+`;
+const UserSettingButton = styled.button`
+  padding: 0.5rem;
+  font-size: 0.8rem;
+  color: #6a737c;
+  background: none;
+  border: none;
+  cursor: pointer;
+
+  &:hover {
+    filter: brightness(1.2);
   }
 `;
 
