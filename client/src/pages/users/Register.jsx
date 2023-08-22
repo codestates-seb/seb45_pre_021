@@ -78,7 +78,7 @@ const Register = () => {
         console.log(response);
         nav('/users/login');
       } catch (error) {
-        console.log(error);
+        alert(`message: ${error.response.data.message}`);
       }
     }
   };

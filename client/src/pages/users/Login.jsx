@@ -55,7 +55,7 @@ const Login = () => {
         localStorage.setItem('access_token', accessToken);
         navigate('/questions');
       } catch (error) {
-        console.log(error);
+        alert(`message: ${error.response.data.message}`);
       }
     }
   };
