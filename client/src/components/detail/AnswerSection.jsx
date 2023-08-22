@@ -3,8 +3,8 @@ import ProfileCard from './ProfileCard.jsx';
 import propTypes from 'prop-types';
 import Viewer from '../Viewer.jsx';
 
-const AnswerSection = ({ answer, isSelected = false }) => {
-  const { createDate, content, writerNickName } = answer;
+const AnswerSection = ({ answer, isSelected = false, handleDelete }) => {
+  const { createDate, content, writerNickName, answerId } = answer;
   return (
     <AnswerContainer>
       {isSelected && <AcceptedTag>Accepted Answer</AcceptedTag>}
@@ -13,7 +13,9 @@ const AnswerSection = ({ answer, isSelected = false }) => {
         <ProfileCard author={writerNickName} createdAt={createDate} />
       </BottomBox>
       <UserSettingButton>Edit</UserSettingButton>
-      <UserSettingButton>Delete</UserSettingButton>
+      <UserSettingButton onClick={() => handleDelete(answerId)}>
+        Delete
+      </UserSettingButton>
     </AnswerContainer>
   );
 };
@@ -24,9 +26,9 @@ AnswerSection.propTypes = {
     content: propTypes.string.isRequired,
     selected: propTypes.bool.isRequired,
     writerNickName: propTypes.string.isRequired,
+    answerId: propTypes.number.isRequired,
   }).isRequired,
   isSelected: propTypes.bool,
-  loggedInUser: propTypes.string.isRequired,
   handleDelete: propTypes.func.isRequired,
 };
 

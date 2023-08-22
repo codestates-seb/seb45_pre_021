@@ -17,13 +17,14 @@ const Detail = () => {
   const [selected, setSelected] = useState(null);
   const [answers, setAnswers] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [content, setContent] = useState('Write your answer here');
+  const [content, setContent] = useState('');
   const [userId, setUserId] = useState(NaN);
 
   const { id } = useParams();
 
   const navigate = useNavigate();
 
+  // post event
   const handleSubmit = async () => {
     const newAnswer = {
       content: content,
@@ -32,8 +33,28 @@ const Detail = () => {
     try {
       const response = await myAxios.post(`/answers/post/${userId}`, newAnswer);
       console.log(response);
+
+      setContent('');
+      setUserId(NaN);
     } catch (error) {
       console.log('ERRROR.....', error);
+    }
+  };
+
+  // delete post
+  const handleDelete = async (answerId) => {
+    try {
+      const responseDelete = await myAxios.delete(
+        `/answers/delete/${answerId}`,
+      );
+      console.log('Deleted answer:', responseDelete);
+
+      setAnswers((prevAnws) =>
+        prevAnws.filter((answer) => answer.answerId !== answerId),
+      );
+      console.log(responseDelete);
+    } catch (error) {
+      console.error('Error deleting answer:', error);
     }
   };
 
@@ -60,6 +81,7 @@ const Detail = () => {
       setIsLoading(false);
     })();
   }, []);
+
   if (isLoading) return <div>Loading...</div>;
   return (
     <PageWrapper>
@@ -74,12 +96,14 @@ const Detail = () => {
               {answers.length + (selected ? 1 : 0) > 1 && (
                 <h2> {answers.length + (selected ? 1 : 0)} Answers</h2>
               )}
-              {selected && (
-                <AnswerSection answer={selected} isSelected={true} />
-              )}
+              {selected && <AnswerSection answer={selected} />}
               {answers.length > 0 &&
                 answers.map((answer, i) => (
-                  <AnswerSection answer={answer} key={i} />
+                  <AnswerSection
+                    answer={answer}
+                    key={i}
+                    handleDelete={handleDelete}
+                  />
                 ))}
               <h2>Your Answer</h2>
               <Editor content={content} setContent={setContent} />
