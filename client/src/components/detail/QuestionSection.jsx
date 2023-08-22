@@ -7,7 +7,8 @@ import { useContext } from 'react';
 import { LoginContext } from '../../App.js';
 
 const QuestionSection = ({ question }) => {
-  const { content, writerNickName, createdAt, questionId } = question;
+  const { content, writerNickName, writerImageId, createdAt, questionId } =
+    question;
   const { userData } = useContext(LoginContext);
   return (
     <QuestionContainer>
@@ -22,6 +23,7 @@ const QuestionSection = ({ question }) => {
         <ProfileCard
           author={writerNickName}
           createdAt={createdAt}
+          imageId={writerImageId}
           isQuestioner={true}
         />
       </BottomBox>
@@ -33,6 +35,7 @@ QuestionSection.propTypes = {
   question: PropTypes.shape({
     content: PropTypes.string.isRequired,
     writerNickName: PropTypes.string.isRequired,
+    writerImageId: PropTypes.number.isRequired,
     createdAt: PropTypes.string.isRequired,
     questionId: PropTypes.number.isRequired,
   }),

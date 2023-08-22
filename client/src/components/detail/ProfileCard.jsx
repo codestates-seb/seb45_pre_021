@@ -1,8 +1,8 @@
 import propTypes from 'prop-types';
 import { styled } from 'styled-components';
-import profileImage from '../../imgs/profile_image.jpg';
+import profiles from '../../utils/profiles';
 
-const ProfileCard = ({ author, createdAt, isQuestioner = false }) => {
+const ProfileCard = ({ author, createdAt, isQuestioner = false, imageId }) => {
   function formatDate(inputDate) {
     const months = [
       'Jan',
@@ -39,7 +39,7 @@ const ProfileCard = ({ author, createdAt, isQuestioner = false }) => {
         asked <span>{formattedDate}</span> at <span>{formattedTime}</span>
       </p>
       <div>
-        <ProfileImage />
+        <ProfileImage $imageId={imageId} />
         <span>{author}</span>
       </div>
     </CardContainer>
@@ -50,6 +50,7 @@ ProfileCard.propTypes = {
   author: propTypes.string.isRequired,
   isQuestioner: propTypes.bool,
   createdAt: propTypes.string.isRequired,
+  imageId: propTypes.number.isRequired,
 };
 
 const CardContainer = styled.div`
@@ -85,7 +86,7 @@ const ProfileImage = styled.div`
   width: 32px;
   height: 32px;
   border-radius: 5px;
-  background-image: url(${profileImage});
+  background-image: url(${({ $imageId }) => profiles[$imageId]});
   background-size: cover;
 `;
 

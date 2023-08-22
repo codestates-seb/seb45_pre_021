@@ -12,7 +12,7 @@ const AnswerSection = ({
   handleDelete,
   onEdit,
 }) => {
-  const { createDate, content, writerNickName } = answer;
+  const { createDate, content, writerNickName, writerImageId } = answer;
 
   const { userData } = useContext(LoginContext);
   const loggedUserNickname = userData.nickName;
@@ -44,7 +44,11 @@ const AnswerSection = ({
         <Viewer content={content} />
       )}
       <BottomBox>
-        <ProfileCard author={writerNickName} createdAt={createDate} />
+        <ProfileCard
+          author={writerNickName}
+          createdAt={createDate}
+          imageId={writerImageId}
+        />
       </BottomBox>
       {isCurrentUserAuthor && (
         <UserSettingButton onClick={toggleEditing}>
@@ -72,6 +76,7 @@ AnswerSection.propTypes = {
     selected: propTypes.bool.isRequired,
     writerNickName: propTypes.string.isRequired,
     answerId: propTypes.number.isRequired,
+    writerImageId: propTypes.number,
   }).isRequired,
   isSelected: propTypes.bool,
   handleDelete: propTypes.func.isRequired,
