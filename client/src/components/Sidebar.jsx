@@ -1,6 +1,8 @@
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
+import { Icon } from '@iconify/react';
+import sidebar from '../imgs/sidebar.gif';
 
 const Sidebar = () => {
   const handleClick = (link) => {
@@ -20,7 +22,8 @@ const Sidebar = () => {
         <PublicBox>
           <Titles>Public</Titles>
           <ul>
-            <ListItem>
+            <ListItem className="iconTab">
+              <Icon icon="ion:earth-sharp" />
               <LinkItems to="/questions">Questions</LinkItems>
             </ListItem>
             <ListItem>
@@ -38,15 +41,18 @@ const Sidebar = () => {
           <Titles>Collectives</Titles>
 
           <LinkItems
+            className="iconTab"
             onClick={() => handleClick('https://stackoverflow.com/collectives')}
           >
+            <Icon icon="material-symbols:award-star-rounded" color="#f48224" />
             Explore Collectives
           </LinkItems>
         </CollectivesBox>
         <ButtonBox>
           <Titles>Teams</Titles>
-
+          <img src={sidebar} alt="sidebar" />
           <LinkItems
+            className="team"
             onClick={() =>
               handleClick(
                 'https://stackoverflowteams.com/teams/create/free/?utm_source=so-owned&utm_medium=side-bar&utm_campaign=campaign-38&utm_content=cta',
@@ -88,7 +94,6 @@ export default Sidebar;
 const SideContainer = styled.aside`
   width: 164px;
   border-right: 1px solid gray;
-  height: 100vh;
 `;
 
 const SideBox = styled.div`
@@ -97,7 +102,7 @@ const SideBox = styled.div`
 `;
 
 const HomeLayer = styled.div`
-  height: 25px;
+  height: 20px;
   padding: 0 5px;
 `;
 
@@ -106,6 +111,7 @@ const HomeBox = styled.h3`
   align-items: center;
   height: 100%;
   font-weight: 600;
+  margin-top: 20px;
 `;
 
 const PublicBox = styled.div`
@@ -118,17 +124,30 @@ const Titles = styled.p`
   text-transform: uppercase;
   font-weight: 300;
   font-size: 13px;
+  margin-left: -8px;
+  margin-bottom: 3px;
 `;
 
 const ListItem = styled.li`
+  display: flex;
+  align-items: center;
+  justify-content: left;
   list-style: none;
 
   line-height: 1.7;
-  height: 25px;
-  margin: 10px;
+  height: 38px;
 
   font-size: 15px;
   font-weight: 500;
+
+  &.iconTab {
+    gap: 3px;
+    margin-left: -8px;
+    font-weight: bold;
+    background-color: hsl(210, 8%, 95%);
+    color: hsl(210, 8%, 5%);
+    border-right: 3px solid hsl(27, 90%, 55%);
+  }
 `;
 
 const CollectivesBox = styled.div`
@@ -138,19 +157,27 @@ const CollectivesBox = styled.div`
 
 const ButtonBox = styled.div`
   padding-left: 10px;
+  img {
+    width: 120px;
+    border-radius: 6px;
+  }
 `;
 
 const QuestionBox = styled.p`
   background-color: #f0f8ff;
   text-align: center;
   font-size: 13px;
+  width: 120px;
   height: 38px;
 
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: left;
   font-weight: 500;
   position: relative;
+  border-radius: 6px;
+  padding: 6px;
+  margin-left: 10px;
 `;
 
 const FindTeamBox = styled.div`
@@ -185,11 +212,32 @@ const LinkButton = styled(Link)`
 
 const LinkItems = styled(Link)`
   color: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  list-style: none;
+  line-height: 1.7;
+  font-size: 13px;
+
+  &.iconTab {
+    gap: 3px;
+    margin-left: -8px;
+  }
+  &.team {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 120px;
+    color: hsl(0, 0%, 100%);
+    background-color: hsl(27, 90%, 55%);
+    padding: 6px;
+    border-radius: 6px;
+  }
 `;
 
 const HomeTitle = styled(Link)`
   color: #000;
   font-size: 16px;
   text-decoration: none;
-  font-weight: 700;
+  font-weight: normal;
 `;
