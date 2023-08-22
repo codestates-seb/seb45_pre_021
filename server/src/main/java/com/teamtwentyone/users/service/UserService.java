@@ -220,10 +220,9 @@ public class UserService {
         });
     }
 
-    // 랜덤 이미지 id 생성 메서드(1 ~ 6)
-    public int randomImageId() {
-        int imageId = (int) (Math.random() * 6) + 1;
-        return imageId;
+    // 랜덤 이미지 id 생성 메서드(0 ~ 5)
+    private int randomImageId() {
+        return (int) (Math.random() * 6);
     }
         /*
         * 프론트 요청으로 사용자 휴대폰 번호 관련 기능 삭제
