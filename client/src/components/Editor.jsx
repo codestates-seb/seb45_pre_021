@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 
 const Editor = ({ content, setContent }) => {
   const handleChange = (newContent) => {
-    console.log(newContent);
     setContent(newContent);
   };
   return (
