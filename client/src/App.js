@@ -27,7 +27,7 @@ function App() {
       const response = await axios.get('users/mypage');
       setUserData(response.data);
       setIsLoggedIn(true);
-      console.log('userData', response.data);
+      // console.log('userData', response.data);
     } catch (error) {
       handleLogout();
       console.log('err', error);

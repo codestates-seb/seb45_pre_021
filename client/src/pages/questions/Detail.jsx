@@ -65,13 +65,15 @@ const Detail = () => {
     // Real data
     try {
       const res = await myAxios.get(`/questions/board/${id}`);
+
       if (res.data.status === 400) {
         navigate('/404');
       }
 
       setQuestion(res.data);
       setUserId(res.data.questionId);
-      setUserNickname(res.data.answers[0].writerNickName);
+      setUserNickname(res.data.answers[0]?.writerNickName);
+
       if (res.data.answers && res.data.answers.length > 0) {
         setSelected(res.data.answers.find((answer) => answer.selected));
         setAnswers(res.data.answers.filter((answer) => !answer.selected));
