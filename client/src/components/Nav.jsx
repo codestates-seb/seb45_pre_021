@@ -18,15 +18,15 @@ const Nav = () => {
         <img src={logo} alt="Logo" />
       </LogoSection>
       <MenuSection>
-        <li>
-          <a href="https://stackoverflow.co/">About</a>
-        </li>
-        <li>
-          <a href="/questions">Questions</a>
-        </li>
-        <li>
-          <a href="https://stackoverflow.co/teams">For Teams</a>
-        </li>
+        <button onClick={() => navigate('/')}>
+          <li>About</li>
+        </button>
+        <button onClick={() => navigate('/questions')}>
+          <li>Questions</li>
+        </button>
+        <button onClick={() => navigate('/')}>
+          <li>For teams</li>
+        </button>
       </MenuSection>
       <SearchSection>
         <FontAwesomeIcon icon={faSearch} />
