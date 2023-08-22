@@ -1,9 +1,11 @@
 import { styled } from 'styled-components';
 import { useNavigate } from 'react-router-dom';
+import profiles from '../utils/profiles.js';
 // import profileImg from '../imgs/profile-img.jpeg';
 
 const Home = () => {
   const nav = useNavigate();
+
   const stack = {
     react:
       'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/React-icon.svg/2300px-React-icon.svg.png',
@@ -38,24 +40,15 @@ const Home = () => {
             <h2>Frontend</h2>
             <ProfileLayout>
               <ProfileDetails>
-                <ProfileImg
-                  src="https://user-images.githubusercontent.com/72354092/259752477-0ed1ebca-f281-48c9-b011-977bbb839c28.png"
-                  alt="profile img"
-                />
+                <ProfileImg src={profiles[1]} alt="profile img" />
                 <span>강성일 (팀장)</span>
               </ProfileDetails>
               <ProfileDetails>
-                <ProfileImg
-                  src="https://user-images.githubusercontent.com/72354092/259753879-98cec546-738a-445a-aaa3-4e73819419ed.png"
-                  alt="profile img"
-                />
+                <ProfileImg src={profiles[0]} alt="profile img" />
                 <span>김동훈</span>
               </ProfileDetails>
               <ProfileDetails>
-                <ProfileImg
-                  src="https://user-images.githubusercontent.com/72354092/259755661-cd732589-ffbb-4309-a37d-6a17dd8a4866.png"
-                  alt="profile img"
-                />
+                <ProfileImg src={profiles[3]} alt="profile img" />
                 <span>이지원</span>
               </ProfileDetails>
             </ProfileLayout>
@@ -64,24 +57,15 @@ const Home = () => {
             <h2>Backend</h2>
             <ProfileLayout>
               <ProfileDetails>
-                <ProfileImg
-                  src="https://user-images.githubusercontent.com/72354092/259754564-dfd83578-6a2b-45e3-be6e-b30b2233c50f.png"
-                  alt="profile img"
-                />
+                <ProfileImg src={profiles[2]} alt="profile img" />
                 <span>한도석 (부팀장)</span>
               </ProfileDetails>
               <ProfileDetails>
-                <ProfileImg
-                  src="https://user-images.githubusercontent.com/72354092/259754946-7c6ac671-0b03-47c1-8f73-6bd41cb816da.png"
-                  alt="profile img"
-                />
+                <ProfileImg src={profiles[4]} alt="profile img" />
                 <span>정승관</span>
               </ProfileDetails>
               <ProfileDetails>
-                <ProfileImg
-                  src="https://user-images.githubusercontent.com/72354092/259756064-ef73cfde-3422-42ad-b854-dbafa4103c89.png"
-                  alt="profile img"
-                />
+                <ProfileImg src={profiles[5]} alt="profile img" />
                 <span>정창인</span>
               </ProfileDetails>
             </ProfileLayout>
