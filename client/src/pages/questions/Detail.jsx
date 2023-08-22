@@ -10,7 +10,7 @@ import Button from '../../components/Button.jsx';
 import widgetImg1 from '../..//imgs/widget_pencil.png';
 import widgetImg2 from '../..//imgs/widget_speechbubble.png';
 import widgetImg3 from '../..//imgs/widget_sof.png';
-import axios from '../../utils/axios.js';
+import myAxios from '../../utils/axios.js';
 
 const Detail = () => {
   const [question, setQuestion] = useState(null);
@@ -18,35 +18,36 @@ const Detail = () => {
   const [answers, setAnswers] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [content, setContent] = useState('Write your answer here');
+  const [userId, setUserId] = useState(NaN);
 
   const { id } = useParams();
 
   const navigate = useNavigate();
 
+  const handleSubmit = async () => {
+    const newAnswer = {
+      content: content,
+    };
+
+    try {
+      const response = await myAxios.post(`/answers/post/${userId}`, newAnswer);
+      console.log(response);
+    } catch (error) {
+      console.log('ERRROR.....', error);
+    }
+  };
+
   useEffect(() => {
-    // Mock data
     (async () => {
-      if (id === 'test') {
-        const res = await fetch('/data/questionDetail.json');
-        const data = await res.json();
-        setQuestion(data);
-        if (data.answers && data.answers.length > 0) {
-          setSelected(data.answers.find((answer) => answer.selected));
-          setAnswers(data.answers.filter((answer) => !answer.selected));
-        }
-        setIsLoading(false);
-        return;
-      }
       // Real data
       try {
-        const res = await axios.get(`/questions/board/${id}`);
-        console.log(res);
-
+        const res = await myAxios.get(`/questions/board/${id}`);
         if (res.data.status === 400) {
           navigate('/404');
         }
 
         setQuestion(res.data);
+        setUserId(res.data.questionId);
         if (res.data.answers && res.data.answers.length > 0) {
           setSelected(res.data.answers.find((answer) => answer.selected));
           setAnswers(res.data.answers.filter((answer) => !answer.selected));
@@ -83,7 +84,8 @@ const Detail = () => {
               <h2>Your Answer</h2>
               <Editor content={content} setContent={setContent} />
               <br />
-              <Button>Post Your Answer</Button>
+              {/* <Button>Post Your Answer</Button> */}
+              <Button onClick={handleSubmit}>Post Your Answer</Button>
             </PostsContainer>
             <Widget>
               <div className="title-box">The Overflow Blog</div>
