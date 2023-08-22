@@ -1,17 +1,12 @@
-import { useState, useContext, useEffect } from 'react';
+import { useState, useContext } from 'react';
 import { styled } from 'styled-components';
 import { LoginContext } from '../../App';
 import profiles from '../../utils/profiles.js';
 
 export const SettingBox = () => {
   const [isChecked, setIsChecked] = useState(false);
-  const { selectedProfileIndex, handleProfileChange } =
-    useContext(LoginContext);
+  const { handleProfileChange, userData } = useContext(LoginContext);
   const [openSelector, setOpenSelector] = useState(false);
-
-  useEffect(() => {
-    localStorage.setItem('selected_profile', selectedProfileIndex);
-  }, [selectedProfileIndex]);
 
   const handlePictureChange = () => {
     setOpenSelector(true);
@@ -32,7 +27,7 @@ export const SettingBox = () => {
             <GeneralInfo>
               <p>Profile Image</p>
               <ProfileBox className="profile--img">
-                <img src={profiles[selectedProfileIndex]} alt="profile" />
+                <img src={profiles[userData.imageId]} alt="profile" />
                 <ChangePictureBtn onClick={handlePictureChange}>
                   Change Picture
                 </ChangePictureBtn>

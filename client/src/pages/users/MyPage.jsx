@@ -9,7 +9,7 @@ import { LoginContext } from '../../App';
 import profiles from '../../utils/profiles.js';
 
 const MyPage = () => {
-  const { selectedProfileIndex } = useContext(LoginContext);
+  const { userData } = useContext(LoginContext);
   const [tab, setTab] = useState(0);
 
   const boxCompoenents = [
@@ -26,7 +26,9 @@ const MyPage = () => {
         <PageHeader>
           <HeaderLeft>
             <div>
-              <img src={profiles[selectedProfileIndex]} alt="profile img" />
+              {userData && (
+                <img src={profiles[userData.imageId]} alt="profile img" />
+              )}
             </div>
             <UserInfo>
               <h2>Qazx960</h2>

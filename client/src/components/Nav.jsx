@@ -9,7 +9,7 @@ import profiles from '../utils/profiles.js';
 
 const Nav = () => {
   const navigate = useNavigate();
-  const { handleLogout, selectedProfileIndex } = useContext(LoginContext);
+  const { handleLogout, userData } = useContext(LoginContext);
 
   const token = localStorage.getItem('access_token');
 
@@ -37,7 +37,9 @@ const Nav = () => {
         {token ? (
           <UserSection>
             <ProfileSection onClick={() => navigate('/users')}>
-              <img src={profiles[selectedProfileIndex]} alt="Profile" />
+              {userData && (
+                <img src={profiles[userData.imageId]} alt="Profile" />
+              )}
             </ProfileSection>
             {/* <LogoutSection as={Link} to="/" onClick={handleLogout}> */}
             <LogoutSection as={Link} to="/" onClick={handleLogout}>
