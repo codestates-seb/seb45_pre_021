@@ -3,24 +3,59 @@ import ProfileCard from './ProfileCard.jsx';
 import propTypes from 'prop-types';
 import Viewer from '../Viewer.jsx';
 import { LoginContext } from '../../App.js';
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
+import Editor from '../Editor.jsx';
 
-const AnswerSection = ({ answer, isSelected = false, handleDelete }) => {
+const AnswerSection = ({
+  answer,
+  isSelected = false,
+  handleDelete,
+  onEdit,
+}) => {
   const { createDate, content, writerNickName } = answer;
 
   const { userData } = useContext(LoginContext);
   const loggedUserNickname = userData.nickName;
 
+  const [isEditing, setIsEditing] = useState(false);
+  const [editedContent, setEditedContent] = useState(content);
+
   const isCurrentUserAuthor = writerNickName === loggedUserNickname;
+
+  const toggleEditing = () => {
+    setIsEditing(!isEditing);
+    if (!isEditing) {
+      setEditedContent(content);
+    }
+  };
+
+  const handleEditSave = () => {
+    onEdit(answer.answerId, editedContent);
+    toggleEditing();
+  };
 
   return (
     <AnswerContainer>
       {isSelected && <AcceptedTag>Accepted Answer</AcceptedTag>}
-      <Viewer content={content} />
+      {/* <Viewer content={content} /> */}
+      {isEditing ? (
+        <Editor content={editedContent} setContent={setEditedContent} />
+      ) : (
+        <Viewer content={content} />
+      )}
       <BottomBox>
         <ProfileCard author={writerNickName} createdAt={createDate} />
       </BottomBox>
-      {isCurrentUserAuthor && <UserSettingButton>Edit</UserSettingButton>}
+      {isCurrentUserAuthor && (
+        <UserSettingButton onClick={toggleEditing}>
+          {isEditing ? 'Cancel' : 'Edit'}
+        </UserSettingButton>
+      )}
+      {isCurrentUserAuthor && isEditing && (
+        <>
+          <UserSettingButton onClick={handleEditSave}>Save</UserSettingButton>
+        </>
+      )}
       {isCurrentUserAuthor && (
         <UserSettingButton onClick={() => handleDelete(answer.answerId)}>
           Delete
@@ -41,6 +76,7 @@ AnswerSection.propTypes = {
   isSelected: propTypes.bool,
   handleDelete: propTypes.func.isRequired,
   userNickname: propTypes.string.isRequired,
+  onEdit: propTypes.func.isRequired,
 };
 
 const AcceptedTag = styled.div`

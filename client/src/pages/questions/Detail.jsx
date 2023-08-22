@@ -61,6 +61,24 @@ const Detail = () => {
       alert('Error deleting answer:', error);
     }
   };
+
+  //edit post
+  const handleEdit = async (answerId, editedContent) => {
+    try {
+      const response = await myAxios.patch(`/answers/edit/${answerId}`, {
+        content: editedContent,
+      });
+
+      if (response.status === 200) {
+        getData();
+      } else {
+        console.error('Error editing answer:', response.data.error);
+      }
+    } catch (error) {
+      console.error('Error editing answer:', error);
+    }
+  };
+
   const getData = async () => {
     // Real data
     try {
@@ -111,6 +129,7 @@ const Detail = () => {
                     handleDelete={handleDelete}
                     userId={userId}
                     userNickname={userNickname}
+                    onEdit={handleEdit}
                   />
                 ))}
               <h2>Your Answer</h2>
