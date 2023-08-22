@@ -3,8 +3,19 @@ import ProfileCard from './ProfileCard.jsx';
 import propTypes from 'prop-types';
 import Viewer from '../Viewer.jsx';
 
-const AnswerSection = ({ answer, isSelected = false, handleDelete }) => {
-  const { createDate, content, writerNickName, answerId } = answer;
+const AnswerSection = ({
+  answer,
+  isSelected = false,
+  handleDelete,
+  userId,
+  userNickname,
+}) => {
+  const { createDate, content, writerNickName } = answer;
+
+  const isCurrentUserAuthor = writerNickName === userNickname;
+
+  console.log(writerNickName);
+
   return (
     <AnswerContainer>
       {isSelected && <AcceptedTag>Accepted Answer</AcceptedTag>}
@@ -12,10 +23,12 @@ const AnswerSection = ({ answer, isSelected = false, handleDelete }) => {
       <BottomBox>
         <ProfileCard author={writerNickName} createdAt={createDate} />
       </BottomBox>
-      <UserSettingButton>Edit</UserSettingButton>
-      <UserSettingButton onClick={() => handleDelete(answerId)}>
-        Delete
-      </UserSettingButton>
+      {isCurrentUserAuthor && <UserSettingButton>Edit</UserSettingButton>}
+      {isCurrentUserAuthor && (
+        <UserSettingButton onClick={() => handleDelete(userId)}>
+          Delete
+        </UserSettingButton>
+      )}
     </AnswerContainer>
   );
 };
@@ -30,6 +43,8 @@ AnswerSection.propTypes = {
   }).isRequired,
   isSelected: propTypes.bool,
   handleDelete: propTypes.func.isRequired,
+  userId: propTypes.number.isRequired,
+  userNickname: propTypes.string.isRequired,
 };
 
 const AcceptedTag = styled.div`

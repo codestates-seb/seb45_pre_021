@@ -19,6 +19,7 @@ const Detail = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [content, setContent] = useState('');
   const [userId, setUserId] = useState(NaN);
+  const [userNickname, setUserNickname] = useState('');
 
   const { id } = useParams();
 
@@ -31,9 +32,7 @@ const Detail = () => {
     };
 
     try {
-      const response = await myAxios.post(`/answers/post/${userId}`, newAnswer);
-      console.log(response);
-
+      await myAxios.post(`/answers/post/${userId}`, newAnswer);
       setContent('');
       setUserId(NaN);
     } catch (error) {
@@ -69,6 +68,7 @@ const Detail = () => {
 
         setQuestion(res.data);
         setUserId(res.data.questionId);
+        setUserNickname(res.data.answers[0].writerNickName);
         if (res.data.answers && res.data.answers.length > 0) {
           setSelected(res.data.answers.find((answer) => answer.selected));
           setAnswers(res.data.answers.filter((answer) => !answer.selected));
@@ -103,6 +103,8 @@ const Detail = () => {
                     answer={answer}
                     key={i}
                     handleDelete={handleDelete}
+                    userId={userId}
+                    userNickname={userNickname}
                   />
                 ))}
               <h2>Your Answer</h2>
