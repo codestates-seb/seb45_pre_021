@@ -13,8 +13,6 @@ const AnswerSection = ({ answer, isSelected = false, handleDelete }) => {
 
   const isCurrentUserAuthor = writerNickName === loggedUserNickname;
 
-  console.log(isCurrentUserAuthor);
-
   return (
     <AnswerContainer>
       {isSelected && <AcceptedTag>Accepted Answer</AcceptedTag>}

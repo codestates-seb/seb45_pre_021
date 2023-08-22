@@ -36,24 +36,20 @@ const Detail = () => {
       setContent('');
       setUserId(null);
     } catch (error) {
-      console.log('ERRROR.....', error);
+      alert('Error: Not able to POST an REPLY!');
     }
   };
 
   // delete post
   const handleDelete = async (answerId) => {
     try {
-      const responseDelete = await myAxios.delete(
-        `/answers/delete/${answerId}`,
-      );
-      console.log('Deleted answer:', responseDelete);
+      await myAxios.delete(`/answers/delete/${answerId}`);
 
       setAnswers((prevAnws) =>
         prevAnws.filter((answer) => answer.answerId !== answerId),
       );
-      console.log(responseDelete);
     } catch (error) {
-      console.error('Error deleting answer:', error);
+      alert('Error deleting answer:', error);
     }
   };
 
@@ -66,7 +62,6 @@ const Detail = () => {
           navigate('/404');
         }
 
-        console.log(res.data);
         setQuestion(res.data);
         setUserId(res.data.questionId);
         setUserNickname(res.data.answers[0].writerNickName);
@@ -75,7 +70,6 @@ const Detail = () => {
           setAnswers(res.data.answers.filter((answer) => !answer.selected));
         }
       } catch (err) {
-        console.log(err);
         navigate('/404');
       }
 
