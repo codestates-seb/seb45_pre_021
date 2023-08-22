@@ -22,10 +22,10 @@ const Nav = () => {
           <a href="https://stackoverflow.co/">About</a>
         </li>
         <li>
-          <a href="/questions">Products</a>
+          <a href="/questions">Questions</a>
         </li>
         <li>
-          <a href="https://stackoverflow.co/teams">For Teams</a>{' '}
+          <a href="https://stackoverflow.co/teams">For Teams</a>
         </li>
       </MenuSection>
       <SearchSection>
