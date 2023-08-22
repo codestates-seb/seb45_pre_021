@@ -3,13 +3,14 @@ import { useNavigate, Link } from 'react-router-dom';
 import logo from '../imgs/logo-stackoverflow.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { LoginContext } from '../App';
 import profiles from '../utils/profiles.js';
 
 const Nav = () => {
   const navigate = useNavigate();
   const { handleLogout, userData, isLoggedIn } = useContext(LoginContext);
+  const [keyword, setKeyword] = useState('');
 
   return (
     <NavigationSection>
@@ -29,7 +30,22 @@ const Nav = () => {
       </MenuSection>
       <SearchSection>
         <FontAwesomeIcon icon={faSearch} />
-        <input type="text" placeholder="Search..." />
+        <input
+          type="text"
+          placeholder="Search..."
+          value={keyword}
+          onChange={(e) => {
+            setKeyword(e.target.value);
+            console.log(keyword);
+          }}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') {
+              e.preventDefault();
+              if (keyword === '') return;
+              navigate(`/questions/search/${keyword}`);
+            }
+          }}
+        />
       </SearchSection>
       <UserSection>
         {isLoggedIn ? (
