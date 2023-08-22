@@ -17,7 +17,7 @@ const Detail = () => {
   const [selected, setSelected] = useState(null);
   const [answers, setAnswers] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [content, setContent] = useState('');
+  const [content, setContent] = useState('Write your answer here');
 
   const { id } = useParams();
 
