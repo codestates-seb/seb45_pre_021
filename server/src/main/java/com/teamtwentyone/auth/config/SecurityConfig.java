@@ -33,7 +33,7 @@ import java.util.Arrays;
 public class SecurityConfig {
     private final JwtTokenizer jwtTokenizer;
     private final CustomAuthorityUtils authorityUtils;
-
+    private String s3 = "http://pre-project-oshinoko.s3-website.ap-northeast-2.amazonaws.com/";
     @Bean
     public SecurityFilterChain filterChain (HttpSecurity http) throws Exception {
         // logout 성공 핸들러
@@ -94,7 +94,7 @@ public class SecurityConfig {
         CorsConfiguration configuration = new CorsConfiguration();
         // configuration.addAllowedOrigin("http://localhost:3000");
         configuration.setAllowedOrigins(
-                Arrays.asList("http://localhost:3000", "http://localhost:8080"));
+                Arrays.asList("http://localhost:3000", "http://localhost:8080", s3));
         configuration.addAllowedMethod("*");
         configuration.addAllowedHeader("*");
         configuration.addExposedHeader("Authorization");
