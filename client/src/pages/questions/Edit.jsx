@@ -1,5 +1,5 @@
 import { styled } from 'styled-components';
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useState } from 'react';
 import Sidebar from '../../components/Sidebar.jsx';
 import Editor from '../../components/Editor.jsx';
 import Viewer from '../../components/Viewer.jsx';
@@ -14,12 +14,9 @@ const Edit = () => {
   const [title, setTitle] = useState('Hello');
   const [content, setContent] = useState('World');
 
-  useEffect(() => {
-    if (!isLoggedIn) {
-      navigate('/users/login');
-    }
-  }, [isLoggedIn]);
-
+  if (!isLoggedIn) {
+    navigate('/users/login');
+  }
   const postEdits = () => {
     alert(`
       Title: ${title}

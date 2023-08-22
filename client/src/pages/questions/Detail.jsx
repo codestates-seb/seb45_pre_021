@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
 import Sidebar from '../../components/Sidebar.jsx';
@@ -11,6 +11,7 @@ import widgetImg1 from '../..//imgs/widget_pencil.png';
 import widgetImg2 from '../..//imgs/widget_speechbubble.png';
 import widgetImg3 from '../..//imgs/widget_sof.png';
 import myAxios from '../../utils/axios.js';
+import { LoginContext } from '../../App.js';
 
 const Detail = () => {
   const [question, setQuestion] = useState(null);
@@ -21,11 +22,18 @@ const Detail = () => {
   const [userId, setUserId] = useState(null);
   const [userNickname, setUserNickname] = useState('');
 
-  const { id } = useParams();
+  const { isLoggedIn } = useContext(LoginContext);
 
   const navigate = useNavigate();
 
+  if (!isLoggedIn) {
+    navigate('/users/login');
+  }
+
+  const { id } = useParams();
+
   // post event
+
   const handleSubmit = async () => {
     const newAnswer = {
       content: content,
