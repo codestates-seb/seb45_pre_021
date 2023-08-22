@@ -11,8 +11,7 @@ import Detail from './pages/questions/Detail.jsx';
 import NotFound from './pages/NotFound.jsx';
 import Nav from './components/Nav.jsx';
 import Footer from './components/Footer.jsx';
-import myAxios from './utils/axios.js';
-import profiles from './utils/profiles';
+import axios from './utils/axios.js';
 
 import './App.css';
 
@@ -21,40 +20,43 @@ export const LoginContext = createContext();
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userData, setUserData] = useState(null);
-  const [selectedProfileIndex, setSelectedProfileIndex] = useState(0);
-  const profileImages = profiles();
 
-  const handleProfileChange = (index) => {
-    setSelectedProfileIndex(index);
+  const fetchUserData = async () => {
+    try {
+      const response = await axios.get('users/mypage');
+      setUserData(response.data);
+      setIsLoggedIn(true);
+      console.log('userData', response.data);
+    } catch (error) {
+      handleLogout();
+      console.log('err', error);
+    }
+  };
+
+  const handleProfileChange = async (index) => {
+    if (userData === null) return;
+    try {
+      await axios.patch('users/mypage/edit-info', {
+        imageId: index,
+      });
+      await fetchUserData();
+    } catch (error) {
+      console.log('err', error);
+    }
   };
 
   const handleLogout = () => {
     localStorage.removeItem('access_token');
     setIsLoggedIn(false);
+    setUserData(null);
   };
 
   useEffect(() => {
     const storedToken = localStorage.getItem('access_token');
-    const storedProfileIndex = localStorage.getItem('selected_profile');
 
     if (!storedToken) {
       handleLogout();
     }
-
-    if (storedProfileIndex !== null) {
-      setSelectedProfileIndex(parseInt(storedProfileIndex, 10));
-    }
-
-    const fetchUserData = async () => {
-      try {
-        const response = await myAxios.get('users/mypage');
-        setUserData(response.data);
-        setIsLoggedIn(true);
-      } catch (error) {
-        handleLogout();
-        console.log('err', error);
-      }
-    };
 
     fetchUserData();
   }, []);
@@ -67,8 +69,6 @@ function App() {
         userData,
         setUserData,
         handleLogout,
-        profileImages,
-        selectedProfileIndex,
         handleProfileChange,
       }}
     >
