@@ -43,6 +43,7 @@ const Detail = () => {
       await myAxios.post(`/answers/post/${userId}`, newAnswer);
       setContent('');
       setUserId(null);
+      getData();
     } catch (error) {
       alert('Error: Not able to POST an REPLY!');
     }
@@ -60,29 +61,30 @@ const Detail = () => {
       alert('Error deleting answer:', error);
     }
   };
-
-  useEffect(() => {
-    (async () => {
-      // Real data
-      try {
-        const res = await myAxios.get(`/questions/board/${id}`);
-        if (res.data.status === 400) {
-          navigate('/404');
-        }
-
-        setQuestion(res.data);
-        setUserId(res.data.questionId);
-        setUserNickname(res.data.answers[0].writerNickName);
-        if (res.data.answers && res.data.answers.length > 0) {
-          setSelected(res.data.answers.find((answer) => answer.selected));
-          setAnswers(res.data.answers.filter((answer) => !answer.selected));
-        }
-      } catch (err) {
+  const getData = async () => {
+    // Real data
+    try {
+      const res = await myAxios.get(`/questions/board/${id}`);
+      if (res.data.status === 400) {
         navigate('/404');
       }
 
-      setIsLoading(false);
-    })();
+      setQuestion(res.data);
+      setUserId(res.data.questionId);
+      setUserNickname(res.data.answers[0].writerNickName);
+      if (res.data.answers && res.data.answers.length > 0) {
+        setSelected(res.data.answers.find((answer) => answer.selected));
+        setAnswers(res.data.answers.filter((answer) => !answer.selected));
+      }
+    } catch (err) {
+      navigate('/404');
+    }
+
+    setIsLoading(false);
+  };
+
+  useEffect(() => {
+    getData();
   }, []);
 
   if (isLoading) return <div>Loading...</div>;
