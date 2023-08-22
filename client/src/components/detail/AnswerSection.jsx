@@ -2,19 +2,18 @@ import { styled } from 'styled-components';
 import ProfileCard from './ProfileCard.jsx';
 import propTypes from 'prop-types';
 import Viewer from '../Viewer.jsx';
+import { LoginContext } from '../../App.js';
+import { useContext } from 'react';
 
-const AnswerSection = ({
-  answer,
-  isSelected = false,
-  handleDelete,
-  userId,
-  userNickname,
-}) => {
+const AnswerSection = ({ answer, isSelected = false, handleDelete }) => {
   const { createDate, content, writerNickName } = answer;
 
-  const isCurrentUserAuthor = writerNickName === userNickname;
+  const { userData } = useContext(LoginContext);
+  const loggedUserNickname = userData.nickName;
 
-  console.log(writerNickName);
+  const isCurrentUserAuthor = writerNickName === loggedUserNickname;
+
+  console.log(isCurrentUserAuthor);
 
   return (
     <AnswerContainer>
@@ -25,7 +24,7 @@ const AnswerSection = ({
       </BottomBox>
       {isCurrentUserAuthor && <UserSettingButton>Edit</UserSettingButton>}
       {isCurrentUserAuthor && (
-        <UserSettingButton onClick={() => handleDelete(userId)}>
+        <UserSettingButton onClick={() => handleDelete(answer.answerId)}>
           Delete
         </UserSettingButton>
       )}
@@ -43,7 +42,6 @@ AnswerSection.propTypes = {
   }).isRequired,
   isSelected: propTypes.bool,
   handleDelete: propTypes.func.isRequired,
-  userId: propTypes.number.isRequired,
   userNickname: propTypes.string.isRequired,
 };
 
