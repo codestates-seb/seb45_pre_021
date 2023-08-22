@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Calendar;
 import java.util.Date;
@@ -23,7 +22,7 @@ import java.util.Map;
 public class JwtTokenizer {
 
     @Getter
-    @Value("${jwt.secret.key}")
+    @Value("${JWT_SECRET_KEY}")// "${key}")
     private String secretKey;
 
     @Getter
@@ -45,7 +44,7 @@ public class JwtTokenizer {
                 .setExpiration(expirateDate)
                 .setIssuedAt(Calendar.getInstance().getTime())
                 .signWith(key)
-                .compact();         // JWT 생성 후 직렬화
+                .compact();
 
         return accessToken;
     }
@@ -65,7 +64,7 @@ public class JwtTokenizer {
 
     //base 64 encoding
     public String encodeBase64SecretKey(String secretKey){
-        return Encoders.BASE64.encode(secretKey.getBytes(Charset.defaultCharset())); // //StandardCharsets.UTF_8 -> sun.nio.cs.UTF_8.INSTANCE
+        return Encoders.BASE64.encode(secretKey.getBytes(Charset.defaultCharset()));
     }
 
     //base64로 인코딩된 키를 디코딩 하여 <JWT의 서명에 사용할 Secret Key>를 얻어냄
@@ -74,7 +73,6 @@ public class JwtTokenizer {
         Key key = Keys.hmacShaKeyFor(byteKey);
         return key;
     }
-
 
     //verification : 유저가 리소스 접근할 때마다 request header에 포함된 JWT를 검증
 
@@ -90,7 +88,7 @@ public class JwtTokenizer {
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.MINUTE, minutes);
 
-        Date expiration = calendar.getTime(); //return Date
+        Date expiration = calendar.getTime();
         return expiration;
     }
 

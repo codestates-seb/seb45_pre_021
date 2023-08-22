@@ -15,22 +15,17 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
+import java.util.Arrays;
 
 @Configuration
 @RequiredArgsConstructor
@@ -41,6 +36,7 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain (HttpSecurity http) throws Exception {
+        // logout 성공 핸들러
         return  http
                 .headers().frameOptions().sameOrigin() // h2-console 사용을 위한 설정
                 .and()
@@ -59,36 +55,31 @@ public class SecurityConfig {
                 .logout() // logout 설정
                 .logoutUrl("/logout") // logout url 설정
                 .invalidateHttpSession(true) // 세션 초기화
-                .deleteCookies("Authorization") // 쿠키 삭제 : Authorization
                 .deleteCookies("Refresh") // 쿠키 삭제 : Refresh
-                .logoutSuccessHandler(new LogoutSuccessHandler() { // logout 성공 핸들러
-                    @Override
-                    public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-                        response.getWriter().append("Logout successfully");
-                        response.setStatus(HttpServletResponse.SC_OK);
-                    }
+                .logoutSuccessHandler((request, response, authentication) -> {
+                    response.getWriter().append("Logout successfully");
+                    response.setStatus(HttpServletResponse.SC_OK);
                 })
                 .and()
 
                 .authorizeHttpRequests(authorize -> authorize // 요청에 대한 권한 설정
-                        .antMatchers(HttpMethod.POST,"/users").permitAll() // 회원가입은 누구나 가능
-                        .antMatchers(HttpMethod.PATCH,"/users/**").hasRole("USER") // 회원정보 수정은 USER 권한 필요
-                        .antMatchers(HttpMethod.GET,"/users/**").hasRole("USER") // 회원정보 조회는 USER 권한 필요
-                        .antMatchers(HttpMethod.DELETE,"/users/**").hasRole("USER") // 회원정보 삭제는 USER 권한 필요
-//                        .antMatchers(HttpMethod.POST,"/questions").hasRole("USER")
-//                        .antMatchers(HttpMethod.PATCH,"/questions/**").hasRole("USER")
-//                        .antMatchers(HttpMethod.GET,"/questions").permitAll()
-//                        .antMatchers(HttpMethod.GET,"/questions/{id}").permitAll()
-//                        .antMatchers(HttpMethod.DELETE,"/questions/{id}").hasRole("USER")
-//                        .antMatchers(HttpMethod.POST,"/questions/{id}/answers").hasRole("USER")
+                    .antMatchers(HttpMethod.POST,"/users/signup").permitAll() // 회원가입은 누구나 가능
+                    .antMatchers(HttpMethod.PATCH,"/users/**").hasRole("USER") // 회원정보 수정은 USER 권한 필요
+                    .antMatchers(HttpMethod.GET,"/users/mypage/**").hasRole("USER") // 회원정보 조회는 USER 권한 필요
+                    .antMatchers(HttpMethod.DELETE,"/users/mypage/delete").hasRole("USER") // 회원정보 삭제는 USER 권한 필요
 
-//                        .antMatchers(HttpMethod.PATCH,"/answers/**").hasRole("USER")
-//                        .antMatchers(HttpMethod.GET,"/questions/{id}/answers").denyAll()
-//                        .antMatchers(HttpMethod.GET,"/questions/{id}/answers/{answerId}").denyAll()
-//                        .antMatchers(HttpMethod.DELETE,"/answers/**").hasRole("USER")
+                    .antMatchers(HttpMethod.POST ,"/questions/post").hasRole("USER") // 질문 등록은 USER 권한 필요
+                    .antMatchers(HttpMethod.PATCH,"/questions/edit/**").hasRole("USER") // 질문 수정은 USER 권한 필요
+                    .antMatchers(HttpMethod.PATCH, "/questions/edit/**").hasRole("USER") // 질문 수정은 USER 권한 필요
+                    .antMatchers(HttpMethod.GET,"/questions/board/**").permitAll()// .hasRole("USER") // 질문 상세 조회는 누구나 가능
+                    .antMatchers(HttpMethod.GET, "/questions/**").permitAll() // 질문 전체 조회, 검색은 누구나 가능
+                    .antMatchers(HttpMethod.DELETE,"/questions/delete/**").hasRole("USER") // 질문 삭제는 USER 권한 필요
 
-                        .antMatchers(HttpMethod.POST,"/logout").hasRole("USER") // logout 은 USER 권한 필요
-//                        .anyRequest().permitAll() // 나머지 요청은 누구나 가능
+                    .antMatchers(HttpMethod.POST, "/answers/post/**").hasRole("USER") // 답변 등록은 USER 권한 필요
+                    .antMatchers(HttpMethod.PATCH, "/answers/edit/**").hasRole("USER") // 답변 수정은 USER 권한 필요
+                    .antMatchers(HttpMethod.DELETE, "/answers/delete/**").hasRole("USER") // 답변 삭제는 USER 권한 필요
+                    .antMatchers(HttpMethod.POST,"/logout").hasRole("USER") // logout 은 USER 권한 필요
+                    .anyRequest().permitAll() // 나머지 요청은 누구나 가능
                 )
                 .build();
     }
@@ -101,25 +92,25 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() { // cors 설정
         CorsConfiguration configuration = new CorsConfiguration();
+        // configuration.addAllowedOrigin("http://localhost:3000");
+        configuration.setAllowedOrigins(
+                Arrays.asList("http://localhost:3000", "http://localhost:8080"));
+        configuration.addAllowedMethod("*");
+        configuration.addAllowedHeader("*");
+        configuration.addExposedHeader("Authorization");
+        configuration.addExposedHeader("Access-Control-Allow-Credentials");
+        configuration.addExposedHeader("Access-Control-Allow-Origin");
+        configuration.setAllowedMethods(Arrays.asList("POST","GET","PATCH","DELETE","OPTIONS"));
+        configuration.addExposedHeader("Authorization");
 
-        configuration.addAllowedOriginPattern("*"); // 모든 요청 허용
-        configuration.addAllowedMethod("*"); // 모든 메소드 허용
-        configuration.addAllowedHeader("*"); // 모든 헤더 허용
-        configuration.addExposedHeader("*"); // 모든 응답 헤더 허용
-        configuration.addExposedHeader("Authorization"); // Authorization 헤더 허용
-        configuration.addExposedHeader("Access-Control-Allow-Credentials"); // Access-Control-Allow-Credentials 헤더 허용
-
-//        configuration.addAllowedOriginPattern("http://localhost:3000");
-//        configuration.setAllowedMethods(Arrays.asList("POST","GET","PATCH","DELETE","OPTIONS"));
-//        configuration.addExposedHeader("Authorization");
-
-
-        configuration.setAllowCredentials(true); // 쿠키 허용
-
+        configuration.setAllowCredentials(true);
+        // setAllowCredentials 를 true 로 설정하면 Access-Control-Allow-Origin 의 값은 * 를 허용하지 않음
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource(); // cors 설정 적용
         source.registerCorsConfiguration("/**", configuration); // 모든 요청에 대해 위의 설정 적용
-
-        return source; // 설정 적용된 source 반환
+        // configuration.addAllowedOriginPattern("*");
+        // configuration.addAllowedOrigin("*");
+        // configuration.addExposedHeader("*");
+        return source;
     }
 
     public class CustomFilterConfigurer extends AbstractHttpConfigurer<CustomFilterConfigurer, HttpSecurity> {
@@ -135,6 +126,5 @@ public class SecurityConfig {
             builder.addFilter(jwtAuthenticationFilter)
                     .addFilterAfter(jwtVerificationFilter, JwtAuthenticationFilter.class);
         }
-
     }
 }
