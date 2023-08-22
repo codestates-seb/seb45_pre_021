@@ -2,14 +2,23 @@ import { styled } from 'styled-components';
 import PropTypes from 'prop-types';
 import Viewer from '../Viewer.jsx';
 import ProfileCard from './ProfileCard.jsx';
+import { Link } from 'react-router-dom';
+import { useContext } from 'react';
+import { LoginContext } from '../../App.js';
 
 const QuestionSection = ({ question }) => {
-  const { content, writerNickName, createdAt } = question;
+  const { content, writerNickName, createdAt, questionId } = question;
+  const { userData } = useContext(LoginContext);
   return (
     <QuestionContainer>
       <Viewer content={content} />
       <BottomBox>
-        <a href="/questions/edit/test">Edit</a>
+        {writerNickName === userData.nickName ? (
+          <Link to={`/questions/edit/${questionId}`}>Edit</Link>
+        ) : (
+          <span></span>
+        )}
+
         <ProfileCard
           author={writerNickName}
           createdAt={createdAt}
@@ -25,6 +34,7 @@ QuestionSection.propTypes = {
     content: PropTypes.string.isRequired,
     writerNickName: PropTypes.string.isRequired,
     createdAt: PropTypes.string.isRequired,
+    questionId: PropTypes.number.isRequired,
   }),
 };
 

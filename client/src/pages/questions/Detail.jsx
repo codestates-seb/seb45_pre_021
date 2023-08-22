@@ -83,6 +83,7 @@ const Detail = () => {
     // Real data
     try {
       const res = await myAxios.get(`/questions/board/${id}`);
+      console.log(res);
       if (res.data.status === 400) {
         navigate('/404');
       }
