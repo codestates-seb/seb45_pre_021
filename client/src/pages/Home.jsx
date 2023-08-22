@@ -114,7 +114,7 @@ const Home = () => {
 
 export default Home;
 
-const MainLayout = styled.body`
+const MainLayout = styled.div`
   width: 100vw;
 
   height: calc(100vh - 204px);
