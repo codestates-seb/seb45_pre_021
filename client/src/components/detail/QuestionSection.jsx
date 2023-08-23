@@ -14,7 +14,7 @@ const QuestionSection = ({ question }) => {
     <QuestionContainer>
       <Viewer content={content} />
       <BottomBox>
-        {writerNickName === userData.nickName ? (
+        {writerNickName === userData?.nickName ? (
           <Link to={`/questions/edit/${questionId}`}>Edit</Link>
         ) : (
           <span></span>

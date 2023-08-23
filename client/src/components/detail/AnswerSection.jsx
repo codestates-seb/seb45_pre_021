@@ -15,7 +15,7 @@ const AnswerSection = ({
   const { createDate, content, writerNickName, writerImageId } = answer;
 
   const { userData } = useContext(LoginContext);
-  const loggedUserNickname = userData.nickName;
+  const loggedUserNickname = userData?.nickName;
 
   const [isEditing, setIsEditing] = useState(false);
   const [editedContent, setEditedContent] = useState(content);
